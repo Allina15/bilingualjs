@@ -32,10 +32,10 @@ const questionSlice = createSlice({
       },
 
       addUpdateOption: (state, { payload }) => {
+         console.log(payload)
          if (state.options[payload?.optionName]) {
-            state.options[payload?.optionName].push(
-               ...payload.optionResponses.questionOptionResponses
-            )
+            state.options[payload?.optionName] =
+               payload.optionResponses.questionOptionResponses
          }
       },
 

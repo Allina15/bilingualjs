@@ -67,8 +67,6 @@ const deleteTest = createAsyncThunk(
 
          showNotification({ message: `${response.data.message}` })
 
-         dispatch(getTests())
-
          return response.data
       } catch (error) {
          showNotification({

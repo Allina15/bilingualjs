@@ -2,8 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstanceFile } from '../../../../configs/axiosInstanceFile'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
-import { ROUTES } from '../../../../routes/routes'
 import { TESTS_THUNKS } from '../tests/testsThunk'
+import { ROUTES } from '../../../../routes/routes'
 
 const addTest = createAsyncThunk(
    'question/saveTest',

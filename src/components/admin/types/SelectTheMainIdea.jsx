@@ -13,6 +13,7 @@ import SaveModal from '../../UI/modals/SaveModal'
 import Loading from '../../Loading'
 import Option from '../../UI/Option'
 import Button from '../../UI/buttons/Button'
+import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
 
 const SelectTheMainIdea = ({
    title,
@@ -91,12 +92,22 @@ const SelectTheMainIdea = ({
    }, [questionId, question])
 
    const deleteHandler = () => {
-      dispatch(
-         QUESTION_ACTIONS.deleteOption({
-            optionId,
-            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
-         })
-      )
+      if (isCreate) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            })
+         )
+      } else {
+         dispatch(
+            OPTIONS_THUNKS.deleteOption({
+               optionId,
+               id: questionId,
+               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            })
+         )
+      }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
 
@@ -193,12 +204,30 @@ const SelectTheMainIdea = ({
          optionId: Math.floor(Math.random() * 200) + 50,
       }
 
-      dispatch(
-         QUESTION_ACTIONS.addOptionRadio({
-            option,
-            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
-         })
-      )
+      if (isCreate) {
+         dispatch(
+            QUESTION_ACTIONS.addOptionCheck({
+               option,
+               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            })
+         )
+      } else {
+         const option = [
+            {
+               optionTitle: optionTitle.trim(),
+               isCorrectOption: checkedOption,
+               fileUrl: 'none',
+            },
+         ]
+
+         dispatch(
+            OPTIONS_THUNKS.postOptions({
+               option,
+               questionId,
+               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            })
+         )
+      }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
 
