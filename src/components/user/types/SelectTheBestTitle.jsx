@@ -40,7 +40,9 @@ const SelectTheBestTitle = ({ questions, nextHandler }) => {
                <Box className="correct-answer">
                   <Typography className="title">PASSAGE</Typography>
 
-                  <Typography className="passage">{questions.title}</Typography>
+                  <Typography className="passage">
+                     {questions?.passage}
+                  </Typography>
                </Box>
 
                <Box>
@@ -75,7 +77,7 @@ const SelectTheBestTitle = ({ questions, nextHandler }) => {
                </Box>
             </Box>
          ) : (
-            <img src={NoData} alt="no-data" />
+            <img src={NoData} alt="no-data" className="no-data" />
          )}
       </StyledContainer>
    )
@@ -86,6 +88,11 @@ export default SelectTheBestTitle
 const StyledContainer = styled(Box)(({ theme }) => ({
    color: '#4C4859',
    fontFamily: 'Poppins',
+
+   '& > .no-data': {
+      width: '25rem',
+      margin: '0 0 0 15rem',
+   },
 
    '& > .content-box': {
       display: 'flex',

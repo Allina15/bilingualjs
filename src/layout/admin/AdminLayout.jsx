@@ -1,5 +1,5 @@
-import { Box, styled } from '@mui/material'
 import { Outlet } from 'react-router-dom'
+import { Box, styled } from '@mui/material'
 import Header from '../Header'
 
 const AdminLayout = () => {

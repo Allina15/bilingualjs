@@ -5,7 +5,6 @@ import { ADMIN_ROUTES } from './AdminRoutes'
 import { USER_ROUTES } from './UserRoutes'
 import ProtectedRoute from './ProtectedRoute'
 import Suspense from './Suspense'
-import Home from '../pages/home/Home'
 
 const Verification = lazy(() => import('../pages/verification/Verification'))
 const AdminLayout = lazy(() => import('../layout/admin/AdminLayout'))
@@ -13,6 +12,7 @@ const UserLayout = lazy(() => import('../layout/user/UserLayout'))
 const NotFound = lazy(() => import('../layout/NotFound'))
 const SignIn = lazy(() => import('../pages/sign-in/SignIn'))
 const SignUp = lazy(() => import('../pages/sign-up/SignUp'))
+const Home = lazy(() => import('../pages/home/Home'))
 const ForgotPassword = lazy(
    () => import('../pages/forgot-password/ForgotPassword')
 )

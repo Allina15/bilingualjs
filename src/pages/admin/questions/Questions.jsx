@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Box, Skeleton, Typography, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
+import { Box, Skeleton, Typography, styled } from '@mui/material'
 import { EditIcon, PlusIcon, TrashIcon } from '../../../assets/icons'
 import { questionTypeHandler } from '../../../utils/helpers'
+import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
-import { NoDataImage } from '../../../assets/images'
 import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
+import { NoDataImage } from '../../../assets/images'
 import { ROUTES } from '../../../routes/routes'
 import TestContainer from '../../../components/UI/TestContainer'
 import DeleteModal from '../../../components/UI/modals/DeleteModal'
 import Switcher from '../../../components/UI/Switcher'
 import Button from '../../../components/UI/buttons/Button'
-import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 
 const Questions = () => {
    const { test, isLoading } = useSelector((state) => state.tests)
@@ -30,7 +30,7 @@ const Questions = () => {
 
    useEffect(() => {
       if (testId) {
-         dispatch(TESTS_THUNKS.getTest(testId))
+         dispatch(TESTS_THUNKS.getTest({ id: testId }))
       }
    }, [testId])
 
@@ -73,16 +73,12 @@ const Questions = () => {
          `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}/${ROUTES.ADMIN.UPDATE_QUESTION}/${questionId}`,
          { state: question }
       )
-      dispatch(QUESTION_ACTIONS.changeIsUpdate(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(true))
    }
 
    const deleteQuestion = test?.question?.find(
       (test) => test.id === selectedQuestionId
    )?.title
-
-   const totalMinutes = test.duration / 60
-   const seconds = test.duration % 60
-   const minutes = Math.floor(totalMinutes)
 
    return (
       <StyledContainer>
@@ -130,7 +126,7 @@ const Questions = () => {
                ) : (
                   <Box className="text">
                      <Typography className="title">Duration:</Typography>
-                     <Typography>{`${minutes}:${seconds}`}</Typography>
+                     <Typography>{test?.duration}:00</Typography>
                   </Box>
                )}
             </Box>
@@ -180,7 +176,7 @@ const Questions = () => {
                         </Typography>
 
                         <Typography className="duration-props">
-                           {item.duration * 60}s
+                           {item.duration} m
                         </Typography>
 
                         <Typography className="question-type-props">
@@ -405,11 +401,11 @@ const StyledBox = styled(Box)(() => ({
 
    '& > .duration-props': {
       margin: '0 4.4rem',
-      width: '2rem',
+      width: '2.5rem',
    },
 
    '& > .question-type-props': {
-      margin: '0 1.2rem',
+      margin: '0 0.6rem',
    },
 
    '&:hover': {

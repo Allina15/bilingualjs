@@ -1,14 +1,14 @@
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router'
-import { useState, useEffect } from 'react'
 import { Box, Typography, styled } from '@mui/material'
-import { CompleteIcon, LogoIcon } from '../../assets/icons'
 import ConfettiAnimation from '../../components/ConfettiAnimation'
-import TestContainer from '../../components/UI/TestContainer'
 import Button from '../../components/UI/buttons/Button'
+import TestContainer from '../../components/UI/TestContainer'
 import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practiceTestThunk'
 import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practiceTestSlice'
 import { ROUTES } from '../../routes/routes'
+import { CompleteIcon, LogoIcon } from '../../assets/icons'
 
 const TestComplete = () => {
    const { correctAnswer } = useSelector((state) => state.practiceTest)

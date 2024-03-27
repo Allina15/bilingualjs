@@ -1,18 +1,18 @@
 /* eslint-disable radix */
-import { Box, Typography, styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practiceTestSlice'
-import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practiceTestThunk'
-import { QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
-import { ROUTES } from '../../routes/routes'
+import { Box, Typography, styled } from '@mui/material'
 import TestContainer from '../../components/UI/TestContainer'
 import ProgressBar from '../../components/UI/ProgressBar'
 import Button from '../../components/UI/buttons/Button'
 import Modal from '../../components/UI/modals/Modal'
 import { NoData } from '../../assets/images'
 import { useToggleModal } from '../../hooks/useToogleModal'
+import { ROUTES } from '../../routes/routes'
+import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practiceTestSlice'
+import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practiceTestThunk'
+import { QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 
 const PracticeTest = () => {
    const { questions } = useSelector((state) => state.practiceTest)
@@ -24,6 +24,7 @@ const PracticeTest = () => {
    const navigate = useNavigate()
 
    const [searchParams] = useSearchParams()
+
    const savedCount = parseInt(searchParams.get('count')) || 1
 
    const [count, setCount] = useState(savedCount)

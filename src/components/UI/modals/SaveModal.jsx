@@ -1,8 +1,8 @@
 import { styled, Modal, Box, Typography } from '@mui/material'
-import { CancelIcon } from '../../../assets/icons'
 import Checkbox from '../Checkbox'
 import Button from '../buttons/Button'
 import Input from '../Input'
+import { CancelIcon } from '../../../assets/icons'
 
 const SaveModal = ({
    title,

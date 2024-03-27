@@ -1,19 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useFormik } from 'formik'
 import { Box, Typography, styled } from '@mui/material'
+import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
 import TestContainer from '../../../components/UI/TestContainer'
 import Button from '../../../components/UI/buttons/Button'
 import Input from '../../../components/UI/Input'
-import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
 
 const CreateTest = () => {
    const { test } = useSelector((state) => state.tests)
-
-   const [testData, setTestData] = useState({
-      title: '',
-      shortDescription: '',
-   })
 
    const { id } = useParams()
 
@@ -23,50 +19,36 @@ const CreateTest = () => {
 
    const isNewTest = id === undefined || id === ''
 
-   const isDisabled =
-      testData.title.trim() !== '' && testData.shortDescription.trim() !== ''
-
-   const isDisabledUpdate =
-      testData.title.trim() !== '' &&
-      testData.shortDescription.trim() !== '' &&
-      testData.shortDescription === test.shortDescription &&
-      testData.title === test.title
-
-   const changeInputHandler = (e) => {
-      const { name, value } = e.target
-
-      setTestData({
-         ...testData,
-         [name]: value,
-      })
-   }
-
-   useEffect(() => {
-      if (id) dispatch(TESTS_THUNKS.getTest(id))
-   }, [dispatch, id])
-
-   useEffect(() => {
-      if (!isNewTest && test) {
-         setTestData({
-            title: test.title || '',
-            shortDescription: test.shortDescription || '',
-         })
-      }
-   }, [isNewTest, test, id])
-
-   const saveHandler = () => {
+   const onSubmit = (values) => {
       if (isNewTest) {
-         dispatch(TESTS_THUNKS.addTest({ testData, navigate }))
+         dispatch(TESTS_THUNKS.addTest({ testData: { ...values }, navigate }))
       } else {
          dispatch(
             TESTS_THUNKS.updateTest({
                id,
-               updatedTest: { ...testData },
+               updatedTest: { ...values },
                navigate,
             })
          )
       }
    }
+
+   const { values, handleChange, handleBlur, handleSubmit, isValid, dirty } =
+      useFormik({
+         initialValues: {
+            title: isNewTest && test ? '' : test?.title || '',
+            shortDescription:
+               isNewTest && test ? '' : test?.shortDescription || '',
+         },
+
+         onSubmit,
+      })
+
+   useEffect(() => {
+      if (id) {
+         dispatch(TESTS_THUNKS.getTest({ id }))
+      }
+   }, [dispatch, id])
 
    return (
       <TestContainer>
@@ -76,8 +58,9 @@ const CreateTest = () => {
             <Input
                className="input"
                name="title"
-               value={testData.title}
-               onChange={changeInputHandler}
+               value={values.title}
+               onChange={handleChange}
+               onBlur={handleBlur}
                autoComplete="off"
             />
 
@@ -86,8 +69,9 @@ const CreateTest = () => {
             <Input
                className="input"
                name="shortDescription"
-               value={testData.shortDescription}
-               onChange={changeInputHandler}
+               value={values.shortDescription}
+               onChange={handleChange}
+               onBlur={handleBlur}
                autoComplete="off"
             />
 
@@ -98,8 +82,8 @@ const CreateTest = () => {
 
                <Button
                   variant="primary"
-                  onClick={saveHandler}
-                  disabled={isNewTest ? !isDisabled : isDisabledUpdate}
+                  onClick={handleSubmit}
+                  disabled={!dirty || !isValid}
                >
                   SAVE
                </Button>

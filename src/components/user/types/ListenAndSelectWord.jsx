@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Howl, Howler } from 'howler'
 import { Box, Typography, styled } from '@mui/material'
-import { AnimationSoundIcon, CheckIcon, SoundIcon } from '../../../assets/icons'
+import { Howl, Howler } from 'howler'
 import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
 import Button from '../../UI/buttons/Button'
 import { NoData } from '../../../assets/images'
+import { AnimationSoundIcon, CheckIcon, SoundIcon } from '../../../assets/icons'
 
 const ListenAndSelectWord = ({ questions, nextHandler }) => {
    const options = questions?.optionResponses
@@ -147,7 +147,7 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
                </Button>
             </>
          ) : (
-            <img src={NoData} alt="no-data" />
+            <img src={NoData} alt="no-data" className="no-data" />
          )}
       </StyledContainer>
    )
@@ -156,6 +156,11 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
 export default ListenAndSelectWord
 
 const StyledContainer = styled(Box)(({ theme }) => ({
+   '& > .no-data': {
+      width: '25rem',
+      margin: '0 0 0 15rem',
+   },
+
    '& > .options-box': {
       width: '820px',
       display: 'flex',

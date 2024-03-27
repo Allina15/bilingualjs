@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
 import Input from '../../UI/Input'
 import Button from '../../UI/buttons/Button'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
 import { NoData } from '../../../assets/images'
 
 const HighlightTheAnswer = ({ questions, nextHandler }) => {

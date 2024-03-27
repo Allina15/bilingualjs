@@ -24,9 +24,8 @@ const SelectRealEnglish = ({
    setDuration,
    setSelectType,
 }) => {
-   const { options, isLoading, isCreate, isUpdateDisabled } = useSelector(
-      (state) => state.question
-   )
+   const { options, isLoading, isCreate, inOpen, isUpdateDisabled } =
+      useSelector((state) => state.question)
 
    const [optionId, setOptionId] = useState(null)
    const [optionTitle, setOptionTitle] = useState('')
@@ -69,6 +68,16 @@ const SelectRealEnglish = ({
       }
    }, [dispatch, questionId])
 
+   useEffect(() => {
+      if (inOpen === false) {
+         if (options.selectRealEnglishWordsOptions.length <= 1) {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+         } else {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+         }
+      }
+   }, [options, inOpen])
+
    const deleteHandler = () => {
       if (isCreate) {
          dispatch(
@@ -88,6 +97,7 @@ const SelectRealEnglish = ({
       }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       deleteModal.onCloseModal()
    }
@@ -101,6 +111,7 @@ const SelectRealEnglish = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
 
    const isDisabled =
@@ -209,6 +220,7 @@ const SelectRealEnglish = ({
       }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       saveModal.onCloseModal()
 

@@ -1,13 +1,13 @@
-import { QUESTION_TYPES } from '../../utils/constants'
 import DescribeImage from './types/DescribeImage'
 import TypeWhatYouHear from './types/TypeWhatYouHear'
 import SelectTheMainIdea from './types/SelectTheMainIdea'
-import SelectTheBestTitle from './types/SelectTheBestTitle'
+import SelectRealEnglish from './types/SelectRealEnglish'
 import HighlightTheAnswer from './types/HighlightTheAnswer'
+import SelectTheBestTitle from './types/SelectTheBestTitle'
 import RecordSayingStatement from './types/RecordSayingStatement'
 import RespondInAtLeastNWords from './types/RespondInAtLeastNWords'
 import ListenAndSelectEnglishWord from './types/ListenAndSelectEnglishWord'
-import SelectRealEnglish from './types/SelectRealEnglish'
+import { QUESTION_TYPES } from '../../utils/constants'
 
 const TestType = (props) => {
    switch (props.selectType) {

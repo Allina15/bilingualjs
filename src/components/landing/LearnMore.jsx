@@ -1,9 +1,10 @@
-import Aos from 'aos'
-import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import Aos from 'aos'
+import { motion } from 'framer-motion'
 import { Box, Typography, keyframes, styled } from '@mui/material'
+import LandingButton from '../UI/buttons/LandingButton'
 import {
    BackgroundFirstLearnMoreIcon,
    FifthLearnMoreIcon,
@@ -14,7 +15,6 @@ import {
    ThirdLearnMoreIcon,
 } from '../../assets/icons'
 import 'aos/dist/aos.css'
-import LandingButton from '../UI/buttons/LandingButton'
 import { ROUTES } from '../../routes/routes'
 
 const ROADMAPE_ANIMATE = keyframes`

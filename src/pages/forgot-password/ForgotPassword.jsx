@@ -1,13 +1,13 @@
-import { useFormik } from 'formik'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
 import { Box, Typography, styled } from '@mui/material'
-import { ExitIcon, LockIcon, WarningIcon } from '../../assets/icons'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/buttons/Button'
+import { ExitIcon, LockIcon, WarningIcon } from '../../assets/icons'
 import { AUTH_THUNKS } from '../../store/slices/auth/authThunk'
-import { VALIDATION_FORGOT_PASSWORD } from '../../utils/helpers/validation'
 import { showErrorForgotPassword } from '../../utils/helpers'
+import { VALIDATION_FORGOT_PASSWORD } from '../../utils/helpers/validation'
 import { ROUTES } from '../../routes/routes'
 
 const ForgotPassword = () => {

@@ -1,7 +1,7 @@
-import { Box, styled } from '@mui/material'
 import { Outlet, useLocation, useParams } from 'react-router-dom'
-import { ROUTES } from '../../routes/routes'
+import { Box, styled } from '@mui/material'
 import Header from '../Header'
+import { ROUTES } from '../../routes/routes'
 
 const UserLayout = () => {
    const location = useLocation()

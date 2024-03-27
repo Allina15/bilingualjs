@@ -74,11 +74,12 @@ const practiceTestSlice = createSlice({
                duration: 200,
             })
          })
+
          .addCase(
             PRACTICE_TEST_THUNKS.addAnswerFile.fulfilled,
             (state, { payload }) => {
                state.isLoading = false
-               state.fileUrl = payload.link
+               state.fileUrl = payload?.link
             }
          )
 

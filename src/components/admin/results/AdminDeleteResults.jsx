@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography } from '@mui/material'
 import { SUBMITTED_RESULTS_THUNKS } from '../../../store/slices/admin/results/submitedResultsThunk'
-import { TrashIcon } from '../../../assets/icons'
-import DeleteModal from '../../UI/modals/DeleteModal'
 import IconButton from '../../UI/buttons/IconButton'
+import DeleteModal from '../../UI/modals/DeleteModal'
+import { TrashIcon } from '../../../assets/icons'
 
 const AdminDeleteResults = ({ resultId, row }) => {
    const [isVisible, setIsVisible] = useState(false)

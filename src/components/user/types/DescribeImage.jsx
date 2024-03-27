@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
 import Button from '../../UI/buttons/Button'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
 import TextArea from '../../UI/TextArea'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
 import { NoData } from '../../../assets/images'
 
 const DescribeImage = ({ questions, nextHandler }) => {
@@ -62,7 +62,7 @@ const DescribeImage = ({ questions, nextHandler }) => {
                </Box>
             </>
          ) : (
-            <img src={NoData} alt="no-data" />
+            <img src={NoData} alt="no-data" className="no-data" />
          )}
       </StyledContainer>
    )
@@ -72,6 +72,11 @@ export default DescribeImage
 
 const StyledContainer = styled(Box)(() => ({
    color: '#4C4859',
+
+   '& > .no-data': {
+      width: '25rem',
+      margin: '0 0 0 15rem',
+   },
 
    '& > .content-box': {
       width: '78.72%',

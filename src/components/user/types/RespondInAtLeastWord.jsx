@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
 import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
+import Button from '../../UI/buttons/Button'
 import {
    ScrollBottomArrowIcon,
    ScrollTopArrowIcon,
 } from '../../../assets/icons'
-import Button from '../../UI/buttons/Button'
 import { NoData } from '../../../assets/images'
 
 const RespondInAtLeastWord = ({ questions, nextHandler }) => {
@@ -87,7 +87,7 @@ const RespondInAtLeastWord = ({ questions, nextHandler }) => {
                </Button>
             </>
          ) : (
-            <img src={NoData} alt="no-data" />
+            <img src={NoData} alt="no-data" className="no-data" />
          )}
       </StyledContainer>
    )
@@ -97,6 +97,11 @@ export default RespondInAtLeastWord
 
 const StyledContainer = styled(Box)(({ theme }) => ({
    color: '#4C4859',
+
+   '& > .no-data': {
+      width: '25rem',
+      margin: '0 0 0 15rem',
+   },
 
    '& > .title': {
       fontFamily: 'Poppins',

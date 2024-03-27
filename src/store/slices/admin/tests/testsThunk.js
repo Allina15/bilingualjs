@@ -19,7 +19,7 @@ const getTests = createAsyncThunk(
 const getTest = createAsyncThunk(
    'tests/getTest',
 
-   async (id, { rejectWithValue }) => {
+   async ({ id }, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.get(`/api/test?testId=${id}`)
 
@@ -57,13 +57,11 @@ const addTest = createAsyncThunk(
 const deleteTest = createAsyncThunk(
    'tests/deleteTest',
 
-   async (testId, { dispatch, rejectWithValue }) => {
+   async (testId, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.delete(
             `/api/test?testId=${testId}`
          )
-
-         dispatch(getTests())
 
          showNotification({ message: `${response.data.message}` })
 
@@ -110,16 +108,22 @@ const updateTest = createAsyncThunk(
 const updateTestByEnable = createAsyncThunk(
    'tests/updateTestByEnable',
 
-   async ({ testId, enable }, { rejectWithValue }) => {
+   async ({ testId, enable }, { rejectWithValue, dispatch }) => {
       try {
          const response = await axiosInstance.patch(
             `/api/test/update?testId=${testId}&enable=${enable}`
          )
 
-         showNotification({ message: `${response.data.message}` })
-
          return response.data
       } catch (error) {
+         showNotification({
+            message: 'Failed to update test',
+            type: 'error',
+            title: 'Error',
+         })
+
+         dispatch(getTests())
+
          return rejectWithValue.message
       }
    }

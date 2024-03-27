@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { AppBar, Box, Typography, styled } from '@mui/material'
 import { AUTH_ACTIONS } from '../store/slices/auth/authSlice'
-import { LogoImage } from '../assets/images'
-import { ROUTES } from '../routes/routes'
 import Button from '../components/UI/buttons/Button'
 import Modal from '../components/UI/modals/Modal'
+import { LogoImage } from '../assets/images'
+import { ROUTES } from '../routes/routes'
 import { useToggleModal } from '../hooks/useToogleModal'
 
 const Header = () => {

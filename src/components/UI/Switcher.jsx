@@ -1,31 +1,39 @@
 import { forwardRef, useEffect, useState } from 'react'
+import { ErrorMessage } from 'formik'
 import { FormControlLabel, Switch, styled } from '@mui/material'
 
 const Switcher = forwardRef(({ checked, onChange, disabled, ...rest }, ref) => {
    const [isChecked, setChecked] = useState(checked)
+   const [error, setError] = useState(null)
 
    useEffect(() => {
       setChecked(checked)
    }, [checked])
 
-   const handleChange = (event) => {
-      setChecked(event.target.checked)
-
-      onChange(event.target.checked)
+   const handleChange = async (event) => {
+      try {
+         setChecked(event.target.checked)
+         await onChange(event.target.checked)
+      } catch (error) {
+         setError(error.message)
+      }
    }
 
    return (
-      <FormControlLabel
-         control={
-            <StyledSwitch
-               onChange={handleChange}
-               disabled={disabled}
-               ref={ref}
-               checked={isChecked}
-               {...rest}
-            />
-         }
-      />
+      <>
+         <FormControlLabel
+            control={
+               <StyledSwitch
+                  onChange={handleChange}
+                  disabled={disabled}
+                  ref={ref}
+                  checked={isChecked}
+                  {...rest}
+               />
+            }
+         />
+         {error && <ErrorMessage>{error}</ErrorMessage>}
+      </>
    )
 })
 

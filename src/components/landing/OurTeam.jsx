@@ -1,5 +1,5 @@
-import { Avatar, Typography, styled, Box } from '@mui/material'
 import Slider from 'react-slick'
+import { Avatar, Typography, styled, Box } from '@mui/material'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { OUR_TEAM } from '../../utils/constants/index'

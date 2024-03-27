@@ -40,7 +40,9 @@ const SelectTheMainIdea = ({ questions, nextHandler }) => {
                <Box className="correct-answer">
                   <Typography className="title">PASSAGE</Typography>
 
-                  <Typography className="passage">{questions.title}</Typography>
+                  <Typography className="passage">
+                     {questions?.passage}
+                  </Typography>
                </Box>
 
                <Box>

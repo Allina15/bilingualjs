@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useFormik } from 'formik'
 import { signInWithPopup } from 'firebase/auth'
 import { useDispatch, useSelector } from 'react-redux'
@@ -53,13 +53,22 @@ const SignIn = () => {
 
    const onSubmit = (values, { resetForm }) => {
       if (values.rememberMe) {
-         localStorage.setItem('email', values.email)
-         localStorage.setItem('password', values.password)
-         localStorage.setItem('rememberMe', true)
+         document.cookie = `email=${values.email}; expires=${new Date(
+            Date.now() + 7 * 24 * 60 * 60 * 1000
+         ).toUTCString()}; path=/`
+         document.cookie = `password=${values.password}; expires=${new Date(
+            Date.now() + 7 * 24 * 60 * 60 * 1000
+         ).toUTCString()}; path=/`
+         document.cookie = `rememberMe=true; expires=${new Date(
+            Date.now() + 7 * 24 * 60 * 60 * 1000
+         ).toUTCString()}; path=/`
       } else {
-         localStorage.removeItem('email')
-         localStorage.removeItem('password')
-         localStorage.removeItem('rememberMe')
+         document.cookie =
+            'email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+         document.cookie =
+            'password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+         document.cookie =
+            'rememberMe=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       }
 
       dispatch(AUTH_THUNKS.signIn({ values, resetForm, navigate }))
@@ -78,21 +87,6 @@ const SignIn = () => {
          validationSchema: VALIDATION_SIGN_IN,
          onSubmit,
       })
-
-   useEffect(() => {
-      const rememberMe = localStorage.getItem('rememberMe') === 'true'
-
-      if (rememberMe) {
-         const savedEmail = localStorage.getItem('email')
-         const savedPassword = localStorage.getItem('password')
-
-         if (savedEmail && savedPassword) {
-            handleChange({ target: { name: 'email', value: savedEmail } })
-            handleChange({ target: { name: 'password', value: savedPassword } })
-            handleChange({ target: { name: 'rememberMe', value: true } })
-         }
-      }
-   }, [])
 
    return (
       <StyledContainer>

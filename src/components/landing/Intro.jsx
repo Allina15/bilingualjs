@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
 import { motion } from 'framer-motion'
@@ -25,6 +25,7 @@ const Intro = () => {
    const [isVisible, setIsVisible] = useState(false)
 
    const navigate = useNavigate()
+   const dispatch = useDispatch()
 
    const beginHandler = () => {
       if (isAuth) navigate(ROUTES.USER.INDEX, { replace: true })
@@ -35,6 +36,30 @@ const Intro = () => {
       const timeoutId = setTimeout(() => setIsVisible(true), 100)
 
       return () => clearTimeout(timeoutId)
+   }, [])
+
+   useEffect(() => {
+      const checkCookies = () => {
+         const email = document.cookie.replace(
+            /(?:(?:^|.*;\s*)email\s*=\s*([^;]*).*$)|^.*$/,
+            '$1'
+         )
+         const password = document.cookie.replace(
+            /(?:(?:^|.*;\s*)password\s*=\s*([^;]*).*$)|^.*$/,
+            '$1'
+         )
+         const rememberMe =
+            document.cookie.replace(
+               /(?:(?:^|.*;\s*)rememberMe\s*=\s*([^;]*).*$)|^.*$/,
+               '$1'
+            ) === 'true'
+
+         if (email && password && rememberMe) {
+            dispatch()
+         }
+      }
+
+      checkCookies()
    }, [])
 
    return (

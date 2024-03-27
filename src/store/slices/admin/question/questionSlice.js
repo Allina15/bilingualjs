@@ -10,6 +10,7 @@ const initialState = {
    attempts: 0,
    isCreate: false,
    isUpdateDisabled: true,
+   inOpen: true,
    correctAnswer: '',
    fileUrl: '',
    question: {},
@@ -32,7 +33,6 @@ const questionSlice = createSlice({
       },
 
       addUpdateOption: (state, { payload }) => {
-         console.log(payload)
          if (state.options[payload?.optionName]) {
             state.options[payload?.optionName] =
                payload.optionResponses.questionOptionResponses
@@ -47,38 +47,45 @@ const questionSlice = createSlice({
          state.isUpdateDisabled = payload
       },
 
+      changeInOpen: (state, { payload }) => {
+         state.inOpen = payload
+      },
+
       addOptionRadio: (state, { payload }) => {
-         const isFirstOption = state.options[payload?.optionName]?.length === 0
+         if (payload && payload.option) {
+            const isFirstOption =
+               state.options[payload.optionName]?.length === 0
 
-         const newOption = {
-            ...payload.option,
-            isCorrectOption: isFirstOption,
-         }
+            const newOption = {
+               ...payload.option,
+               isCorrectOption: isFirstOption,
+            }
 
-         state.options[payload?.optionName] = [
-            ...state.options[payload?.optionName],
-            newOption,
-         ]
+            state.options[payload.optionName] = [
+               ...state.options[payload.optionName],
+               newOption,
+            ]
 
-         state.options[payload?.optionName] = state.options[
-            payload?.optionName
-         ].map((option) => {
-            if (payload.option?.isCorrectOption) {
-               if (payload?.option?.optionId === option?.optionId) {
+            state.options[payload.optionName] = state.options[
+               payload.optionName
+            ].map((option) => {
+               if (payload.option.isCorrectOption) {
+                  if (payload.option.optionId === option.optionId) {
+                     return {
+                        ...option,
+                        isCorrectOption: payload.option.isCorrectOption,
+                     }
+                  }
+
                   return {
                      ...option,
-                     isCorrectOption: payload?.option?.isCorrectOption,
+                     isCorrectOption: false,
                   }
                }
 
-               return {
-                  ...option,
-                  isCorrectOption: false,
-               }
-            }
-
-            return option
-         })
+               return option
+            })
+         }
       },
 
       handleIsChecked: (state, { payload }) => {

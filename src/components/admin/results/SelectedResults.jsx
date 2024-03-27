@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { CheckSquareIcon, EyeIcon } from '../../../assets/icons'
 import IconButton from '../../UI/buttons/IconButton'
+import { CheckSquareIcon, EyeIcon } from '../../../assets/icons'
 import { ROUTES } from '../../../routes/routes'
 
 const SelectedResults = ({ resultId, status }) => {

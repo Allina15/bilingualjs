@@ -1,7 +1,7 @@
 import { Typography, styled, IconButton, Box } from '@mui/material'
 import FAQ from '../components/landing/FAQ'
-import { FacebookIcon, InstagramIcon, YouTubeIcon } from '../assets/icons'
 import { FooterLogoImage } from '../assets/images'
+import { FacebookIcon, InstagramIcon, YouTubeIcon } from '../assets/icons'
 
 const Footer = () => (
    <StyledContainer>

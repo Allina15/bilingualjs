@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Box, Typography, styled } from '@mui/material'
-import { useSearchParams, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useSearchParams, useLocation } from 'react-router-dom'
+import { Box, Typography, styled } from '@mui/material'
 import { questionTypeHandler } from '../../../utils/helpers'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { OPTIONS } from '../../../utils/constants'
@@ -27,6 +27,7 @@ const Question = () => {
 
    useEffect(() => {
       const typeParam = searchParams.get('type')
+
       if (typeParam) {
          setSelectType(typeParam)
       }
@@ -36,7 +37,6 @@ const Question = () => {
       const newSelectType = e.target.value
 
       setSearchParams({ type: newSelectType })
-
       setSelectType(newSelectType)
    }
 

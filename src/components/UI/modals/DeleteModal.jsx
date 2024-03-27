@@ -1,6 +1,6 @@
 import { styled, Modal, Box, Typography } from '@mui/material'
-import { CancelIcon, FalseIcon } from '../../../assets/icons'
 import Button from '../buttons/Button'
+import { CancelIcon, FalseIcon } from '../../../assets/icons'
 
 const DeleteModal = ({ children, isVisible, deleteHandler, toggleModal }) => (
    <StyledModal open={isVisible} onClose={toggleModal}>

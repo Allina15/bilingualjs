@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { useFormik } from 'formik'
-import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
 import { Box, InputAdornment, Typography, styled } from '@mui/material'
-import { ExitIcon, EyeIcon, EyeOffIcon, WarningIcon } from '../../assets/icons'
-import { VALIDATION_CHANGE_PASSWORD } from '../../utils/helpers/validation'
-import { showErrorChangePassword } from '../../utils/helpers'
-import { AUTH_THUNKS } from '../../store/slices/auth/authThunk'
-import { ROUTES } from '../../routes/routes'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/buttons/Button'
+import { ExitIcon, EyeIcon, EyeOffIcon, WarningIcon } from '../../assets/icons'
+import { AUTH_THUNKS } from '../../store/slices/auth/authThunk'
+import { ROUTES } from '../../routes/routes'
+import { showErrorChangePassword } from '../../utils/helpers'
+import { VALIDATION_CHANGE_PASSWORD } from '../../utils/helpers/validation'
 
 const ChangePassword = () => {
    const { passwordToken, isLoading } = useSelector((state) => state.auth)

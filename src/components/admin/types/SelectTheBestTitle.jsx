@@ -90,6 +90,10 @@ const SelectTheBestTitle = ({
    }, [questionId, question])
 
    const deleteHandler = () => {
+      if (options.selectTheBestTitleOptions.length > 1) {
+         dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+      }
+
       if (isCreate) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({

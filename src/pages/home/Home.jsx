@@ -1,15 +1,15 @@
 import { Box } from '@mui/material'
-import LandingHeader from '../../layout/LandingHeader'
-import Intro from '../../components/landing/Intro'
-import Statistics from '../../components/landing/Statistics'
 import UserExperience from '../../components/landing/UserExperience'
-import OurTeam from '../../components/landing/OurTeam'
-import CheckOut from '../../components/landing/CheckOut'
+import LandingHeader from '../../layout/LandingHeader'
 import UsefulVideos from '../../components/landing/UsefulVideos'
+import Statistics from '../../components/landing/Statistics'
 import LearnMore from '../../components/landing/LearnMore'
 import Feedbacks from '../../components/landing/Feedbacks'
+import CheckOut from '../../components/landing/CheckOut'
 import Partners from '../../components/landing/Partners'
+import OurTeam from '../../components/landing/OurTeam'
 import Footer from '../../layout/Footer'
+import Intro from '../../components/landing/Intro'
 
 const Home = () => {
    return (

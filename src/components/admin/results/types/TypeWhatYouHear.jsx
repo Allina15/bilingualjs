@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { Howl, Howler } from 'howler'
 import { Box, Typography, styled } from '@mui/material'
-import { SmallPauseIcon, SmallPlayIcon } from '../../../../assets/icons'
 import Button from '../../../UI/buttons/Button'
+import { SmallPauseIcon, SmallPlayIcon } from '../../../../assets/icons'
 
 const TypeWhatYouHear = ({ isDisabled, saveHandler }) => {
    const { answers } = useSelector((state) => state.answersSlice)

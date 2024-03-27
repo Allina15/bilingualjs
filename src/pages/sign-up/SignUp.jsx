@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { useFormik } from 'formik'
-import { signInWithPopup } from 'firebase/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { signInWithPopup } from 'firebase/auth'
 import { Box, Typography, styled, InputAdornment } from '@mui/material'
+import Input from '../../components/UI/Input'
+import Button from '../../components/UI/buttons/Button'
 import {
    ExitIcon,
    EyeIcon,
@@ -12,14 +14,12 @@ import {
    LogoIcon,
    WarningIcon,
 } from '../../assets/icons'
-import { VALIDATION_SIGN_UP } from '../../utils/helpers/validation'
-import { showErrorSignUp } from '../../utils/helpers'
+import { ROUTES } from '../../routes/routes'
+import { AUTH_THUNKS } from '../../store/slices/auth/authThunk'
 import { auth, provider } from '../../configs/firebase'
 import { SIGN_UP_INPUTS } from '../../utils/constants'
-import { AUTH_THUNKS } from '../../store/slices/auth/authThunk'
-import { ROUTES } from '../../routes/routes'
-import Input from '../../components/UI/Input'
-import Button from '../../components/UI/buttons/Button'
+import { showErrorSignUp } from '../../utils/helpers'
+import { VALIDATION_SIGN_UP } from '../../utils/helpers/validation'
 
 const SignUp = () => {
    const { isLoading } = useSelector((state) => state.auth)

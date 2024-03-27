@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,6 +7,7 @@ import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { useToggleModal } from '../../../hooks/useToogleModal'
+import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
 import { PlusIcon } from '../../../assets/icons'
 import { ROUTES } from '../../../routes/routes'
 import DeleteModal from '../../UI/modals/DeleteModal'
@@ -13,7 +15,6 @@ import SaveModal from '../../UI/modals/SaveModal'
 import Loading from '../../Loading'
 import Option from '../../UI/Option'
 import Button from '../../UI/buttons/Button'
-import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
 
 const SelectTheMainIdea = ({
    title,
@@ -52,15 +53,15 @@ const SelectTheMainIdea = ({
    }
 
    const changeTextAreaHandler = (e) => {
+      const { value } = e.target
+
+      setPassage(value || '')
+
       if (passage === options?.passage) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
       } else {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       }
-
-      const { value } = e.target
-
-      setPassage(value || '')
    }
 
    const navigateGoBackHandler = () => {
@@ -201,7 +202,7 @@ const SelectTheMainIdea = ({
       const option = {
          optionTitle: optionTitle.trim(),
          isCorrectOption: checkedOption,
-         optionId: Math.floor(Math.random() * 200) + 50,
+         optionId: uuidv4(),
       }
 
       if (isCreate) {
