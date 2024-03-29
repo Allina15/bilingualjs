@@ -10,14 +10,13 @@ import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practiceTestThu
 
 const RecordSayingStatement = ({ questions, nextHandler }) => {
    const { fileUrl } = useSelector((state) => state.practiceTest)
-
    const [array, setArray] = useState(null)
    const [analyser, setAnalyser] = useState(null)
    const [myElements, setMyElements] = useState([])
    const [isRecording, setIsRecording] = useState(false)
-   // const [recordedAudio, setRecordedAudio] = useState(null)
    const [mediaRecorder, setMediaRecorder] = useState(null)
    const [showNextButton, setShowNextButton] = useState(false)
+   const [stream, setStream] = useState(null)
 
    const dispatch = useDispatch()
 
@@ -25,42 +24,8 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
    const width = 7
 
    useEffect(() => {
-      const handleClick = () => {
-         if (analyser) return
-
-         const audioContext = new AudioContext()
-         const newAnalyser = audioContext.createAnalyser()
-
-         setAnalyser(newAnalyser)
-
-         navigator.mediaDevices
-            .getUserMedia({ audio: true })
-            .then((stream) => {
-               const src = audioContext.createMediaStreamSource(stream)
-
-               src.connect(newAnalyser)
-            })
-            .catch((error) => {
-               showNotification({
-                  message: 'Something went wrong',
-                  type: error,
-               })
-
-               window.location.reload()
-            })
-      }
-
-      window.addEventListener('click', handleClick)
-
-      return () => {
-         window.removeEventListener('click', handleClick)
-      }
-   }, [analyser])
-
-   useEffect(() => {
       if (analyser) {
          const newArray = new Uint8Array(num * 2)
-
          setArray(newArray)
       }
    }, [analyser])
@@ -69,23 +34,18 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
       if (analyser && array) {
          const loop = () => {
             window.requestAnimationFrame(loop)
-
             analyser.getByteFrequencyData(array)
-
             const elements = []
             for (let i = 0; i < num; i += 1) {
                const height = array[i + num]
-
                elements.push({
                   height,
                   opacity: 0.008 * height,
                   key: Math.random(),
                })
             }
-
             setMyElements(elements)
          }
-
          loop()
       }
    }, [analyser, array])
@@ -93,11 +53,17 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
    const startRecordingHandler = () => {
       setIsRecording(true)
       setShowNextButton(false)
+      const audioContext = new window.AudioContext()
+      const newAnalyser = audioContext.createAnalyser()
+      setAnalyser(newAnalyser)
 
       navigator.mediaDevices
-         .getUserMedia({ audio: true })
+         .getUserMedia({ audio: true, video: false })
          .then((stream) => {
+            setStream(stream)
             const mediaRecorderInstance = new MediaRecorder(stream)
+            const src = audioContext.createMediaStreamSource(stream)
+            src.connect(newAnalyser)
 
             const chunks = []
 
@@ -107,18 +73,9 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
 
             mediaRecorderInstance.addEventListener('stop', () => {
                const blob = new Blob(chunks, { type: 'audio/mp3' })
-               // const url = URL.createObjectURL(blob)
-
-               // setRecordedAudio(url)
-
-               // const gokme = url.split('')
-
-               // gokme.splice(0, 5)
 
                dispatch(
-                  PRACTICE_TEST_THUNKS.addAnswerFile({
-                     recordedAudio: blob,
-                  })
+                  PRACTICE_TEST_THUNKS.addAnswerFile({ recordedAudio: blob })
                )
             })
 
@@ -134,9 +91,19 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
    const stopRecordingHandler = () => {
       setIsRecording(false)
       setShowNextButton(true)
-
-      mediaRecorder.stop()
+      if (stream) {
+         stream.getTracks().forEach((track) => track.stop())
+      }
+      if (analyser) {
+         analyser.disconnect()
+      }
    }
+
+   useEffect(() => {
+      return () => {
+         stopRecordingHandler()
+      }
+   }, [])
 
    const onSubmit = () => {
       const answerData = {
@@ -146,12 +113,9 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
          optionId: [],
          questionID: questions.questionId,
       }
-
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
-
-      setMediaRecorder()
-
       nextHandler()
+      setMediaRecorder(null)
    }
 
    return (
