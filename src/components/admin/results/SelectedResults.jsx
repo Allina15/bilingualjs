@@ -14,7 +14,7 @@ const SelectedResults = ({ resultId, status }) => {
 
    return status === 'EVALUATED' ? (
       <IconButton onClick={navigateHandler}>
-         <CheckSquareIcon />
+         <CheckSquareIcon className="evaluated" />
       </IconButton>
    ) : (
       <IconButton onClick={navigateHandler}>

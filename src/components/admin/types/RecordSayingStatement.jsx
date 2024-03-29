@@ -71,7 +71,7 @@ const RecordSayingStatement = ({
          const requestData = {
             title: title.trim(),
             duration: +duration,
-            correctAnswer: statement.trim(),
+            statement: statement.trim(),
          }
 
          if (state === null) {
@@ -96,7 +96,7 @@ const RecordSayingStatement = ({
             const requestData = {
                title: title.trim(),
                duration: +duration,
-               correctAnswer: statement.trim(),
+               statement: statement.trim(),
                optionRequest: [],
             }
 
@@ -144,6 +144,7 @@ export default RecordSayingStatement
 
 const StyledContainer = styled(Box)(() => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > .statement': {
       marginTop: '1.4rem',

@@ -107,13 +107,6 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
 
             mediaRecorderInstance.addEventListener('stop', () => {
                const blob = new Blob(chunks, { type: 'audio/mp3' })
-               // const url = URL.createObjectURL(blob)
-
-               // setRecordedAudio(url)
-
-               // const gokme = url.split('')
-
-               // gokme.splice(0, 5)
 
                dispatch(
                   PRACTICE_TEST_THUNKS.addAnswerFile({
@@ -219,7 +212,7 @@ const Container = styled(Box)(() => ({
 
    '& > .no-data': {
       width: '25rem',
-      margin: '0 0 0 15rem',
+      margin: 'auto',
    },
 
    '& > .styled-container': {

@@ -8,10 +8,18 @@ import TestContainer from '../../UI/TestContainer'
 import Button from '../../UI/buttons/Button'
 import { ROUTES } from '../../../routes/routes'
 import { TestImage } from '../../../assets/images'
-import { ClockIcon, LaptopIcon, UserCardIcon } from '../../../assets/icons'
+import {
+   ClockIcon,
+   LaptopIcon,
+   ScreenShotIcon,
+   UserCardIcon,
+} from '../../../assets/icons'
+import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practiceTestThunk'
 
 const InnerTest = () => {
    const { tests, isLoading } = useSelector((state) => state.testsList)
+
+   const { isDisabled } = useSelector((state) => state.practiceTest)
 
    const { testId } = useParams()
 
@@ -21,6 +29,10 @@ const InnerTest = () => {
 
    useEffect(() => {
       dispatch(TESTS_LIST_THUNKS.getTest(testId))
+   }, [dispatch, testId])
+
+   useEffect(() => {
+      dispatch(PRACTICE_TEST_THUNKS.getAllQuestions({ testId }))
    }, [dispatch, testId])
 
    const navigateHandler = () =>
@@ -63,6 +75,16 @@ const InnerTest = () => {
 
                      <Typography>Get an unofficial score estimate</Typography>
                   </ListItem>
+
+                  <ListItem>
+                     <img
+                        src={ScreenShotIcon}
+                        alt="screen-shot"
+                        className="screen"
+                     />
+
+                     <Typography>You cant take a screenshot </Typography>
+                  </ListItem>
                </Box>
             </Box>
 
@@ -76,7 +98,9 @@ const InnerTest = () => {
                   CANCEL
                </Button>
 
-               <Button onClick={practiceHandler}>PRACTICE TEST</Button>
+               <Button onClick={practiceHandler} disabled={isDisabled}>
+                  PRACTICE TEST
+               </Button>
             </Box>
          </MainContent>
       </StyledContainer>
@@ -117,6 +141,10 @@ const MainContent = styled(Box)(() => ({
          justifyContent: 'center',
          flexDirection: 'column',
          gap: '1rem',
+
+         '& .screen': {
+            width: '1.8rem',
+         },
 
          '& > .MuiListItem-root': {
             gap: '1.5rem',

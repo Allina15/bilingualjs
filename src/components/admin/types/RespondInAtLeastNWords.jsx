@@ -183,6 +183,7 @@ const StyledContainer = styled(Box)(() => ({
    gap: '2rem',
    marginTop: '2rem',
    width: '820px',
+   overflow: 'hidden',
 
    '& > .MuiInputLabel-root': {
       fontFamily: 'Poppins',

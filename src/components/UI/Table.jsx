@@ -139,6 +139,10 @@ const StyledCellTd = styled(TableCell)(({ row }) => ({
    textAlign: 'left',
    fontFamily: 'Poppins',
 
+   '& > button > .evaluated > path': {
+      stroke: '#2AB930',
+   },
+
    '& > span': {
       fontFamily: 'inherit',
       color:

@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { createHashRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ROLES, ROUTES } from './routes'
 import { ADMIN_ROUTES } from './AdminRoutes'
 import { USER_ROUTES } from './UserRoutes'
@@ -21,7 +21,7 @@ const ChangePassword = lazy(
 )
 
 const AppRoutes = () => {
-   const router = createHashRouter([
+   const router = createBrowserRouter([
       {
          path: '/',
          element: (

@@ -196,6 +196,7 @@ export default HighlightTheAnswer
 
 const StyledContainer = styled(Box)(({ theme }) => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > div > .title': {
       fontSize: '1rem',

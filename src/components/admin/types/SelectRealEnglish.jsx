@@ -264,6 +264,7 @@ export default SelectRealEnglish
 
 const StyledContainer = styled(Box)(() => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > .add-button': {
       margin: '2rem -1rem 1.375rem 41rem',
