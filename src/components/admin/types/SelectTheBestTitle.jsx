@@ -6,6 +6,7 @@ import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { useToggleModal } from '../../../hooks/useToogleModal'
+import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
 import { PlusIcon } from '../../../assets/icons'
 import { ROUTES } from '../../../routes/routes'
 import DeleteModal from '../../UI/modals/DeleteModal'
@@ -22,7 +23,7 @@ const SelectTheBestTitle = ({
    setDuration,
    setSelectType,
 }) => {
-   const { options, isLoading, isCreate, question, isUpdateDisabled } =
+   const { options, isLoading, isCreate, question, inOpen, isUpdateDisabled } =
       useSelector((state) => state.question)
 
    const [passage, setPassage] = useState('')
@@ -64,7 +65,6 @@ const SelectTheBestTitle = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-
       dispatch(QUESTION_ACTIONS.clearOptions())
    }
 
@@ -87,15 +87,47 @@ const SelectTheBestTitle = ({
       }
    }, [questionId, question])
 
+   useEffect(() => {
+      if (inOpen === false) {
+         if (options.selectTheBestTitleOptions?.length <= 1) {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+         } else {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+         }
+      }
+   }, [options, inOpen])
+
    const deleteHandler = () => {
-      dispatch(
-         QUESTION_ACTIONS.deleteOption({
-            optionId,
-            optionName: OPTIONS_NAME.selectTheBestTitleOptions,
-         })
-      )
+      if (options.selectTheBestTitleOptions.length > 1) {
+         dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+      }
+
+      if (isCreate) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+            })
+         )
+      } else if (optionId > 200) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+            })
+         )
+      } else {
+         dispatch(
+            OPTIONS_THUNKS.deleteOption({
+               optionId,
+               id: questionId,
+               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+            })
+         )
+      }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       deleteModal.onCloseModal()
    }
@@ -109,6 +141,7 @@ const SelectTheBestTitle = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
 
    const isDisabled =
@@ -187,17 +220,18 @@ const SelectTheBestTitle = ({
       const option = {
          optionTitle: optionTitle.trim(),
          isCorrectOption: checkedOption,
-         optionId: Math.floor(Math.random() * 200) + 50,
+         optionId: Math.floor(Math.random() * 999) + 200,
       }
 
       dispatch(
          QUESTION_ACTIONS.addOptionRadio({
             option,
-            optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
+            optionName: OPTIONS_NAME.selectTheBestTitleOptions,
          })
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       saveModal.onCloseModal()
 
@@ -341,7 +375,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',

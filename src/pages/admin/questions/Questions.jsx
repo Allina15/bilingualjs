@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Skeleton, Typography, styled } from '@mui/material'
+import { EditIcon, PlusIcon, TrashIcon } from '../../../assets/icons'
+import { questionTypeHandler } from '../../../utils/helpers'
+import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
+import { NoDataImage } from '../../../assets/images'
+import { ROUTES } from '../../../routes/routes'
 import TestContainer from '../../../components/UI/TestContainer'
 import DeleteModal from '../../../components/UI/modals/DeleteModal'
 import Switcher from '../../../components/UI/Switcher'
 import Button from '../../../components/UI/buttons/Button'
-import { NoDataImage } from '../../../assets/images'
-import { EditIcon, PlusIcon, TrashIcon } from '../../../assets/icons'
-import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
-import { ROUTES } from '../../../routes/routes'
-import { questionTypeHandler } from '../../../utils/helpers'
 
 const Questions = () => {
    const { test, isLoading } = useSelector((state) => state.tests)
@@ -71,7 +71,8 @@ const Questions = () => {
          `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}/${ROUTES.ADMIN.UPDATE_QUESTION}/${questionId}`,
          { state: question }
       )
-      dispatch(QUESTION_ACTIONS.changeIsUpdate(false))
+
+      dispatch(QUESTION_ACTIONS.changeInOpen(true))
    }
 
    const deleteQuestion = test?.question?.find(
@@ -399,11 +400,11 @@ const StyledBox = styled(Box)(() => ({
 
    '& > .duration-props': {
       margin: '0 4.4rem',
-      width: '2rem',
+      width: '2.5rem',
    },
 
    '& > .question-type-props': {
-      margin: '0 1.2rem',
+      margin: '0 0.6rem',
    },
 
    '&:hover': {

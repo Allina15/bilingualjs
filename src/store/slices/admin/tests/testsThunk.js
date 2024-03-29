@@ -57,15 +57,13 @@ const addTest = createAsyncThunk(
 const deleteTest = createAsyncThunk(
    'tests/deleteTest',
 
-   async (testId, { dispatch, rejectWithValue }) => {
+   async (testId, { rejectWithValue }) => {
       try {
          const response = await axiosInstance.delete(
             `/api/test?testId=${testId}`
          )
 
          showNotification({ message: `${response.data.message}` })
-
-         dispatch(getTests())
 
          return response.data
       } catch (error) {

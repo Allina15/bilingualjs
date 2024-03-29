@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Box, Typography, styled } from '@mui/material'
+import { Box, Skeleton, Typography, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Input from '../../../components/UI/Input'
@@ -8,7 +8,7 @@ import Button from '../../../components/UI/buttons/Button'
 import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
 
 const CreateTest = () => {
-   const { test } = useSelector((state) => state.tests)
+   const { test, isLoading } = useSelector((state) => state.tests)
 
    const { id } = useParams()
 
@@ -76,20 +76,39 @@ const CreateTest = () => {
       <TestContainer>
          <StyledContainer>
             <Typography className="label">Title</Typography>
-            <Input
-               className="input"
-               name="title"
-               value={formData.title}
-               onChange={handleInputChange}
-            />
+            {isLoading ? (
+               <Skeleton
+                  variant="rounded"
+                  width={900}
+                  height={58}
+                  className="skeleton-box"
+               />
+            ) : (
+               <Input
+                  className="input"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+               />
+            )}
 
             <Typography className="label">Short Description</Typography>
-            <Input
-               className="input"
-               name="shortDescription"
-               value={formData.shortDescription}
-               onChange={handleInputChange}
-            />
+
+            {isLoading ? (
+               <Skeleton
+                  variant="rounded"
+                  width={900}
+                  height={58}
+                  className="skeleton-box"
+               />
+            ) : (
+               <Input
+                  className="input"
+                  name="shortDescription"
+                  value={formData.shortDescription}
+                  onChange={handleInputChange}
+               />
+            )}
 
             <Box className="container-buttons">
                <Link to="/">
@@ -126,5 +145,11 @@ const StyledContainer = styled(Box)(() => ({
       justifyContent: 'flex-end',
       gap: '1rem',
       marginTop: '0.7rem',
+   },
+
+   '& > .skeleton-box': {
+      backgroundColor: '#e5e5e567',
+      borderRadius: '8px',
+      margin: '0 0.5rem 1rem 0',
    },
 }))

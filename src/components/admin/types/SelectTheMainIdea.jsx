@@ -6,6 +6,7 @@ import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { useToggleModal } from '../../../hooks/useToogleModal'
+import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
 import { PlusIcon } from '../../../assets/icons'
 import { ROUTES } from '../../../routes/routes'
 import DeleteModal from '../../UI/modals/DeleteModal'
@@ -22,7 +23,7 @@ const SelectTheMainIdea = ({
    setDuration,
    setSelectType,
 }) => {
-   const { options, question, isLoading, isCreate, isUpdateDisabled } =
+   const { options, question, isLoading, isCreate, inOpen, isUpdateDisabled } =
       useSelector((state) => state.question)
 
    const [passage, setPassage] = useState('')
@@ -51,15 +52,15 @@ const SelectTheMainIdea = ({
    }
 
    const changeTextAreaHandler = (e) => {
+      const { value } = e.target
+
+      setPassage(value || '')
+
       if (passage === options?.passage) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
       } else {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       }
-
-      const { value } = e.target
-
-      setPassage(value || '')
    }
 
    const navigateGoBackHandler = () => {
@@ -68,7 +69,6 @@ const SelectTheMainIdea = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-
       dispatch(QUESTION_ACTIONS.clearOptions())
    }
 
@@ -82,7 +82,7 @@ const SelectTheMainIdea = ({
             })
          )
       }
-   }, [dispatch, questionId])
+   }, [dispatch, questionId, isCreate])
 
    useEffect(() => {
       if (questionId && question) {
@@ -90,15 +90,43 @@ const SelectTheMainIdea = ({
       }
    }, [questionId, question])
 
+   useEffect(() => {
+      if (inOpen === false) {
+         if (options.selectTheMainIdeaOptions?.length <= 1) {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+         } else {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+         }
+      }
+   }, [options, inOpen])
+
    const deleteHandler = () => {
-      dispatch(
-         QUESTION_ACTIONS.deleteOption({
-            optionId,
-            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
-         })
-      )
+      if (isCreate) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            })
+         )
+      } else if (optionId > 200) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            })
+         )
+      } else {
+         dispatch(
+            OPTIONS_THUNKS.deleteOption({
+               optionId,
+               id: questionId,
+               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            })
+         )
+      }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       deleteModal.onCloseModal()
    }
@@ -112,6 +140,7 @@ const SelectTheMainIdea = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
 
    const isDisabled =
@@ -190,7 +219,7 @@ const SelectTheMainIdea = ({
       const option = {
          optionTitle: optionTitle.trim(),
          isCorrectOption: checkedOption,
-         optionId: Math.floor(Math.random() * 200) + 50,
+         optionId: Math.floor(Math.random() * 999) + 200,
       }
 
       dispatch(
@@ -201,6 +230,7 @@ const SelectTheMainIdea = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       saveModal.onCloseModal()
 
@@ -344,7 +374,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',

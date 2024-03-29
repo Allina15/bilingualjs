@@ -10,6 +10,7 @@ const initialState = {
    attempts: 0,
    isCreate: false,
    isUpdateDisabled: true,
+   inOpen: true,
    correctAnswer: '',
    fileUrl: '',
    question: {},
@@ -33,9 +34,8 @@ const questionSlice = createSlice({
 
       addUpdateOption: (state, { payload }) => {
          if (state.options[payload?.optionName]) {
-            state.options[payload?.optionName].push(
-               ...payload.optionResponses.questionOptionResponses
-            )
+            state.options[payload?.optionName] =
+               payload.optionResponses.questionOptionResponses
          }
       },
 
@@ -45,6 +45,10 @@ const questionSlice = createSlice({
 
       changeIsdisabled: (state, { payload }) => {
          state.isUpdateDisabled = payload
+      },
+
+      changeInOpen: (state, { payload }) => {
+         state.inOpen = payload
       },
 
       addOptionRadio: (state, { payload }) => {
