@@ -62,6 +62,7 @@ const addAnswerFile = createAsyncThunk(
    async ({ recordedAudio }, { rejectWithValue }) => {
       try {
          const formData = new FormData()
+
          formData.append('multipartFile', recordedAudio, 'recording.mp3')
 
          const response = await axiosInstanceFile.post('/api/awsFile', formData)
