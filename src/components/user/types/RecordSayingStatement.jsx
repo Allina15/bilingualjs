@@ -9,14 +9,15 @@ import { NoData } from '../../../assets/images'
 import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practiceTestThunk'
 
 const RecordSayingStatement = ({ questions, nextHandler }) => {
-   const { fileUrl } = useSelector((state) => state.practiceTest)
+   const { fileUrl, isLoading } = useSelector((state) => state.practiceTest)
+
    const [array, setArray] = useState(null)
+   const [stream, setStream] = useState(null)
    const [analyser, setAnalyser] = useState(null)
    const [myElements, setMyElements] = useState([])
    const [isRecording, setIsRecording] = useState(false)
    const [mediaRecorder, setMediaRecorder] = useState(null)
    const [showNextButton, setShowNextButton] = useState(false)
-   const [stream, setStream] = useState(null)
 
    const dispatch = useDispatch()
 
@@ -91,9 +92,11 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
    const stopRecordingHandler = () => {
       setIsRecording(false)
       setShowNextButton(true)
+
       if (stream) {
          stream.getTracks().forEach((track) => track.stop())
       }
+
       if (analyser) {
          analyser.disconnect()
       }
@@ -114,6 +117,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
          questionID: questions.questionId,
       }
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
+
       nextHandler()
       setMediaRecorder(null)
    }
@@ -127,13 +131,17 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
                      <Typography className="title">
                         Record yourself saying the statement below:
                      </Typography>
+
                      <Box className="block">
                         <SpeakManIcon className="speak" />
+
                         <Typography>{questions.statement}</Typography>
                      </Box>
                   </Box>
+
                   <Box className="container-button">
                      {isRecording && <RecordingIcon />}
+
                      {isRecording ? (
                         <Box className="block-of-visualize">
                            {myElements.map((element) => (
@@ -145,6 +153,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
                            ))}
                         </Box>
                      ) : null}
+
                      <Box>
                         {!showNextButton && (
                            <Button
@@ -159,7 +168,12 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
                         )}
 
                         {showNextButton && (
-                           <Button onClick={onSubmit} disabled={!mediaRecorder}>
+                           <Button
+                              onClick={onSubmit}
+                              disabled={!mediaRecorder}
+                              isLoading={isLoading}
+                              loadingColor="secondary"
+                           >
                               NEXT
                            </Button>
                         )}
@@ -183,7 +197,7 @@ const Container = styled(Box)(() => ({
 
    '& > .no-data': {
       width: '25rem',
-      margin: '0 0 0 15rem',
+      margin: 'auto',
    },
 
    '& > .styled-container': {

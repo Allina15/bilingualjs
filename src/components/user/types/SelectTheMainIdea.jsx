@@ -47,7 +47,7 @@ const SelectTheMainIdea = ({ questions, nextHandler }) => {
 
                <Box>
                   <Typography className="instruction">
-                     Select the best title for the passage
+                     Select the main idea for the passage
                   </Typography>
 
                   {options.map(({ id, optionTitle }) => (

@@ -213,7 +213,7 @@ const TypeWhatYouHear = ({
                   type="file"
                   id="filedInput"
                   name="fileUrl"
-                  accept="audio/mp3"
+                  accept="audio/mp3, .wav"
                   onChange={changeFileHandler}
                />
 
@@ -234,7 +234,7 @@ const TypeWhatYouHear = ({
                <audio
                   className="audio"
                   ref={audioRef}
-                  type="audio/mp3"
+                  type="audio/mp3, .wav"
                   controls
                   onEnded={endedHandler}
                >
@@ -287,6 +287,7 @@ const StyledContainer = styled(Box)(() => ({
    gap: '1rem',
    width: '820px',
    color: '#4C4859',
+   overflow: 'hidden',
 
    '& > .content': {
       display: 'flex',

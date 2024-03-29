@@ -296,6 +296,7 @@ export default SelectTheBestTitle
 
 const StyledContainer = styled(Box)(({ theme }) => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > .add-button': {
       margin: '2rem 0 1.375rem 41rem',

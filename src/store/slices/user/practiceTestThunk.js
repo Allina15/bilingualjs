@@ -7,7 +7,7 @@ import { ROUTES } from '../../../routes/routes'
 const getAllQuestions = createAsyncThunk(
    'practiceTest/getAllQuestions',
 
-   async ({ testId }, { rejectWithValue }) => {
+   async ({ testId }) => {
       try {
          const response = await axiosInstance.get(
             `/api/question?testId=${testId}`
@@ -15,7 +15,15 @@ const getAllQuestions = createAsyncThunk(
 
          return response.data
       } catch (error) {
-         return rejectWithValue.message
+         if (error.response) {
+            showNotification({
+               title: 'Error',
+               message: `${error.response.data.message}`,
+               type: 'error',
+            })
+         }
+
+         return error.response.data.message
       }
    }
 )
@@ -23,13 +31,18 @@ const getAllQuestions = createAsyncThunk(
 const addAnswer = createAsyncThunk(
    'practiceTest/postTest',
 
-   async ({ correctAnswer, navigate }, { rejectWithValue }) => {
+   async (
+      { correctAnswer, navigate, clearAnswer },
+      { rejectWithValue, dispatch }
+   ) => {
       try {
          const response = await axiosInstance.post('/api/answer', correctAnswer)
 
          navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}`)
 
          showNotification({ message: `${response.data.message}` })
+
+         dispatch(clearAnswer.clearCorrectAnswer())
 
          return response.data
       } catch (error) {
@@ -49,6 +62,7 @@ const addAnswerFile = createAsyncThunk(
    async ({ recordedAudio }, { rejectWithValue }) => {
       try {
          const formData = new FormData()
+
          formData.append('multipartFile', recordedAudio, 'recording.mp3')
 
          const response = await axiosInstanceFile.post('/api/awsFile', formData)

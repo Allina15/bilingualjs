@@ -23,10 +23,6 @@ const TestList = () => {
    const navigateHandler = (id) =>
       navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${id}`)
 
-   const enabledTests = Array.isArray(tests)
-      ? tests.filter((test) => test.enable)
-      : []
-
    return (
       <>
          {isLoading && <Loading />}
@@ -37,38 +33,30 @@ const TestList = () => {
             <TestContainer>
                <MainContent>
                   {Array.isArray(tests) &&
-                     enabledTests?.map(
-                        ({ id, duration, title, shortDescription }) => (
-                           <Box className="content" key={id}>
-                              <img
-                                 src={ListImage}
-                                 alt="list"
-                                 className="list"
-                              />
+                     tests?.map(({ id, duration, title, shortDescription }) => (
+                        <Box className="content" key={id}>
+                           <img src={ListImage} alt="list" className="list" />
 
-                              <Box className="texts">
-                                 <Typography className="duration">
-                                    {duration % 60} minutes
-                                 </Typography>
+                           <Box className="texts">
+                              <Typography className="duration">
+                                 {duration % 60} minutes
+                              </Typography>
 
-                                 <Typography className="title">
-                                    {title}
-                                 </Typography>
+                              <Typography className="title">{title}</Typography>
 
-                                 <Typography>{shortDescription}</Typography>
-                              </Box>
-
-                              <Box className="button-conteiner">
-                                 <Button
-                                    variant="secondary"
-                                    onClick={() => navigateHandler(id)}
-                                 >
-                                    TRY TEST
-                                 </Button>
-                              </Box>
+                              <Typography>{shortDescription}</Typography>
                            </Box>
-                        )
-                     )}
+
+                           <Box className="button-container">
+                              <Button
+                                 variant="secondary"
+                                 onClick={() => navigateHandler(id)}
+                              >
+                                 TRY TEST
+                              </Button>
+                           </Box>
+                        </Box>
+                     ))}
                </MainContent>
             </TestContainer>
          )}
@@ -117,8 +105,12 @@ const MainContent = styled(Box)(() => ({
          },
       },
 
-      '& > .button-conteiner': {
+      '& > .button-container': {
          marginLeft: 'auto',
+
+         '& > .passed': {
+            color: '#26d82f',
+         },
       },
    },
 }))

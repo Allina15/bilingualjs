@@ -110,7 +110,7 @@ const updateTest = createAsyncThunk(
 const updateTestByEnable = createAsyncThunk(
    'tests/updateTestByEnable',
 
-   async ({ testId, enable }, { rejectWithValue }) => {
+   async ({ testId, enable }, { rejectWithValue, dispatch }) => {
       try {
          const response = await axiosInstance.patch(
             `/api/test/update?testId=${testId}&enable=${enable}`
@@ -118,6 +118,14 @@ const updateTestByEnable = createAsyncThunk(
 
          return response.data
       } catch (error) {
+         showNotification({
+            message: 'Failed to update test',
+            type: 'error',
+            title: 'Error',
+         })
+
+         dispatch(getTests())
+
          return rejectWithValue.message
       }
    }

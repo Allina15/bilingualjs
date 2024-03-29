@@ -64,7 +64,7 @@ const TestQuestion = () => {
 
    const minutes = duration % 60
 
-   const formattedDuration = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`
+   const formattedDuration = ` ${hours}:${minutes < 10 ? '0' : ''}${minutes}`
 
    const isDisabled = !scoreValue
 
@@ -147,7 +147,9 @@ const TestQuestion = () => {
                   <Typography className="score">Score:</Typography>
 
                   {questionType === QUESTION_TITLES.SELECT_MAIN_IDEA ||
-                  questionType === QUESTION_TITLES.SELECT_THE_BEST_TITLE ? (
+                  questionType === QUESTION_TITLES.SELECT_THE_BEST_TITLE ||
+                  questionType === QUESTION_TITLES.SELECT_REAL_ENGLISH_WORD ||
+                  questionType === QUESTION_TITLES.LISTEN_AND_SELECT_WORD ? (
                      <Typography className="number">{score}</Typography>
                   ) : (
                      <Typography className="score">(1-10)</Typography>
@@ -155,7 +157,10 @@ const TestQuestion = () => {
                </Box>
 
                {questionType === QUESTION_TITLES.SELECT_MAIN_IDEA ||
-               questionType === QUESTION_TITLES.SELECT_THE_BEST_TITLE ? null : (
+               questionType === QUESTION_TITLES.SELECT_THE_BEST_TITLE ||
+               questionType === QUESTION_TITLES.SELECT_REAL_ENGLISH_WORD ||
+               questionType ===
+                  QUESTION_TITLES.LISTEN_AND_SELECT_WORD ? null : (
                   <Input
                      className="input"
                      type="number"

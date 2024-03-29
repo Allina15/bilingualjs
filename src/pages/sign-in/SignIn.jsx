@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useFormik } from 'formik'
 import { signInWithPopup } from 'firebase/auth'
 import { useDispatch, useSelector } from 'react-redux'
@@ -52,17 +52,9 @@ const SignIn = () => {
    }
 
    const onSubmit = (values, { resetForm }) => {
-      if (values.rememberMe) {
-         localStorage.setItem('email', values.email)
-         localStorage.setItem('password', values.password)
-         localStorage.setItem('rememberMe', true)
-      } else {
-         localStorage.removeItem('email')
-         localStorage.removeItem('password')
-         localStorage.removeItem('rememberMe')
-      }
-
       dispatch(AUTH_THUNKS.signIn({ values, resetForm, navigate }))
+
+      localStorage.setItem('rememberMe', values.rememberMe)
    }
 
    const { values, errors, touched, handleChange, handleSubmit, handleBlur } =
@@ -78,19 +70,6 @@ const SignIn = () => {
          validationSchema: VALIDATION_SIGN_IN,
          onSubmit,
       })
-
-   useEffect(() => {
-      const rememberMe = localStorage.getItem('rememberMe') === 'true'
-      if (rememberMe) {
-         const savedEmail = localStorage.getItem('email')
-         const savedPassword = localStorage.getItem('password')
-         if (savedEmail && savedPassword) {
-            handleChange({ target: { name: 'email', value: savedEmail } })
-            handleChange({ target: { name: 'password', value: savedPassword } })
-            handleChange({ target: { name: 'rememberMe', value: true } })
-         }
-      }
-   }, [])
 
    return (
       <StyledContainer>

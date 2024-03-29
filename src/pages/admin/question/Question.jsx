@@ -49,11 +49,15 @@ const Question = () => {
    }
 
    const changeDurationHandler = (e) => {
-      const newValue = e.target.value.replace(/\D/g, '')
+      let newValue = e.target.value.replace(/\D/g, '')
+      newValue = newValue.slice(0, 2)
 
-      const limitedValue = newValue.slice(0, 2)
+      const value = parseInt(newValue, 10)
+      if (value > 15) {
+         newValue = '15'
+      }
 
-      setDuration(limitedValue)
+      setDuration(newValue)
 
       if (
          state?.duration === e.target.value ||
@@ -68,6 +72,19 @@ const Question = () => {
 
    useEffect(() => {
       dispatch(QUESTION_ACTIONS.updateOptions(options || []))
+   }, [])
+
+   useEffect(() => {
+      const handleBeforeUnload = (event) => {
+         event.preventDefault()
+         event.returnValue = ''
+      }
+
+      window.addEventListener('beforeunload', handleBeforeUnload)
+
+      return () => {
+         window.removeEventListener('beforeunload', handleBeforeUnload)
+      }
    }, [])
 
    return (

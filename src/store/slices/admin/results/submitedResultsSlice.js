@@ -5,6 +5,7 @@ const initialState = {
    results: [],
    evaluations: {},
    isLoading: false,
+   isSendLoading: false,
 }
 
 export const submitedResultsSlice = createSlice({
@@ -66,15 +67,15 @@ export const submitedResultsSlice = createSlice({
          })
 
          .addCase(SUBMITTED_RESULTS_THUNKS.postResults.pending, (state) => {
-            state.isLoading = true
+            state.isSendLoading = true
          })
 
          .addCase(SUBMITTED_RESULTS_THUNKS.postResults.fulfilled, (state) => {
-            state.isLoading = false
+            state.isSendLoading = false
          })
 
          .addCase(SUBMITTED_RESULTS_THUNKS.postResults.rejected, (state) => {
-            state.isLoading = false
+            state.isSendLoading = false
          })
    },
 })

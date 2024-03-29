@@ -10,7 +10,6 @@ import { PlusIcon } from '../../../assets/icons'
 import { ROUTES } from '../../../routes/routes'
 import DeleteModal from '../../UI/modals/DeleteModal'
 import SaveModal from '../../UI/modals/SaveModal'
-import Loading from '../../Loading'
 import Button from '../../UI/buttons/Button'
 import Option from '../../UI/Option'
 
@@ -206,8 +205,6 @@ const ListenAndSelectEnglishWord = ({
 
    return (
       <StyledContainer>
-         {isLoading && <Loading />}
-
          <Box className="add-button">
             <Button
                icon={<PlusIcon className="plus" />}
@@ -302,6 +299,7 @@ export default ListenAndSelectEnglishWord
 
 const StyledContainer = styled(Box)(() => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > .add-button': {
       margin: '2rem 0 1.375rem 41rem',
