@@ -30,6 +30,8 @@ const PracticeTest = () => {
 
    const [count, setCount] = useState(savedCount)
 
+   const [warningCount, setWarningCount] = useState(4)
+
    useEffect(() => {
       dispatch(PRACTICE_TEST_THUNKS.getAllQuestions({ testId }))
    }, [dispatch, testId])
@@ -49,11 +51,10 @@ const PracticeTest = () => {
       navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`)
    }
 
-   useEffect(() => {
-      dispatch(PRACTICE_TEST_THUNKS.getAllQuestions({ testId }))
-   }, [dispatch, testId])
-
-   const QuestionComponent = QUESTION_COMPONENTS[questions[count]?.questionType]
+   const QuestionComponent =
+      questions && questions[count]
+         ? QUESTION_COMPONENTS[questions[count].questionType]
+         : null
 
    const nextHandler = () => setCount((prevCount) => prevCount + 1)
 
@@ -91,43 +92,61 @@ const PracticeTest = () => {
       document.addEventListener('keyup', (e) => {
          if (e.key === 'PrintScreen') {
             navigator.clipboard.writeText('')
-
-            showNotification({ message: 'Screen disabled', type: 'error' })
+            setWarningCount((prevCount) => {
+               const newCount = prevCount - 1
+               if (newCount < 0) {
+                  return 0
+               }
+               showNotification({
+                  title: 'Error',
+                  message: `You can't take a screenshot! You have ${newCount} tries!`,
+                  type: 'error',
+               })
+               if (newCount === 0) {
+                  dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
+                  navigate(
+                     `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`
+                  )
+               }
+               return newCount
+            })
          }
       })
    }, [])
 
    useEffect(() => {
-      const handleBeforeUnload = (event) => {
-         event.preventDefault()
-         event.returnValue = ''
-      }
-
-      const handleVisibilityChange = (event) => {
+      const handleVisibilityChange = () => {
          if (document.hidden) {
-            showNotification({
-               message:
-                  'You cannot leave the test page. Please complete the test!',
-               type: 'error',
+            setWarningCount((prevCount) => {
+               const newCount = prevCount - 1
+               if (newCount < 0) {
+                  return 0
+               }
+               showNotification({
+                  title: 'Error',
+                  message: `You cannot leave the test page.  Please complete the test!  You have ${newCount} tries!`,
+                  type: 'error',
+               })
+               if (newCount === 0) {
+                  dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
+                  navigate(
+                     `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`
+                  )
+               }
+               return newCount
             })
-            event.preventDefault()
-            event.returnValue = ''
          }
       }
 
-      window.addEventListener('beforeunload', handleBeforeUnload)
-      window.onbeforeunload = handleBeforeUnload
       document.addEventListener('visibilitychange', handleVisibilityChange)
 
       return () => {
-         window.removeEventListener('beforeunload', handleBeforeUnload)
-         window.onbeforeunload = null
          document.removeEventListener(
             'visibilitychange',
             handleVisibilityChange
          )
       }
-   }, [])
+   }, [warningCount])
 
    return (
       <StyledContainer>

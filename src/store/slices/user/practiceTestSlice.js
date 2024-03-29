@@ -7,6 +7,7 @@ const initialState = {
    correctOptions: [],
    correctAnswer: [],
    fileUrl: '',
+   isDisabled: false,
    isLoading: false,
 }
 
@@ -47,7 +48,13 @@ const practiceTestSlice = createSlice({
          .addCase(
             PRACTICE_TEST_THUNKS.getAllQuestions.fulfilled,
             (state, { payload }) => {
-               state.questions = payload
+               if (typeof payload !== 'string') {
+                  state.questions = payload
+                  state.isDisabled = false
+               } else {
+                  state.isDisabled = true
+               }
+
                state.isLoading = false
             }
          )
@@ -89,13 +96,6 @@ const practiceTestSlice = createSlice({
 
          .addCase(PRACTICE_TEST_THUNKS.addAnswerFile.pending, (state) => {
             state.isLoading = true
-
-            showNotification({
-               title: 'Pending',
-               message: false,
-               type: 'warning',
-               duration: 200,
-            })
          })
    },
 })

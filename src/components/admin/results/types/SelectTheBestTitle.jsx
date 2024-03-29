@@ -21,9 +21,9 @@ const SelectTheBestTitle = ({ saveHandler }) => {
 
          <Box className="admin-options-box">
             {answers?.questionOptionResponses?.map(
-               ({ optionId, optionTitle, isCorrectOption }, index) => (
+               ({ optionId, optionTitle, isCorrectOption, number }) => (
                   <Box key={optionId} className="option">
-                     <Typography className="number">{index + 1} </Typography>
+                     <Typography className="number">{number}</Typography>
 
                      <Typography>{optionTitle}</Typography>
 

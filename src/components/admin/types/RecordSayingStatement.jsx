@@ -71,7 +71,7 @@ const RecordSayingStatement = ({
          const requestData = {
             title: title.trim(),
             duration: +duration,
-            correctAnswer: statement.trim(),
+            statement: statement.trim(),
          }
 
          if (state === null) {
@@ -96,7 +96,7 @@ const RecordSayingStatement = ({
             const requestData = {
                title: title.trim(),
                duration: +duration,
-               correctAnswer: statement.trim(),
+               statement: statement.trim(),
                optionRequest: [],
             }
 

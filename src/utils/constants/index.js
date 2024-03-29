@@ -100,40 +100,80 @@ const OUR_TEAM = [
 const CHECK_OUT = [
    {
       id: 1,
-      title: 'Confirm your English proficiency today!',
-      text: 'For nearly 30 years, lea rners have turned to Rosetta Stone to build the fluency and confidence they need to speak new languages.',
+      title: 'Select the real english word',
+      text: 'Will be given a few words that will be misspelled or in a different language. Your task is to choose the correct words.',
       image: GlobusImage,
       titleColor: '#FE9102',
       background: '#212629',
    },
+
    {
       id: 2,
-      title: 'Confirm your English proficiency today!',
-      text: 'For nearly 30 years, lea rners have turned to Rosetta Stone    to build the fluency and confidence they need to speak new languages.',
+      title: 'Listen and select word',
+      text: 'Here you have to listen to all the sounds given to you and choose the correct pronunciations from them.',
       image: GlobusImage,
       titleColor: '#FFFFFF',
       background: '#FE9102',
    },
+
    {
       id: 3,
-      title: 'Confirm your English proficiency today!',
-      text: 'For nearly 30 years, lea rners have turned to Rosetta Stoneto build the fluency and confidence they need to speak new languages.',
+      title: 'Type what you hear',
+      text: 'Here you must write what you hear, but there are limits to how many times you can listen.',
       image: GlobusImage,
       titleColor: '#FE9102',
       background: '#212629',
    },
+
    {
       id: 4,
-      title: 'Confirm your English proficiency today!',
-      text: 'For nearly 30 years, lea rners have turned to Rosetta Stoneto build the fluency and confidence they need to speak new languages.',
+      title: 'Descibe image',
+      text: 'There will be a picture you have to describe. The clearer you describe the more likely you are to get a high score.',
       image: GlobusImage,
       titleColor: '#FFFFFF',
       background: '#FE9102',
    },
+
    {
       id: 5,
-      title: 'Confirm your English proficiency today!',
-      text: 'For nearly 30 years, lea rners have turned to Rosetta Stoneto build the fluency and confidence they need to speak new languages.',
+      title: 'Record saying statement',
+      text: 'The screen will display text that you must read with correct pronunciation',
+      image: GlobusImage,
+      titleColor: '#FE9102',
+      background: '#212629',
+   },
+
+   {
+      id: 5,
+      title: 'Respond in at least N words',
+      text: 'Here you will be given any question and you must answer it in at least the given number of words.',
+      image: GlobusImage,
+      titleColor: '#FFFFFF',
+      background: '#FE9102',
+   },
+
+   {
+      id: 5,
+      title: 'Highlights the answer',
+      text: 'You will be given a small text to read. And there will be a question that you can only answer by highlighting words from the text.',
+      image: GlobusImage,
+      titleColor: '#FE9102',
+      background: '#212629',
+   },
+
+   {
+      id: 5,
+      title: 'Select the main idea',
+      text: 'Here too a small text and answer options will be given . Well and carefully read this text should choose the main idea of this text they will be in the options. You can choose only one option.',
+      image: GlobusImage,
+      titleColor: '#FFFFFF',
+      background: '#FE9102',
+   },
+
+   {
+      id: 5,
+      title: 'Select the best title',
+      text: 'There will also be a small text and answer choices. Read this text well and carefully, you will have to choose the name of this text in the options. You can only choose one option.',
       image: GlobusImage,
       titleColor: '#FE9102',
       background: '#212629',

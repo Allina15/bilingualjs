@@ -64,7 +64,7 @@ const TestQuestion = () => {
 
    const minutes = duration % 60
 
-   const formattedDuration = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`
+   const formattedDuration = ` ${hours}:${minutes < 10 ? '0' : ''}${minutes}`
 
    const isDisabled = !scoreValue
 

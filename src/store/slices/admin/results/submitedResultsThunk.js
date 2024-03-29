@@ -37,7 +37,7 @@ const postResults = createAsyncThunk(
 
    async ({ resultId, navigate }, { rejectWithValue, dispatch }) => {
       try {
-         const link = `http://localhost:3001/user/results`
+         const link = 'http://localhost:3001/user/results'
 
          const response = await axiosInstance.post(
             `/api/result/${resultId}?link=${link}`

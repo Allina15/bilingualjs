@@ -67,9 +67,9 @@ const authSlice = createSlice({
          .addCase(
             AUTH_THUNKS.authWithGoogle.fulfilled,
             (state, { payload }) => {
-               state.role = payload.role
-               state.email = payload.email
-               state.token = payload.token
+               state.role = payload?.role
+               state.email = payload?.email
+               state.token = payload?.token
                state.isAuth = true
                state.isLoading = false
             }
@@ -98,7 +98,7 @@ const authSlice = createSlice({
          .addCase(
             AUTH_THUNKS.verificationCode.fulfilled,
             (state, { payload }) => {
-               state.passwordToken = payload.token
+               state.passwordToken = payload?.token
                state.isLoading = false
             }
          )

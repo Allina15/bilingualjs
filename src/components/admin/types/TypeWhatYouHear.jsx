@@ -213,7 +213,7 @@ const TypeWhatYouHear = ({
                   type="file"
                   id="filedInput"
                   name="fileUrl"
-                  accept="audio/mp3"
+                  accept="audio/mp3, .wav"
                   onChange={changeFileHandler}
                />
 
@@ -234,7 +234,7 @@ const TypeWhatYouHear = ({
                <audio
                   className="audio"
                   ref={audioRef}
-                  type="audio/mp3"
+                  type="audio/mp3, .wav"
                   controls
                   onEnded={endedHandler}
                >

@@ -6,10 +6,35 @@ import Radio from '../../../UI/Radio'
 
 const SelectTheMainIdea = ({ saveHandler }) => {
    const { answers } = useSelector((state) => state.answersSlice)
-
    const navigate = useNavigate()
 
    const navigateHandler = () => navigate(-1)
+
+   const renderUserOptions = () => {
+      return answers?.userOptionResponses?.map(({ optionId, optionTitle }) => {
+         const matchedOption = answers.questionOptionResponses.find(
+            (questionOption) => questionOption.optionTitle === optionTitle
+         )
+
+         if (matchedOption) {
+            return (
+               <Box key={optionId} className="option">
+                  <Typography className="number">
+                     {matchedOption.number}
+                  </Typography>
+
+                  <Typography>{optionTitle}</Typography>
+               </Box>
+            )
+         }
+
+         return (
+            <Box key={optionId} className="option">
+               <Typography>{optionTitle}</Typography>
+            </Box>
+         )
+      })
+   }
 
    return (
       <StyledContainer>
@@ -21,9 +46,9 @@ const SelectTheMainIdea = ({ saveHandler }) => {
 
          <Box className="admin-options-box">
             {answers?.questionOptionResponses?.map(
-               ({ optionId, optionTitle, isCorrectOption }, index) => (
+               ({ optionId, optionTitle, isCorrectOption, number }) => (
                   <Box key={optionId} className="option">
-                     <Typography className="number">{index + 1} </Typography>
+                     <Typography className="number">{number}</Typography>
 
                      <Typography>{optionTitle}</Typography>
 
@@ -35,17 +60,7 @@ const SelectTheMainIdea = ({ saveHandler }) => {
 
          <Typography className="user-answer">User`s Answer </Typography>
 
-         <Box className="user-options-box">
-            {answers?.userOptionResponses?.map(
-               ({ optionId, number, optionTitle }) => (
-                  <Box key={optionId} className="option">
-                     <Typography className="number">{number}</Typography>
-
-                     <Typography>{optionTitle}</Typography>
-                  </Box>
-               )
-            )}
-         </Box>
+         <Box className="user-options-box">{renderUserOptions()}</Box>
 
          <Box className="buttons-box">
             <Button variant="secondary" onClick={navigateHandler}>

@@ -122,10 +122,10 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
 
    '& .slick-next': {
       position: 'relative',
-      left: '40rem',
-      top: '2.8rem',
+      left: '41rem',
+      top: '2.76rem',
       width: '3.75rem',
-      height: '3.75rem',
+      height: '3.90rem',
 
       [theme.breakpoints.down('lg')]: {
          left: '35rem',
@@ -134,7 +134,7 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
 
    '& .slick-prev': {
       position: 'relative',
-      left: '26rem',
+      left: '25rem',
       top: '36.200rem',
       width: '3.75rem',
       height: '3.75rem',
