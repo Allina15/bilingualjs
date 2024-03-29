@@ -287,6 +287,7 @@ const StyledContainer = styled(Box)(() => ({
    gap: '1rem',
    width: '820px',
    color: '#4C4859',
+   overflow: 'hidden',
 
    '& > .content': {
       display: 'flex',
@@ -365,7 +366,7 @@ const StyledContainer = styled(Box)(() => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',

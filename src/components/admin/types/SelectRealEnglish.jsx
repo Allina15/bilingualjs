@@ -31,6 +31,8 @@ const SelectRealEnglish = ({
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
 
+   console.log(isCreate, 'en')
+
    const { questionId } = useParams()
 
    const { testId } = useParams()
@@ -70,7 +72,7 @@ const SelectRealEnglish = ({
 
    useEffect(() => {
       if (inOpen === false) {
-         if (options.selectRealEnglishWordsOptions.length <= 1) {
+         if (options.selectRealEnglishWordsOptions?.length <= 1) {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
          } else {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
@@ -306,6 +308,7 @@ export default SelectRealEnglish
 
 const StyledContainer = styled(Box)(() => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > .add-button': {
       margin: '2rem -1rem 1.375rem 41rem',
@@ -351,7 +354,7 @@ const StyledContainer = styled(Box)(() => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',

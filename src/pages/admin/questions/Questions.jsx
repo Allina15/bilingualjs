@@ -73,6 +73,7 @@ const Questions = () => {
          `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}/${ROUTES.ADMIN.UPDATE_QUESTION}/${questionId}`,
          { state: question }
       )
+
       dispatch(QUESTION_ACTIONS.changeInOpen(true))
    }
 

@@ -144,6 +144,7 @@ export default RecordSayingStatement
 
 const StyledContainer = styled(Box)(() => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > .statement': {
       marginTop: '1.4rem',
@@ -159,7 +160,7 @@ const StyledContainer = styled(Box)(() => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',

@@ -183,6 +183,7 @@ const StyledContainer = styled(Box)(() => ({
    gap: '2rem',
    marginTop: '2rem',
    width: '820px',
+   overflow: 'hidden',
 
    '& > .MuiInputLabel-root': {
       fontFamily: 'Poppins',
@@ -210,7 +211,7 @@ const StyledContainer = styled(Box)(() => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',

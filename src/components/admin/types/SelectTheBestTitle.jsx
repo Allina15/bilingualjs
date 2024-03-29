@@ -24,8 +24,12 @@ const SelectTheBestTitle = ({
    setDuration,
    setSelectType,
 }) => {
-   const { options, isLoading, isCreate, question, isUpdateDisabled } =
+   const { options, isLoading, isCreate, question, inOpen, isUpdateDisabled } =
       useSelector((state) => state.question)
+
+   const correctOption = options.selectTheBestTitleOptions?.find(
+      (option) => option.isCorrectOption
+   )
 
    const [passage, setPassage] = useState('')
    const [optionId, setOptionId] = useState(null)
@@ -66,7 +70,6 @@ const SelectTheBestTitle = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-
       dispatch(QUESTION_ACTIONS.clearOptions())
    }
 
@@ -88,6 +91,16 @@ const SelectTheBestTitle = ({
          setCheckedOption(question?.isCorrectOption)
       }
    }, [questionId, question])
+
+   useEffect(() => {
+      if (inOpen === false) {
+         if (options.selectTheBestTitleOptions?.length <= 1) {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+         } else {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+         }
+      }
+   }, [options, inOpen])
 
    const deleteHandler = () => {
       if (options.selectTheBestTitleOptions.length > 1) {
@@ -112,6 +125,7 @@ const SelectTheBestTitle = ({
       }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       deleteModal.onCloseModal()
    }
@@ -125,6 +139,7 @@ const SelectTheBestTitle = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
 
    const isDisabled =
@@ -208,12 +223,12 @@ const SelectTheBestTitle = ({
 
       if (isCreate) {
          dispatch(
-            QUESTION_ACTIONS.addOptionCheck({
+            QUESTION_ACTIONS.addOptionRadio({
                option,
                optionName: OPTIONS_NAME.selectTheBestTitleOptions,
             })
          )
-      } else {
+      } else if (!correctOption) {
          const option = [
             {
                optionTitle: optionTitle.trim(),
@@ -229,9 +244,37 @@ const SelectTheBestTitle = ({
                optionName: OPTIONS_NAME.selectTheBestTitleOptions,
             })
          )
+      } else {
+         const { optionId, ...options } = correctOption
+
+         const updatedOptions = [
+            {
+               optionTitle: optionTitle.trim(),
+               isCorrectOption: checkedOption,
+               fileUrl: 'none',
+            },
+            { ...options, isCorrectOption: false },
+         ]
+
+         dispatch(
+            OPTIONS_THUNKS.deleteOption({
+               optionId: correctOption.optionId,
+               id: questionId,
+               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+            })
+         )
+
+         dispatch(
+            OPTIONS_THUNKS.postOptions({
+               option: updatedOptions,
+               questionId,
+               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+            })
+         )
       }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       saveModal.onCloseModal()
 
@@ -330,6 +373,7 @@ export default SelectTheBestTitle
 
 const StyledContainer = styled(Box)(({ theme }) => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > .add-button': {
       margin: '2rem 0 1.375rem 41rem',
@@ -374,7 +418,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',

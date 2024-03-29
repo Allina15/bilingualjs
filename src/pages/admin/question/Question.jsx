@@ -49,16 +49,20 @@ const Question = () => {
    }
 
    const changeDurationHandler = (e) => {
-      const newValue = e.target.value.replace(/\D/g, '')
+      let newValue = e.target.value.replace(/\D/g, '')
+      newValue = newValue.slice(0, 2)
 
-      const limitedValue = newValue.slice(0, 2)
+      const value = parseInt(newValue, 10)
+      if (value > 15) {
+         newValue = '15'
+      }
 
-      setDuration(limitedValue)
+      setDuration(newValue)
 
       if (
-         state?.duration === e.target.value ||
-         e.target.value === '0' ||
-         e.target.value === ''
+         value === 0 ||
+         newValue === '' ||
+         state?.duration === value.toString()
       ) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
       } else {

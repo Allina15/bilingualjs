@@ -24,7 +24,7 @@ const SelectTheMainIdea = ({
    setDuration,
    setSelectType,
 }) => {
-   const { options, question, isLoading, isCreate, isUpdateDisabled } =
+   const { options, question, isLoading, isCreate, inOpen, isUpdateDisabled } =
       useSelector((state) => state.question)
 
    const [passage, setPassage] = useState('')
@@ -32,6 +32,8 @@ const SelectTheMainIdea = ({
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
    const [selectedOptionId, setSelectedOptionId] = useState(null)
+
+   console.log(isCreate, 'main')
 
    const deleteModal = useToggleModal('delete')
    const saveModal = useToggleModal('save')
@@ -70,7 +72,6 @@ const SelectTheMainIdea = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-
       dispatch(QUESTION_ACTIONS.clearOptions())
    }
 
@@ -84,13 +85,23 @@ const SelectTheMainIdea = ({
             })
          )
       }
-   }, [dispatch, questionId])
+   }, [dispatch, questionId, isCreate])
 
    useEffect(() => {
       if (questionId && question) {
          setPassage(question?.passage)
       }
    }, [questionId, question])
+
+   useEffect(() => {
+      if (inOpen === false) {
+         if (options.selectTheMainIdeaOptions?.length <= 1) {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+         } else {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+         }
+      }
+   }, [options, inOpen])
 
    const deleteHandler = () => {
       if (isCreate) {
@@ -111,6 +122,7 @@ const SelectTheMainIdea = ({
       }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       deleteModal.onCloseModal()
    }
@@ -124,6 +136,7 @@ const SelectTheMainIdea = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
 
    const isDisabled =
@@ -207,7 +220,7 @@ const SelectTheMainIdea = ({
 
       if (isCreate) {
          dispatch(
-            QUESTION_ACTIONS.addOptionCheck({
+            QUESTION_ACTIONS.addOptionRadio({
                option,
                optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
             })
@@ -231,6 +244,7 @@ const SelectTheMainIdea = ({
       }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       saveModal.onCloseModal()
 
@@ -329,6 +343,7 @@ export default SelectTheMainIdea
 
 const StyledContainer = styled(Box)(({ theme }) => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > .add-button': {
       margin: '2rem 0 1.375rem 41rem',
@@ -373,7 +388,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',

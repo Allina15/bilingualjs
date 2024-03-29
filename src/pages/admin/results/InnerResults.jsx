@@ -16,7 +16,7 @@ import Button from '../../../components/UI/buttons/Button'
 import { ROUTES } from '../../../routes/routes'
 
 const InnerResults = () => {
-   const { evaluations, isLoading } = useSelector(
+   const { evaluations, isLoading, isSendLoading } = useSelector(
       (state) => state.submitedResultsSlice
    )
    const { resultId } = useParams()
@@ -168,6 +168,7 @@ const InnerResults = () => {
                         className="button"
                         disabled={!isDisabled}
                         onClick={sendResultsHandler}
+                        isLoading={isSendLoading}
                      >
                         SEND RESULTS TO USER`S EMAIL
                      </Button>
@@ -266,7 +267,7 @@ const InnerResults = () => {
 
 export default InnerResults
 
-const StyledContainer = styled(Box)(() => ({
+const StyledContainer = styled(Box)(({ theme }) => ({
    color: '#4C4859',
 
    '& > .no-data-image': {
@@ -334,7 +335,13 @@ const StyledContainer = styled(Box)(() => ({
       '& > div > .button': {
          marginBottom: '2rem',
          marginTop: '2rem',
+         width: '270px',
          cursor: 'pointer',
+
+         '&:hover': {
+            background: 'none',
+            color: theme.palette.primary.main,
+         },
       },
    },
 

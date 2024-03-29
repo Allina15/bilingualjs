@@ -210,13 +210,13 @@ const updateQuestionByEnable = createAsyncThunk(
 
          return response.data
       } catch (error) {
+         dispatch(TESTS_THUNKS.getTest({ id: testId }))
+
          showNotification({
             message: 'Failed to update question',
             type: 'error',
             title: 'Error',
          })
-
-         dispatch(TESTS_THUNKS.getTest({ id: testId }))
 
          return rejectWithValue.message
       }

@@ -273,6 +273,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
    fontFamily: 'Arial',
    color: '#4C4859',
    width: '820px',
+   overflow: 'hidden',
 
    '& > .container-image': {
       display: 'flex',
@@ -330,7 +331,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',

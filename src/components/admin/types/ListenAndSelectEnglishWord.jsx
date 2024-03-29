@@ -23,7 +23,7 @@ const ListenAndSelectEnglishWord = ({
    setDuration,
    setSelectType,
 }) => {
-   const { fileUrl, isLoading, options, isUpdateDisabled, isCreate } =
+   const { fileUrl, isLoading, options, inOpen, isUpdateDisabled, isCreate } =
       useSelector((state) => state.question)
 
    const { questionId } = useParams()
@@ -33,6 +33,8 @@ const ListenAndSelectEnglishWord = ({
    const [isUploaded, setIsUploaded] = useState(false)
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
+
+   console.log(isCreate, 'lis')
 
    const deleteModal = useToggleModal('delete')
    const saveModal = useToggleModal('save')
@@ -66,6 +68,16 @@ const ListenAndSelectEnglishWord = ({
          )
       }
    }, [dispatch, questionId])
+
+   useEffect(() => {
+      if (inOpen === false) {
+         if (options.listenAndSelectOptions?.length <= 1) {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+         } else {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+         }
+      }
+   }, [options, inOpen])
 
    const deleteOption = options?.listenAndSelectOptions?.find(
       (option) => option.optionId === optionId
@@ -118,6 +130,7 @@ const ListenAndSelectEnglishWord = ({
       }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       deleteModal.onCloseModal()
    }
@@ -131,6 +144,7 @@ const ListenAndSelectEnglishWord = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
 
    const onSubmit = () => {
@@ -225,6 +239,7 @@ const ListenAndSelectEnglishWord = ({
       }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       saveModal.onCloseModal()
 
@@ -329,6 +344,7 @@ export default ListenAndSelectEnglishWord
 
 const StyledContainer = styled(Box)(() => ({
    width: '820px',
+   overflow: 'hidden',
 
    '& > .add-button': {
       margin: '2rem 0 1.375rem 41rem',
@@ -343,7 +359,7 @@ const StyledContainer = styled(Box)(() => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',
