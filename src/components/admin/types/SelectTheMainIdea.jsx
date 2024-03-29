@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,8 +31,6 @@ const SelectTheMainIdea = ({
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
    const [selectedOptionId, setSelectedOptionId] = useState(null)
-
-   console.log(isCreate, 'main')
 
    const deleteModal = useToggleModal('delete')
    const saveModal = useToggleModal('save')
@@ -105,6 +102,13 @@ const SelectTheMainIdea = ({
 
    const deleteHandler = () => {
       if (isCreate) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            })
+         )
+      } else if (optionId > 200) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
@@ -215,33 +219,15 @@ const SelectTheMainIdea = ({
       const option = {
          optionTitle: optionTitle.trim(),
          isCorrectOption: checkedOption,
-         optionId: uuidv4(),
+         optionId: Math.floor(Math.random() * 999) + 200,
       }
 
-      if (isCreate) {
-         dispatch(
-            QUESTION_ACTIONS.addOptionRadio({
-               option,
-               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
-            })
-         )
-      } else {
-         const option = [
-            {
-               optionTitle: optionTitle.trim(),
-               isCorrectOption: checkedOption,
-               fileUrl: 'none',
-            },
-         ]
-
-         dispatch(
-            OPTIONS_THUNKS.postOptions({
-               option,
-               questionId,
-               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
-            })
-         )
-      }
+      dispatch(
+         QUESTION_ACTIONS.addOptionRadio({
+            option,
+            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+         })
+      )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))

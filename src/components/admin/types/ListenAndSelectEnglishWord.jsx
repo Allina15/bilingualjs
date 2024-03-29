@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -33,8 +32,6 @@ const ListenAndSelectEnglishWord = ({
    const [isUploaded, setIsUploaded] = useState(false)
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
-
-   console.log(isCreate, 'lis')
 
    const deleteModal = useToggleModal('delete')
    const saveModal = useToggleModal('save')
@@ -113,6 +110,13 @@ const ListenAndSelectEnglishWord = ({
 
    const deleteHandler = () => {
       if (isCreate) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.listenAndSelectOptions,
+            })
+         )
+      } else if (optionId > 200) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
@@ -209,34 +213,16 @@ const ListenAndSelectEnglishWord = ({
       const option = {
          optionTitle: optionTitle.trim(),
          isCorrectOption: checkedOption,
-         optionId: uuidv4(),
+         optionId: Math.floor(Math.random() * 999) + 200,
          fileUrl,
       }
 
-      if (isCreate) {
-         dispatch(
-            QUESTION_ACTIONS.addOptionCheck({
-               option,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
-            })
-         )
-      } else {
-         const option = [
-            {
-               optionTitle: optionTitle.trim(),
-               isCorrectOption: checkedOption,
-               fileUrl: 'none',
-            },
-         ]
-
-         dispatch(
-            OPTIONS_THUNKS.postOptions({
-               option,
-               questionId,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
-            })
-         )
-      }
+      dispatch(
+         QUESTION_ACTIONS.addOptionCheck({
+            option,
+            optionName: OPTIONS_NAME?.listenAndSelectOptions,
+         })
+      )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))

@@ -26,12 +26,6 @@ const authSlice = createSlice({
 
          localStorage.removeItem(BILINGUAL)
 
-         document.cookie =
-            'email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-         document.cookie =
-            'password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-         document.cookie =
-            'rememberMe=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
          payload.navigate('/')
       },
    },
@@ -39,11 +33,11 @@ const authSlice = createSlice({
    extraReducers: (builder) => {
       builder
          .addCase(AUTH_THUNKS.signUp.fulfilled, (state, { payload }) => {
-            state.role = payload.role
-            state.email = payload.email
+            state.role = payload?.role
+            state.email = payload?.email
             state.isAuth = true
             state.isLoading = false
-            state.token = payload.token
+            state.token = payload?.token
          })
 
          .addCase(AUTH_THUNKS.signUp.rejected, (state) => {
@@ -55,9 +49,9 @@ const authSlice = createSlice({
          })
 
          .addCase(AUTH_THUNKS.signIn.fulfilled, (state, { payload }) => {
-            state.role = payload.role
-            state.email = payload.email
-            state.token = payload.token
+            state.role = payload?.role
+            state.email = payload?.email
+            state.token = payload?.token
             state.isAuth = true
             state.isLoading = false
          })

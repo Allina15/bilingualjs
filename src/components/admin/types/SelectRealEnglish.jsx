@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
@@ -30,8 +29,6 @@ const SelectRealEnglish = ({
    const [optionId, setOptionId] = useState(null)
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
-
-   console.log(isCreate, 'en')
 
    const { questionId } = useParams()
 
@@ -82,6 +79,13 @@ const SelectRealEnglish = ({
 
    const deleteHandler = () => {
       if (isCreate) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+            })
+         )
+      } else if (optionId > 200) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
@@ -193,33 +197,15 @@ const SelectRealEnglish = ({
       const option = {
          optionTitle: optionTitle.trim(),
          isCorrectOption: checkedOption,
-         optionId: uuidv4(),
+         optionId: Math.floor(Math.random() * 999) + 200,
       }
 
-      if (isCreate) {
-         dispatch(
-            QUESTION_ACTIONS.addOptionCheck({
-               option,
-               optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
-            })
-         )
-      } else {
-         const option = [
-            {
-               optionTitle: optionTitle.trim(),
-               isCorrectOption: checkedOption,
-               fileUrl: 'none',
-            },
-         ]
-
-         dispatch(
-            OPTIONS_THUNKS.postOptions({
-               option,
-               questionId,
-               optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
-            })
-         )
-      }
+      dispatch(
+         QUESTION_ACTIONS.addOptionCheck({
+            option,
+            optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+         })
+      )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))

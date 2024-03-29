@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,10 +25,6 @@ const SelectTheBestTitle = ({
 }) => {
    const { options, isLoading, isCreate, question, inOpen, isUpdateDisabled } =
       useSelector((state) => state.question)
-
-   const correctOption = options.selectTheBestTitleOptions?.find(
-      (option) => option.isCorrectOption
-   )
 
    const [passage, setPassage] = useState('')
    const [optionId, setOptionId] = useState(null)
@@ -108,6 +103,13 @@ const SelectTheBestTitle = ({
       }
 
       if (isCreate) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+            })
+         )
+      } else if (optionId > 200) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
@@ -218,60 +220,15 @@ const SelectTheBestTitle = ({
       const option = {
          optionTitle: optionTitle.trim(),
          isCorrectOption: checkedOption,
-         optionId: uuidv4(),
+         optionId: Math.floor(Math.random() * 999) + 200,
       }
 
-      if (isCreate) {
-         dispatch(
-            QUESTION_ACTIONS.addOptionRadio({
-               option,
-               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
-            })
-         )
-      } else if (!correctOption) {
-         const option = [
-            {
-               optionTitle: optionTitle.trim(),
-               isCorrectOption: checkedOption,
-               fileUrl: 'none',
-            },
-         ]
-
-         dispatch(
-            OPTIONS_THUNKS.postOptions({
-               option,
-               questionId,
-               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
-            })
-         )
-      } else {
-         const { optionId, ...options } = correctOption
-
-         const updatedOptions = [
-            {
-               optionTitle: optionTitle.trim(),
-               isCorrectOption: checkedOption,
-               fileUrl: 'none',
-            },
-            { ...options, isCorrectOption: false },
-         ]
-
-         dispatch(
-            OPTIONS_THUNKS.deleteOption({
-               optionId: correctOption.optionId,
-               id: questionId,
-               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
-            })
-         )
-
-         dispatch(
-            OPTIONS_THUNKS.postOptions({
-               option: updatedOptions,
-               questionId,
-               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
-            })
-         )
-      }
+      dispatch(
+         QUESTION_ACTIONS.addOptionRadio({
+            option,
+            optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+         })
+      )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))

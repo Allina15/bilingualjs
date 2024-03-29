@@ -3,35 +3,46 @@ import FAQ from '../components/landing/FAQ'
 import { FooterLogoImage } from '../assets/images'
 import { FacebookIcon, InstagramIcon, YouTubeIcon } from '../assets/icons'
 
-const Footer = () => (
-   <StyledContainer>
-      <Box className="box">
-         <FAQ />
+const Footer = () => {
+   const scrollToTop = () => {
+      window.scrollTo({
+         top: 0,
+         behavior: 'smooth',
+      })
+   }
 
-         <StyledFooter>
-            <img src={FooterLogoImage} alt="logo" className="logo" />
+   return (
+      <StyledContainer>
+         <Box className="box">
+            <FAQ />
 
-            <Box>
-               <IconButton href="https://www.youtube.com/@peaksofthouse2429">
-                  <img src={YouTubeIcon} alt="youtube" className="youtube" />
+            <StyledFooter>
+               <IconButton onClick={scrollToTop}>
+                  <img src={FooterLogoImage} alt="logo" className="logo" />
                </IconButton>
 
-               <IconButton href="https://ru-ru.facebook.com/">
-                  <FacebookIcon />
-               </IconButton>
+               <Box>
+                  <IconButton href="https://www.youtube.com/@peaksofthouse2429">
+                     <img src={YouTubeIcon} alt="youtube" className="youtube" />
+                  </IconButton>
 
-               <IconButton href="https://www.instagram.com/peaksoft.house/">
-                  <InstagramIcon />
-               </IconButton>
-            </Box>
-         </StyledFooter>
+                  <IconButton href="https://ru-ru.facebook.com/">
+                     <FacebookIcon />
+                  </IconButton>
 
-         <Typography className="reserved">
-            © Copyright PeakSoft. All Rights Reserved
-         </Typography>
-      </Box>
-   </StyledContainer>
-)
+                  <IconButton href="https://www.instagram.com/peaksoft.house/">
+                     <InstagramIcon />
+                  </IconButton>
+               </Box>
+            </StyledFooter>
+
+            <Typography className="reserved">
+               © Copyright PeakSoft. All Rights Reserved
+            </Typography>
+         </Box>
+      </StyledContainer>
+   )
+}
 
 export default Footer
 

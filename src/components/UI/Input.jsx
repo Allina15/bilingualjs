@@ -16,6 +16,7 @@ const Input = forwardRef(
          error={Boolean(error)}
          placeholder={placeholder}
          variant="outlined"
+         autoComplete="off"
          {...rest}
       />
    )

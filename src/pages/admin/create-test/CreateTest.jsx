@@ -1,48 +1,34 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Box, Skeleton, Typography, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useFormik } from 'formik'
-import { Box, Typography, styled } from '@mui/material'
-import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
+import Input from '../../../components/UI/Input'
 import TestContainer from '../../../components/UI/TestContainer'
 import Button from '../../../components/UI/buttons/Button'
-import Input from '../../../components/UI/Input'
+import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
 
 const CreateTest = () => {
-   const { test } = useSelector((state) => state.tests)
+   const { test, isLoading } = useSelector((state) => state.tests)
 
    const { id } = useParams()
 
-   const dispatch = useDispatch()
-
-   const navigate = useNavigate()
+   const [formData, setFormData] = useState({
+      title: '',
+      shortDescription: '',
+   })
 
    const isNewTest = id === undefined || id === ''
 
-   const onSubmit = (values) => {
-      if (isNewTest) {
-         dispatch(TESTS_THUNKS.addTest({ testData: { ...values }, navigate }))
-      } else {
-         dispatch(
-            TESTS_THUNKS.updateTest({
-               id,
-               updatedTest: { ...values },
-               navigate,
-            })
-         )
-      }
-   }
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
 
-   const { values, handleChange, handleBlur, handleSubmit, isValid, dirty } =
-      useFormik({
-         initialValues: {
-            title: isNewTest && test ? '' : test?.title || '',
-            shortDescription:
-               isNewTest && test ? '' : test?.shortDescription || '',
-         },
-
-         onSubmit,
+   const handleInputChange = (e) => {
+      const { name, value } = e.target
+      setFormData({
+         ...formData,
+         [name]: value,
       })
+   }
 
    useEffect(() => {
       if (id) {
@@ -50,40 +36,76 @@ const CreateTest = () => {
       }
    }, [dispatch, id])
 
+   useEffect(() => {
+      if (!isNewTest && test) {
+         setFormData({
+            title: test.title || '',
+            shortDescription: test.shortDescription || '',
+         })
+      }
+   }, [isNewTest, test, id])
+
+   const handleSave = () => {
+      const testToSave = { ...formData }
+
+      if (isNewTest) {
+         dispatch(TESTS_THUNKS.addTest({ testData: testToSave, navigate }))
+      } else {
+         dispatch(
+            TESTS_THUNKS.updateTest({ id, updatedTest: testToSave, navigate })
+         )
+      }
+   }
+
+   const isFormValid = formData.title !== '' && formData.shortDescription !== ''
+
    return (
       <TestContainer>
          <StyledContainer>
             <Typography className="label">Title</Typography>
-
-            <Input
-               className="input"
-               name="title"
-               value={values.title}
-               onChange={handleChange}
-               onBlur={handleBlur}
-               autoComplete="off"
-            />
+            {isLoading ? (
+               <Skeleton
+                  variant="rounded"
+                  width={900}
+                  height={58}
+                  className="skeleton-box"
+               />
+            ) : (
+               <Input
+                  className="input"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+               />
+            )}
 
             <Typography className="label">Short Description</Typography>
 
-            <Input
-               className="input"
-               name="shortDescription"
-               value={values.shortDescription}
-               onChange={handleChange}
-               onBlur={handleBlur}
-               autoComplete="off"
-            />
+            {isLoading ? (
+               <Skeleton
+                  variant="rounded"
+                  width={900}
+                  height={58}
+                  className="skeleton-box"
+               />
+            ) : (
+               <Input
+                  className="input"
+                  name="shortDescription"
+                  value={formData.shortDescription}
+                  onChange={handleInputChange}
+               />
+            )}
 
-            <Box className="buttons-box">
+            <Box className="container-buttons">
                <Link to="/">
                   <Button variant="secondary">GO BACK</Button>
                </Link>
 
                <Button
                   variant="primary"
-                  onClick={handleSubmit}
-                  disabled={!dirty || !isValid}
+                  onClick={handleSave}
+                  disabled={!isFormValid}
                >
                   SAVE
                </Button>
@@ -105,10 +127,16 @@ const StyledContainer = styled(Box)(() => ({
       marginBottom: '1.8rem',
    },
 
-   '& > .buttons-box': {
+   '& > .container-buttons': {
       display: 'flex',
       justifyContent: 'flex-end',
       gap: '1rem',
       marginTop: '0.7rem',
+   },
+
+   '& > .skeleton-box': {
+      backgroundColor: '#e5e5e567',
+      borderRadius: '8px',
+      margin: '0 0.5rem 1rem 0',
    },
 }))

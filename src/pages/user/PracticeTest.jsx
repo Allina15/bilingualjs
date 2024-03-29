@@ -13,6 +13,7 @@ import { ROUTES } from '../../routes/routes'
 import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practiceTestSlice'
 import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practiceTestThunk'
 import { QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
+import { showNotification } from '../../utils/helpers/notification'
 
 const PracticeTest = () => {
    const { questions } = useSelector((state) => state.practiceTest)
@@ -25,7 +26,7 @@ const PracticeTest = () => {
 
    const [searchParams] = useSearchParams()
 
-   const savedCount = parseInt(searchParams.get('count')) || 1
+   const savedCount = parseInt(searchParams.get('count')) || 0
 
    const [count, setCount] = useState(savedCount)
 
@@ -85,6 +86,48 @@ const PracticeTest = () => {
          )
       }
    }
+
+   useEffect(() => {
+      document.addEventListener('keyup', (e) => {
+         if (e.key === 'PrintScreen') {
+            navigator.clipboard.writeText('')
+
+            showNotification({ message: 'Screen disabled', type: 'error' })
+         }
+      })
+   }, [])
+
+   useEffect(() => {
+      const handleBeforeUnload = (event) => {
+         event.preventDefault()
+         event.returnValue = ''
+      }
+
+      const handleVisibilityChange = (event) => {
+         if (document.hidden) {
+            showNotification({
+               message:
+                  'You cannot leave the test page. Please complete the test!',
+               type: 'error',
+            })
+            event.preventDefault()
+            event.returnValue = ''
+         }
+      }
+
+      window.addEventListener('beforeunload', handleBeforeUnload)
+      window.onbeforeunload = handleBeforeUnload
+      document.addEventListener('visibilitychange', handleVisibilityChange)
+
+      return () => {
+         window.removeEventListener('beforeunload', handleBeforeUnload)
+         window.onbeforeunload = null
+         document.removeEventListener(
+            'visibilitychange',
+            handleVisibilityChange
+         )
+      }
+   }, [])
 
    return (
       <StyledContainer>
