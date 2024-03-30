@@ -51,8 +51,19 @@ const SignUp = () => {
          })
    }
 
-   const onSubmit = (values, { resetForm }) =>
-      dispatch(AUTH_THUNKS.signUp({ values, resetForm, navigate }))
+   const onSubmit = (values, { resetForm }) => {
+      const trimmedValues = Object.fromEntries(
+         Object.entries(values).map(([key, value]) => {
+            const trimmedValue =
+               typeof value === 'string' ? value.trim() : value
+            return [key, trimmedValue]
+         })
+      )
+
+      dispatch(
+         AUTH_THUNKS.signUp({ values: trimmedValues, resetForm, navigate })
+      )
+   }
 
    const { values, errors, handleChange, handleSubmit, handleBlur, touched } =
       useFormik({
@@ -161,6 +172,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
    background: 'linear-gradient(180deg, #833fac, #3b10e5d8)',
    display: 'flex',
    justifyContent: 'center',
+   alignItems: 'center',
    width: '100%',
    height: '100vh',
    fontFamily: 'Poppins',

@@ -1,6 +1,7 @@
 import * as Yup from 'yup'
 
 const passwordRegex = '^(?=.*[A-Z])(?=.*\\d).*$'
+const gmailRegex = /@gmail\.com$/
 
 const VALIDATION_SIGN_IN = Yup.object().shape({
    email: Yup.string().email('Invalid email').required('Email is required'),
@@ -23,7 +24,10 @@ const VALIDATION_SIGN_UP = Yup.object().shape({
 })
 
 const VALIDATION_FORGOT_PASSWORD = Yup.object().shape({
-   email: Yup.string().email('Invalid email').required('Email is required'),
+   email: Yup.string()
+      .email('Invalid email')
+      .required('Email is required')
+      .matches(gmailRegex, 'Email must contain @gmail.com'),
 })
 
 const VALIDATION_VERIFICATION = Yup.object().shape({

@@ -52,9 +52,17 @@ const SignIn = () => {
    }
 
    const onSubmit = (values, { resetForm }) => {
-      dispatch(AUTH_THUNKS.signIn({ values, resetForm, navigate }))
+      const trimmedValues = Object.fromEntries(
+         Object.entries(values).map(([key, value]) => {
+            const trimmedValue =
+               typeof value === 'string' ? value.trim() : value
+            return [key, trimmedValue]
+         })
+      )
 
-      localStorage.setItem('rememberMe', values.rememberMe)
+      dispatch(
+         AUTH_THUNKS.signIn({ values: trimmedValues, resetForm, navigate })
+      )
    }
 
    const { values, errors, touched, handleChange, handleSubmit, handleBlur } =
@@ -185,6 +193,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
    background: 'linear-gradient(180deg, #833fac, #3b10e5d8)',
    display: 'flex',
    justifyContent: 'center',
+   alignItems: 'center',
    width: '100%',
    height: '100vh',
    fontFamily: 'Poppins',

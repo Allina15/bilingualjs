@@ -30,15 +30,24 @@ const ChangePassword = () => {
    const handleNewPasswordFieldFocus = () => setIsPasswordFieldActive(true)
    const handleConfirmPasswordFieldFocus = () => setIsPasswordFieldActive(true)
 
-   const onSubmit = (values, { resetForm }) =>
+   const onSubmit = (values, { resetForm }) => {
+      const trimmedValues = Object.fromEntries(
+         Object.entries(values).map(([key, value]) => {
+            const trimmedValue =
+               typeof value === 'string' ? value.trim() : value
+            return [key, trimmedValue]
+         })
+      )
+
       dispatch(
          AUTH_THUNKS.passwordChange({
-            values,
+            values: trimmedValues,
             passwordToken,
             resetForm,
             navigate,
          })
       )
+   }
 
    const { values, errors, touched, handleChange, handleSubmit, handleBlur } =
       useFormik({

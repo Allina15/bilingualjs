@@ -9,6 +9,7 @@ import { ROUTES } from '../../../routes/routes'
 import Loading from '../../Loading'
 import Button from '../../UI/buttons/Button'
 import Input from '../../UI/Input'
+import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 
 const TypeWhatYouHear = ({
    title,
@@ -44,9 +45,25 @@ const TypeWhatYouHear = ({
       )
 
    const attemptsChangeHandler = (e) => {
-      const { value } = e.target
+      let newValue = e.target.value.replace(/\D/g, '')
+      newValue = newValue.slice(0, 2)
 
-      setAttempts(value || '')
+      const value = parseInt(newValue, 10)
+      if (value > 15) {
+         newValue = '15'
+      }
+
+      setDuration(newValue)
+
+      if (
+         value === 0 ||
+         newValue === '' ||
+         state?.duration === value.toString()
+      ) {
+         dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+      } else {
+         dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      }
    }
 
    const correctAnswerChangeHandler = (e) => {
@@ -366,7 +383,7 @@ const StyledContainer = styled(Box)(() => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',
