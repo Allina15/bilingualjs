@@ -1,35 +1,29 @@
-import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import { Box, Skeleton, Typography, styled } from '@mui/material'
+import { ROUTES } from '../../../routes/routes'
+import Switcher from '../../UI/Switcher'
+import DeleteModal from '../../UI/modals/DeleteModal'
+import { NoDataImage } from '../../../assets/images'
 import { EditIcon, TrashIcon } from '../../../assets/icons'
 import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
-import { NoDataImage } from '../../../assets/images'
-import { ROUTES } from '../../../routes/routes'
-import DeleteModal from '../../UI/modals/DeleteModal'
-import Switcher from '../../UI/Switcher'
 
 const AdminTestList = () => {
    const { tests, isLoading } = useSelector((state) => state.tests)
+
+   const [isVisible, setIsVisible] = useState(false)
+   const [selectedTestId, setSelectedTestId] = useState(null)
 
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
 
-   const [isVisible, setIsVisible] = useState(false)
-   const [selectedTestId, setSelectedTestId] = useState(null)
-
-   const stopPropagationHandler = (e) => e.stopPropagation()
-
    useEffect(() => {
       dispatch(TESTS_THUNKS.getTests())
    }, [dispatch])
 
-   const deleteTestHandler = (testId) => {
-      dispatch(TESTS_THUNKS.deleteTest(testId))
-
-      setIsVisible(false)
-   }
+   const stopPropagationHandler = (e) => e.stopPropagation()
 
    const isVisibleHandler = (e, testId) => {
       e.preventDefault()
@@ -45,6 +39,12 @@ const AdminTestList = () => {
             enable: value,
          })
       )
+   }
+
+   const deleteTestHandler = (testId) => {
+      dispatch(TESTS_THUNKS.deleteTest(testId))
+
+      setIsVisible(false)
    }
 
    const navigateHandler = (e, id) => {

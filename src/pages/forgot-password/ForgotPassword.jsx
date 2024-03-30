@@ -5,10 +5,10 @@ import { Box, Typography, styled } from '@mui/material'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/buttons/Button'
 import { ExitIcon, LockIcon, WarningIcon } from '../../assets/icons'
+import { ROUTES } from '../../routes/routes'
 import { AUTH_THUNKS } from '../../store/slices/auth/authThunk'
 import { showErrorForgotPassword } from '../../utils/helpers'
 import { VALIDATION_FORGOT_PASSWORD } from '../../utils/helpers/validation'
-import { ROUTES } from '../../routes/routes'
 
 const ForgotPassword = () => {
    const { isLoading } = useSelector((state) => state.auth)
@@ -22,12 +22,13 @@ const ForgotPassword = () => {
          Object.entries(values).map(([key, value]) => {
             const trimmedValue =
                typeof value === 'string' ? value.trim() : value
+
             return [key, trimmedValue]
          })
       )
 
       dispatch(
-         AUTH_THUNKS.forgotPasswordEmail({
+         AUTH_THUNKS.forgotPassword({
             values: trimmedValues,
             resetForm,
             navigate,
@@ -46,6 +47,7 @@ const ForgotPassword = () => {
          validationSchema: VALIDATION_FORGOT_PASSWORD,
          onSubmit,
       })
+
    return (
       <StyledContainer>
          <form className="form" autoComplete="off" onSubmit={handleSubmit}>
@@ -158,14 +160,10 @@ const StyledContainer = styled(Box)(({ theme }) => ({
                fontWeight: '500',
             },
 
-            '& .description': {
+            '& > .description': {
                color: '#525059',
                marginBottom: '1.5rem',
             },
-         },
-
-         '& .check': {
-            marginRight: '9px',
          },
 
          '& .MuiOutlinedInput-root': {
@@ -200,7 +198,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             },
          },
 
-         '& .back-container': {
+         '& > .back-container': {
             display: 'flex',
             justifyContent: 'center',
 

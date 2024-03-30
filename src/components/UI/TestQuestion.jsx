@@ -2,25 +2,25 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
+import Input from './Input'
 import TestContainer from './TestContainer'
 import Loading from '../Loading'
-import Input from './Input'
-import { ANSWERS_THUNKS } from '../../store/slices/admin/answers/answersThunk'
-import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/AdminQuestionComponents'
+import { ANSWER_THUNKS } from '../../store/slices/admin/answer/answerThunk'
 import { QUESTION_TITLES } from '../../utils/constants'
+import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/AdminQuestionComponents'
 import { questionTypeHandler } from '../../utils/helpers'
 import { showNotification } from '../../utils/helpers/notification'
 
 const TestQuestion = () => {
-   const { answers, isLoading } = useSelector((state) => state.answersSlice)
+   const { answer, isLoading } = useSelector((state) => state.answer)
+
+   const [scoreValue, setScoreValue] = useState('')
 
    const { answerId } = useParams()
 
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
-
-   const [scoreValue, setScoreValue] = useState('')
 
    const {
       score,
@@ -31,17 +31,17 @@ const TestQuestion = () => {
       questionType,
       questionTitle,
       questionAttempts,
-   } = answers
+   } = answer
+
+   useEffect(() => {
+      dispatch(ANSWER_THUNKS.getAnswer({ answerId }))
+   }, [dispatch])
 
    const changeScoreValueHandler = (e) => setScoreValue(e.target.value)
 
-   useEffect(() => {
-      dispatch(ANSWERS_THUNKS.getAnswers({ answerId }))
-   }, [dispatch])
-
    const saveHandler = () => {
-      if (answers.status !== 'EVALUATED') {
-         dispatch(ANSWERS_THUNKS.postResult({ answerId, scoreValue, navigate }))
+      if (answer.status !== 'EVALUATED') {
+         dispatch(ANSWER_THUNKS.postResult({ answerId, scoreValue, navigate }))
       } else {
          showNotification({
             type: 'error',
@@ -176,7 +176,7 @@ const TestQuestion = () => {
 
          {QuestionComponent && (
             <QuestionComponent
-               answers={answers[answerId]}
+               answers={answer[answerId]}
                isDisabled={isDisabled}
                answerId={answerId}
                saveHandler={saveHandler}

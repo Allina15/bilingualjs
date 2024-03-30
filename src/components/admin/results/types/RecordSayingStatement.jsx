@@ -7,15 +7,13 @@ import Button from '../../../UI/buttons/Button'
 import { SmallPauseIcon, SmallPlayIcon } from '../../../../assets/icons'
 
 const RecordSayingStatement = ({ isDisabled, saveHandler }) => {
-   const { answers } = useSelector((state) => state.answersSlice)
+   const { answer } = useSelector((state) => state.answer)
 
-   const navigate = useNavigate()
+   const { audioFile, correctAnswer } = answer
 
    const [isPlaying, setIsPlaying] = useState(false)
 
-   const { audioFile, correctAnswer } = answers
-
-   const navigateHandler = () => navigate(-1)
+   const navigate = useNavigate()
 
    const stopSoundHandler = () => {
       Howler.stop()
@@ -34,10 +32,12 @@ const RecordSayingStatement = ({ isDisabled, saveHandler }) => {
          onstop: () => setIsPlaying(false),
          onplay: () => setIsPlaying(true),
       })
-      sound.play()
 
+      sound.play()
       setIsPlaying(true)
    }
+
+   const navigateHandler = () => navigate(-1)
 
    return (
       <StyledContainer>
@@ -57,7 +57,7 @@ const RecordSayingStatement = ({ isDisabled, saveHandler }) => {
             </Button>
 
             <Box className="correct-answer">
-               <Typography>Correct Answer:</Typography>
+               <Typography className="title">Correct Answer:</Typography>
 
                <Typography>{correctAnswer}</Typography>
             </Box>
@@ -146,6 +146,10 @@ const StyledContainer = styled(Box)(() => ({
          display: 'flex',
          gap: '0.4rem',
          marginLeft: '1rem',
+
+         '& > .title': {
+            fontWeight: 600,
+         },
       },
    },
 

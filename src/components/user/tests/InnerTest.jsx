@@ -2,23 +2,22 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Box, ListItem, Typography, styled } from '@mui/material'
-import { TESTS_LIST_THUNKS } from '../../../store/slices/user/tests/testsListThunk'
 import Loading from '../../Loading'
-import TestContainer from '../../UI/TestContainer'
 import Button from '../../UI/buttons/Button'
-import { ROUTES } from '../../../routes/routes'
+import TestContainer from '../../UI/TestContainer'
 import { TestImage } from '../../../assets/images'
+import { ROUTES } from '../../../routes/routes'
 import {
    ClockIcon,
    LaptopIcon,
    ScreenShotIcon,
    UserCardIcon,
 } from '../../../assets/icons'
-import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practiceTestThunk'
+import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practice-test/practiceTestThunk'
+import { TESTS_LIST_THUNKS } from '../../../store/slices/user/tests/testsListThunk'
 
 const InnerTest = () => {
    const { tests, isLoading } = useSelector((state) => state.testsList)
-
    const { isDisabled } = useSelector((state) => state.practiceTest)
 
    const { testId } = useParams()
@@ -32,7 +31,7 @@ const InnerTest = () => {
    }, [dispatch, testId])
 
    useEffect(() => {
-      dispatch(PRACTICE_TEST_THUNKS.getAllQuestions({ testId }))
+      dispatch(PRACTICE_TEST_THUNKS.getQuestions({ testId }))
    }, [dispatch, testId])
 
    const navigateHandler = () =>
@@ -40,7 +39,8 @@ const InnerTest = () => {
 
    const practiceHandler = () =>
       navigate(
-         `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}/${ROUTES.USER.PRACTICE_TEST}`
+         `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}/${ROUTES.USER.PRACTICE_TEST}`,
+         { replace: true }
       )
 
    return (

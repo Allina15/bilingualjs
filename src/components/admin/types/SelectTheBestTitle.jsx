@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Box, TextField, Typography, styled } from '@mui/material'
-import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
-import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
-import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
-import { useToggleModal } from '../../../hooks/useToogleModal'
-import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
-import { PlusIcon } from '../../../assets/icons'
-import { ROUTES } from '../../../routes/routes'
-import DeleteModal from '../../UI/modals/DeleteModal'
-import SaveModal from '../../UI/modals/SaveModal'
 import Loading from '../../Loading'
 import Option from '../../UI/Option'
 import Button from '../../UI/buttons/Button'
+import SaveModal from '../../UI/modals/SaveModal'
+import DeleteModal from '../../UI/modals/DeleteModal'
+import { PlusIcon } from '../../../assets/icons'
+import { ROUTES } from '../../../routes/routes'
+import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
+import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
+import { useToggleModal } from '../../../hooks/useToogleModal'
+import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 
 const SelectTheBestTitle = ({
    title,
@@ -32,19 +31,16 @@ const SelectTheBestTitle = ({
    const [checkedOption, setCheckedOption] = useState(false)
    const [selectedOptionId, setSelectedOptionId] = useState(null)
 
-   const deleteModal = useToggleModal('delete')
-   const saveModal = useToggleModal('save')
-
-   const { questionId } = useParams()
+   const { testId, questionId } = useParams()
 
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
 
-   const { testId } = useParams()
+   const deleteModal = useToggleModal('delete')
+   const saveModal = useToggleModal('save')
 
    const changeTitleHandler = (e) => setOptionTitle(e.target.value)
-
    const changeCheckboxHandler = (e) => setCheckedOption(e.target.checked)
 
    const changeTextAreaHandler = (e) => {
@@ -57,15 +53,6 @@ const SelectTheBestTitle = ({
       const { value } = e.target
 
       setPassage(value || '')
-   }
-
-   const navigateGoBackHandler = () => {
-      navigate(
-         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
-      )
-
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-      dispatch(QUESTION_ACTIONS.clearOptions())
    }
 
    useEffect(() => {
@@ -97,6 +84,48 @@ const SelectTheBestTitle = ({
       }
    }, [options, inOpen])
 
+   const handleOnClose = () => {
+      saveModal.onCloseModal()
+
+      setOptionTitle('')
+      setCheckedOption(false)
+   }
+
+   const addOptionHandler = () => {
+      const option = {
+         optionTitle: optionTitle.trim(),
+         isCorrectOption: checkedOption,
+         optionId: Math.floor(Math.random() * 999) + 200,
+      }
+
+      dispatch(
+         QUESTION_ACTIONS.addOptionRadio({
+            option,
+            optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+         })
+      )
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
+
+      handleOnClose()
+
+      if (options.selectTheBestTitleOptions?.length === 0 || checkedOption) {
+         setSelectedOptionId(option.optionId)
+      }
+   }
+
+   const checkedHandler = (optionId) => {
+      dispatch(
+         QUESTION_ACTIONS.handleIsCorrect({
+            optionId,
+            optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+         })
+      )
+
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
+   }
+
    const deleteHandler = () => {
       if (options.selectTheBestTitleOptions.length > 1) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
@@ -118,10 +147,11 @@ const SelectTheBestTitle = ({
          )
       } else {
          dispatch(
-            OPTIONS_THUNKS.deleteOption({
+            QUESTION_THUNKS.deleteOption({
                optionId,
                id: questionId,
                optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+               addUpdateOption: QUESTION_ACTIONS,
             })
          )
       }
@@ -131,28 +161,6 @@ const SelectTheBestTitle = ({
 
       deleteModal.onCloseModal()
    }
-
-   const checkedHandler = (optionId) => {
-      dispatch(
-         QUESTION_ACTIONS.handleIsCorrect({
-            optionId,
-            optionName: OPTIONS_NAME.selectTheBestTitleOptions,
-         })
-      )
-
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      dispatch(QUESTION_ACTIONS.changeInOpen(false))
-   }
-
-   const isDisabled =
-      !selectType ||
-      !duration ||
-      duration < 1 ||
-      !title ||
-      options.selectTheBestTitleOptions?.length < 2 ||
-      !passage
-
-   const isDisabledModal = !optionTitle.trim()
 
    const onSubmit = () => {
       if (selectType !== '' && +duration !== 0 && title !== '') {
@@ -216,32 +224,24 @@ const SelectTheBestTitle = ({
       }
    }
 
-   const addOptionHandler = () => {
-      const option = {
-         optionTitle: optionTitle.trim(),
-         isCorrectOption: checkedOption,
-         optionId: Math.floor(Math.random() * 999) + 200,
-      }
-
-      dispatch(
-         QUESTION_ACTIONS.addOptionRadio({
-            option,
-            optionName: OPTIONS_NAME.selectTheBestTitleOptions,
-         })
+   const navigateGoBackHandler = () => {
+      navigate(
+         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
       )
 
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      dispatch(QUESTION_ACTIONS.changeInOpen(false))
-
-      saveModal.onCloseModal()
-
-      setOptionTitle('')
-      setCheckedOption(false)
-
-      if (options.selectTheBestTitleOptions?.length === 0 || checkedOption) {
-         setSelectedOptionId(option.optionId)
-      }
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+      dispatch(QUESTION_ACTIONS.clearOptions())
    }
+
+   const isDisabled =
+      !selectType ||
+      !duration ||
+      duration < 1 ||
+      !title ||
+      options.selectTheBestTitleOptions?.length < 2 ||
+      !passage
+
+   const isDisabledModal = !optionTitle.trim()
 
    return (
       <StyledContainer>
@@ -316,7 +316,7 @@ const SelectTheBestTitle = ({
             title={optionTitle}
             checked={checkedOption}
             isVisible={saveModal.isOpen}
-            toggleModal={saveModal.onCloseModal}
+            toggleModal={handleOnClose}
             isDisabledModal={!isDisabledModal}
             addOptionHandler={addOptionHandler}
             changeTitleHandler={changeTitleHandler}

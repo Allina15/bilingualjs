@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
+import Option from '../../UI/Option'
+import Button from '../../UI/buttons/Button'
+import Loading from '../../Loading'
+import SaveModal from '../../UI/modals/SaveModal'
+import DeleteModal from '../../UI/modals/DeleteModal'
+import { ROUTES } from '../../../routes/routes'
+import { PlusIcon } from '../../../assets/icons'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { useToggleModal } from '../../../hooks/useToogleModal'
-import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
-import { PlusIcon } from '../../../assets/icons'
-import { ROUTES } from '../../../routes/routes'
-import DeleteModal from '../../UI/modals/DeleteModal'
-import SaveModal from '../../UI/modals/SaveModal'
-import Loading from '../../Loading'
-import Button from '../../UI/buttons/Button'
-import Option from '../../UI/Option'
+import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 
 const SelectRealEnglish = ({
    title,
@@ -30,9 +29,7 @@ const SelectRealEnglish = ({
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
 
-   const { questionId } = useParams()
-
-   const { testId } = useParams()
+   const { testId, questionId } = useParams()
 
    const dispatch = useDispatch()
 
@@ -40,20 +37,6 @@ const SelectRealEnglish = ({
 
    const deleteModal = useToggleModal('delete')
    const saveModal = useToggleModal('save')
-
-   const changeCheckbox = (e) => setCheckedOption(e.target.checked)
-
-   const changeTitleHandler = (e) => setOptionTitle(e.target.value)
-
-   const navigateGoBackHandler = () => {
-      navigate(
-         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
-      )
-
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-
-      dispatch(QUESTION_ACTIONS.clearOptions())
-   }
 
    useEffect(() => {
       if (questionId) {
@@ -77,6 +60,49 @@ const SelectRealEnglish = ({
       }
    }, [options, inOpen])
 
+   const changeCheckbox = (e) => setCheckedOption(e.target.checked)
+
+   const changeTitleHandler = (e) => setOptionTitle(e.target.value)
+
+   const handleOnClose = () => {
+      saveModal.onCloseModal()
+
+      setOptionTitle('')
+      setCheckedOption(false)
+   }
+
+   const addOptionHandler = () => {
+      const option = {
+         optionTitle: optionTitle.trim(),
+         isCorrectOption: checkedOption,
+         optionId: Math.floor(Math.random() * 999) + 200,
+      }
+
+      dispatch(
+         QUESTION_ACTIONS.addOptionCheck({
+            option,
+            optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+         })
+      )
+
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
+
+      handleOnClose()
+   }
+
+   const checkedHandler = (optionId) => {
+      dispatch(
+         QUESTION_ACTIONS.handleIsChecked({
+            optionId,
+            optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+         })
+      )
+
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
+   }
+
    const deleteHandler = () => {
       if (isCreate) {
          dispatch(
@@ -94,10 +120,11 @@ const SelectRealEnglish = ({
          )
       } else {
          dispatch(
-            OPTIONS_THUNKS.deleteOption({
+            QUESTION_THUNKS.deleteOption({
                optionId,
                id: questionId,
                optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+               addUpdateOption: QUESTION_ACTIONS,
             })
          )
       }
@@ -107,27 +134,6 @@ const SelectRealEnglish = ({
 
       deleteModal.onCloseModal()
    }
-
-   const checkedHandler = (optionId) => {
-      dispatch(
-         QUESTION_ACTIONS.handleIsChecked({
-            optionId,
-            optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
-         })
-      )
-
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      dispatch(QUESTION_ACTIONS.changeInOpen(false))
-   }
-
-   const isDisabled =
-      !selectType ||
-      !duration ||
-      duration < 1 ||
-      !title ||
-      options.selectRealEnglishWordsOptions?.length < 2
-
-   const isDisabledModal = !optionTitle.trim()
 
    const deleteOption = options?.selectRealEnglishWordsOptions?.find(
       (option) => option?.optionId === optionId
@@ -193,28 +199,23 @@ const SelectRealEnglish = ({
       }
    }
 
-   const addOptionHandler = () => {
-      const option = {
-         optionTitle: optionTitle.trim(),
-         isCorrectOption: checkedOption,
-         optionId: Math.floor(Math.random() * 999) + 200,
-      }
-
-      dispatch(
-         QUESTION_ACTIONS.addOptionCheck({
-            option,
-            optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
-         })
+   const navigateGoBackHandler = () => {
+      navigate(
+         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
       )
 
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      dispatch(QUESTION_ACTIONS.changeInOpen(false))
-
-      saveModal.onCloseModal()
-
-      setOptionTitle('')
-      setCheckedOption(false)
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+      dispatch(QUESTION_ACTIONS.clearOptions())
    }
+
+   const isDisabled =
+      !selectType ||
+      !duration ||
+      duration < 1 ||
+      !title ||
+      options.selectRealEnglishWordsOptions?.length < 2
+
+   const isDisabledModal = !optionTitle.trim()
 
    return (
       <>
@@ -280,7 +281,7 @@ const SelectRealEnglish = ({
             title={optionTitle}
             checked={checkedOption}
             isVisible={saveModal.isOpen}
-            toggleModal={saveModal.onCloseModal}
+            toggleModal={handleOnClose}
             isDisabledModal={!isDisabledModal}
             addOptionHandler={addOptionHandler}
             changeTitleHandler={changeTitleHandler}
@@ -323,15 +324,6 @@ const StyledContainer = styled(Box)(() => ({
             textOverflow: 'ellipsis',
             cursor: 'pointer',
             whiteSpace: 'nowrap',
-
-            '&:active': {
-               maxWidth: '261px',
-               maxHeight: 'none',
-               overflow: 'visible',
-               textOverflow: 'unset',
-               whiteSpace: 'normal',
-               wordBreak: 'break-all',
-            },
          },
       },
    },

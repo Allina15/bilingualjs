@@ -1,16 +1,15 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import { PRACTICE_TEST_ACTIONS } from '../store/slices/user/practiceTestSlice'
+import { PRACTICE_TEST_ACTIONS } from '../store/slices/user/practice-test/practiceTestSlice'
 
 const DragAndDrop = ({ options }) => {
    const { correctOptions } = useSelector((state) => state.practiceTest)
 
-   const dispatch = useDispatch()
-
    const [isDropped, setIsDropped] = useState(false)
-
    const [isDragging, setIsDragging] = useState(false)
+
+   const dispatch = useDispatch()
 
    const onDragEndHandler = (e, option) => {
       e.preventDefault()
@@ -23,7 +22,6 @@ const DragAndDrop = ({ options }) => {
          if (correctOption) {
             return correctOptions
          }
-
          return dispatch(PRACTICE_TEST_ACTIONS.addCorrectOption(option))
       }
 
@@ -31,10 +29,6 @@ const DragAndDrop = ({ options }) => {
       setIsDragging(false)
 
       return option
-   }
-
-   const deleteWordHandler = (id) => {
-      dispatch(PRACTICE_TEST_ACTIONS.deleteCorrectOption(id))
    }
 
    const onDropHandler = (e) => {
@@ -51,6 +45,10 @@ const DragAndDrop = ({ options }) => {
 
    const optionDisabledHandler = (id) =>
       correctOptions.find((correctOption) => correctOption.id === id)
+
+   const deleteWordHandler = (id) => {
+      dispatch(PRACTICE_TEST_ACTIONS.deleteCorrectOption(id))
+   }
 
    return (
       <StyledContainer>
@@ -71,9 +69,8 @@ const DragAndDrop = ({ options }) => {
             ))}
          </Box>
 
-         <Box className="main-bord-container">
-            <StyledBox
-               className="board-container"
+         <Box className="bord-container">
+            <StyledBord
                dragging={isDragging.toString()}
                onDrop={onDropHandler}
                onDragOver={onDragOverHandler}
@@ -95,7 +92,7 @@ const DragAndDrop = ({ options }) => {
                      </Box>
                   ))
                )}
-            </StyledBox>
+            </StyledBord>
          </Box>
       </StyledContainer>
    )
@@ -110,12 +107,12 @@ const StyledContainer = styled(Box)(({ theme }) => ({
    gap: '1.5rem',
    width: '100%',
 
-   '& .drag-container': {
+   '& > .drag-container': {
       display: 'flex',
       flexWrap: 'wrap',
    },
 
-   '& .option-container': {
+   '& div > .option-container': {
       border: '2px solid #D4D0D0',
       borderRadius: '0.5rem',
       padding: '0.5rem 2rem',
@@ -136,19 +133,19 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          color: theme.palette.primary.white,
       },
 
-      '& .option': {
+      '& > .option': {
          fontFamily: 'Poppins',
          fontWeight: '500',
       },
    },
 
-   '& .main-bord-container': {
+   '& > .bord-container': {
       display: 'flex',
       justifyContent: 'flex-end',
    },
 }))
 
-const StyledBox = styled(Box)(({ dragging }) => ({
+const StyledBord = styled(Box)(({ dragging }) => ({
    gap: '0.3rem',
    display: 'flex',
    flexWrap: 'wrap',
@@ -160,7 +157,7 @@ const StyledBox = styled(Box)(({ dragging }) => ({
    background: dragging === 'true' ? 'rgba(58, 16, 229, 0.1)' : '',
    padding: '3.5rem',
 
-   '& .board-text': {
+   '& > .board-text': {
       fontFamily: 'Poppins',
    },
 }))

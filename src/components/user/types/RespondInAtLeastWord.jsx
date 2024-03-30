@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
 import Button from '../../UI/buttons/Button'
+import { NoData } from '../../../assets/images'
 import {
    ScrollBottomArrowIcon,
    ScrollTopArrowIcon,
 } from '../../../assets/icons'
-import { NoData } from '../../../assets/images'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const RespondInAtLeastWord = ({ questions, nextHandler }) => {
    const [text, setText] = useState('')
@@ -24,8 +24,6 @@ const RespondInAtLeastWord = ({ questions, nextHandler }) => {
 
    const wordsCount = countWords(text)
 
-   const isDisabled = wordsCount < questions.attempts
-
    const onSubmit = () => {
       const answerDate = {
          attempts: 0,
@@ -41,6 +39,8 @@ const RespondInAtLeastWord = ({ questions, nextHandler }) => {
 
       setText()
    }
+
+   const isDisabled = wordsCount < questions.attempts
 
    return (
       <StyledContainer>
@@ -97,6 +97,7 @@ export default RespondInAtLeastWord
 
 const StyledContainer = styled(Box)(({ theme }) => ({
    color: '#4C4859',
+   userSelect: 'none',
 
    '& > .no-data': {
       width: '25rem',

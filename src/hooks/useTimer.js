@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 
 const useTimer = (durationInMinutes, timeIsUp, count) => {
    const durationInSeconds = durationInMinutes * 60
+
    const [time, setTime] = useState(durationInSeconds)
    const [percent, setPercent] = useState(0)
 
@@ -29,6 +30,7 @@ const useTimer = (durationInMinutes, timeIsUp, count) => {
             if (prevTime <= 0) {
                clearInterval(timer)
                timeIsUp()
+
                return 0
             }
             return prevTime - 1

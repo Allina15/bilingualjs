@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Box, InputLabel, TextField, Typography, styled } from '@mui/material'
+import Input from '../../UI/Input'
+import Button from '../../UI/buttons/Button'
+import Loading from '../../Loading'
+import { ROUTES } from '../../../routes/routes'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { QUESTION_TITLES } from '../../../utils/constants'
-import { ROUTES } from '../../../routes/routes'
-import Loading from '../../Loading'
-import Button from '../../UI/buttons/Button'
-import Input from '../../UI/Input'
 
 const HighlightTheAnswer = ({
    title,
@@ -31,6 +31,20 @@ const HighlightTheAnswer = ({
 
    const { testId } = useParams()
 
+   useEffect(() => {
+      if (state !== null) {
+         dispatch(QUESTION_THUNKS.getQuestion({ id: state?.id }))
+      }
+   }, [dispatch, state])
+
+   useEffect(() => {
+      if (state !== null && question) {
+         setAnswerValue(question?.correctAnswer)
+         setText(question?.passage)
+         setStatement(question?.statement)
+      }
+   }, [state, question])
+
    const mouseUpHandler = () => setAnswerValue(window.getSelection().toString())
 
    const changeTextHandler = (e) => {
@@ -49,39 +63,6 @@ const HighlightTheAnswer = ({
       navigate(
          `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
       )
-
-   useEffect(() => {
-      if (state !== null) {
-         dispatch(QUESTION_THUNKS.getQuestion({ id: state?.id }))
-      }
-   }, [dispatch, state])
-
-   useEffect(() => {
-      if (state !== null && question) {
-         setAnswerValue(question?.correctAnswer)
-         setText(question?.passage)
-         setStatement(question?.statement)
-      }
-   }, [state, question])
-
-   const isDisabled =
-      isLoading ||
-      (!state &&
-         (!selectType ||
-            !duration ||
-            duration < 1 ||
-            !title?.trim() ||
-            !answerValue?.trim() ||
-            !statement?.trim())) ||
-      (title?.trim() === question?.title &&
-         duration === question?.duration &&
-         answerValue === question?.correctAnswer &&
-         statement?.trim() === question?.statement &&
-         text?.trim() === question?.passage) ||
-      !duration ||
-      duration < 1
-
-   const isDisabledUpdate = !statement && !text && !answerValue
 
    const onSubmit = () => {
       if (
@@ -138,6 +119,25 @@ const HighlightTheAnswer = ({
          }
       }
    }
+
+   const isDisabled =
+      isLoading ||
+      (!state &&
+         (!selectType ||
+            !duration ||
+            duration < 1 ||
+            !title?.trim() ||
+            !answerValue?.trim() ||
+            !statement?.trim())) ||
+      (title?.trim() === question?.title &&
+         duration === question?.duration &&
+         answerValue === question?.correctAnswer &&
+         statement?.trim() === question?.statement &&
+         text?.trim() === question?.passage) ||
+      !duration ||
+      duration < 1
+
+   const isDisabledUpdate = !statement && !text && !answerValue
 
    return (
       <StyledContainer>

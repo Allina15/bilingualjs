@@ -4,13 +4,9 @@ import { Box, Typography, styled } from '@mui/material'
 import Button from '../../../UI/buttons/Button'
 
 const RespondInAtLeastWords = ({ isDisabled, saveHandler }) => {
-   const { answers } = useSelector((state) => state.answersSlice)
-
-   const { userAnswer } = answers
+   const { answer } = useSelector((state) => state.answer)
 
    const navigate = useNavigate()
-
-   const navigateHandler = () => navigate(-1)
 
    const countWords = (text) => {
       const wordsArray = text.split(' ').filter((word) => word !== '')
@@ -18,7 +14,9 @@ const RespondInAtLeastWords = ({ isDisabled, saveHandler }) => {
       return wordsArray?.length
    }
 
-   const wordsCount = userAnswer ? countWords(userAnswer) : 0
+   const wordsCount = answer.userAnswer ? countWords(answer.userAnswer) : 0
+
+   const navigateHandler = () => navigate(-1)
 
    return (
       <StyledContainer>
@@ -27,7 +25,7 @@ const RespondInAtLeastWords = ({ isDisabled, saveHandler }) => {
          <Box className="user-options-box">
             <Typography className="respond">Respond:</Typography>
 
-            <Typography className="user-answer">{userAnswer}</Typography>
+            <Typography className="user-answer">{answer.userAnswer}</Typography>
          </Box>
 
          <Typography>Number of words: {wordsCount}</Typography>
@@ -72,7 +70,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       },
 
       '& > .respond': {
-         fontWeight: 500,
+         fontWeight: 600,
       },
    },
 

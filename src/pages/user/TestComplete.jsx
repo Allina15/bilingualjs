@@ -5,10 +5,10 @@ import { Box, Typography, styled } from '@mui/material'
 import ConfettiAnimation from '../../components/ConfettiAnimation'
 import Button from '../../components/UI/buttons/Button'
 import TestContainer from '../../components/UI/TestContainer'
-import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practiceTestThunk'
-import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practiceTestSlice'
 import { ROUTES } from '../../routes/routes'
 import { CompleteIcon, LogoIcon } from '../../assets/icons'
+import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practice-test/practiceTestSlice'
+import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practice-test/practiceTestThunk'
 
 const TestComplete = () => {
    const { correctAnswer } = useSelector((state) => state.practiceTest)
@@ -36,7 +36,9 @@ const TestComplete = () => {
    const navigateHandler = () => {
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
 
-      navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`)
+      navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`, {
+         replace: true,
+      })
    }
 
    const onSubmit = () => {
@@ -48,6 +50,19 @@ const TestComplete = () => {
          })
       )
    }
+
+   useEffect(() => {
+      const handleBeforeUnload = (event) => {
+         event.preventDefault()
+         event.returnValue = ''
+      }
+
+      window.addEventListener('beforeunload', handleBeforeUnload)
+
+      return () => {
+         window.removeEventListener('beforeunload', handleBeforeUnload)
+      }
+   }, [])
 
    return (
       <TestContainer>

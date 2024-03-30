@@ -1,40 +1,33 @@
 import { useEffect, useState } from 'react'
-import { Box, Skeleton, Typography, styled } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Box, Skeleton, Typography, styled } from '@mui/material'
 import Input from '../../../components/UI/Input'
-import TestContainer from '../../../components/UI/TestContainer'
 import Button from '../../../components/UI/buttons/Button'
+import TestContainer from '../../../components/UI/TestContainer'
 import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
 
 const CreateTest = () => {
    const { test, isLoading } = useSelector((state) => state.tests)
-
-   const { id } = useParams()
 
    const [formData, setFormData] = useState({
       title: '',
       shortDescription: '',
    })
 
-   const isNewTest = id === undefined || id === ''
+   const { id } = useParams()
 
    const navigate = useNavigate()
-   const dispatch = useDispatch()
 
-   const handleInputChange = (e) => {
-      const { name, value } = e.target
-      setFormData({
-         ...formData,
-         [name]: value,
-      })
-   }
+   const dispatch = useDispatch()
 
    useEffect(() => {
       if (id) {
          dispatch(TESTS_THUNKS.getTest({ id }))
       }
    }, [dispatch, id])
+
+   const isNewTest = id === undefined || id === ''
 
    useEffect(() => {
       if (!isNewTest && test) {
@@ -44,6 +37,14 @@ const CreateTest = () => {
          })
       }
    }, [isNewTest, test, id])
+
+   const handleInputChange = (e) => {
+      const { name, value } = e.target
+      setFormData({
+         ...formData,
+         [name]: value,
+      })
+   }
 
    const handleSave = () => {
       const testToSave = { ...formData }
@@ -58,6 +59,10 @@ const CreateTest = () => {
    }
 
    const isFormValid = formData.title !== '' && formData.shortDescription !== ''
+
+   const isFormUpdateValid =
+      formData.title === (test?.title || '') &&
+      formData.shortDescription === (test?.shortDescription || '')
 
    useEffect(() => {
       const handleBeforeUnload = (event) => {
@@ -118,7 +123,7 @@ const CreateTest = () => {
                <Button
                   variant="primary"
                   onClick={handleSave}
-                  disabled={!isFormValid}
+                  disabled={!isFormValid || isFormUpdateValid}
                >
                   SAVE
                </Button>

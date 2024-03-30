@@ -35,12 +35,20 @@ export const USER_ROUTES = [
 
    {
       path: `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/:${ROUTES.USER.TEST_ID}/${ROUTES.USER.PRACTICE_TEST}`,
-      element: <PracticeTest />,
+      element: (
+         <Suspense>
+            <PracticeTest />,
+         </Suspense>
+      ),
    },
 
    {
       path: `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/:${ROUTES.USER.TEST_ID}/${ROUTES.USER.PRACTICE_TEST}/${ROUTES.USER.COMPLETE}`,
-      element: <TestComplete />,
+      element: (
+         <Suspense>
+            <TestComplete />,
+         </Suspense>
+      ),
    },
 
    {

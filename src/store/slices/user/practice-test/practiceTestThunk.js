@@ -1,19 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { axiosInstance } from '../../../configs/axiosInstance'
-import { showNotification } from '../../../utils/helpers/notification'
-import { axiosInstanceFile } from '../../../configs/axiosInstanceFile'
-import { ROUTES } from '../../../routes/routes'
+import { axiosInstance } from '../../../../configs/axiosInstance'
+import { showNotification } from '../../../../utils/helpers/notification'
+import { axiosInstanceFile } from '../../../../configs/axiosInstanceFile'
+import { ROUTES } from '../../../../routes/routes'
 
-const getAllQuestions = createAsyncThunk(
-   'practiceTest/getAllQuestions',
+const getQuestions = createAsyncThunk(
+   'practiceTest/getQuestions',
 
    async ({ testId }) => {
       try {
-         const response = await axiosInstance.get(
+         const { data } = await axiosInstance.get(
             `/api/question?testId=${testId}`
          )
 
-         return response.data
+         return data
       } catch (error) {
          if (error.response) {
             showNotification({
@@ -36,15 +36,15 @@ const addAnswer = createAsyncThunk(
       { rejectWithValue, dispatch }
    ) => {
       try {
-         const response = await axiosInstance.post('/api/answer', correctAnswer)
+         const { data } = await axiosInstance.post('/api/answer', correctAnswer)
 
          navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}`)
 
-         showNotification({ message: `${response.data.message}` })
+         showNotification({ message: `${data.message}` })
 
          dispatch(clearAnswer.clearCorrectAnswer())
 
-         return response.data
+         return data
       } catch (error) {
          showNotification({
             title: 'Error',
@@ -65,9 +65,9 @@ const addAnswerFile = createAsyncThunk(
 
          formData.append('multipartFile', recordedAudio, 'recording.mp3')
 
-         const response = await axiosInstanceFile.post('/api/awsFile', formData)
+         const { data } = await axiosInstanceFile.post('/api/awsFile', formData)
 
-         return response.data
+         return data
       } catch (error) {
          showNotification({
             title: 'Error',
@@ -81,7 +81,7 @@ const addAnswerFile = createAsyncThunk(
 )
 
 export const PRACTICE_TEST_THUNKS = {
-   getAllQuestions,
+   getQuestions,
    addAnswer,
    addAnswerFile,
 }

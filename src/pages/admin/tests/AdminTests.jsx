@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { Box, styled } from '@mui/material'
-import TestList from '../../../components/admin/tests/AdminTestList'
+import AdminTestList from '../../../components/admin/tests/AdminTestList'
 import Button from '../../../components/UI/buttons/Button'
 import TestContainer from '../../../components/UI/TestContainer'
 import { PlusIcon } from '../../../assets/icons'
@@ -26,7 +26,7 @@ const AdminTests = () => {
                ADD NEW TEST
             </Button>
 
-            <TestList />
+            <AdminTestList />
          </TestContainer>
       </StyledContainer>
    )

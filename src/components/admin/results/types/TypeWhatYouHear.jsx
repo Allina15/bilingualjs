@@ -7,15 +7,13 @@ import Button from '../../../UI/buttons/Button'
 import { SmallPauseIcon, SmallPlayIcon } from '../../../../assets/icons'
 
 const TypeWhatYouHear = ({ isDisabled, saveHandler }) => {
-   const { answers } = useSelector((state) => state.answersSlice)
+   const { answer } = useSelector((state) => state.answer)
 
-   const navigate = useNavigate()
+   const { fileUrl, correctAnswer, userAnswer, answerAttempts } = answer
 
    const [isPlaying, setIsPlaying] = useState(false)
 
-   const { fileUrl, correctAnswer, userAnswer, answerAttempts } = answers
-
-   const navigateHandler = () => navigate(-1)
+   const navigate = useNavigate()
 
    const stopSoundHandler = () => {
       Howler.stop()
@@ -39,6 +37,8 @@ const TypeWhatYouHear = ({ isDisabled, saveHandler }) => {
       setIsPlaying(true)
    }
 
+   const navigateHandler = () => navigate(-1)
+
    return (
       <StyledContainer>
          <Box className="admin-answers-box">
@@ -57,7 +57,7 @@ const TypeWhatYouHear = ({ isDisabled, saveHandler }) => {
             </Button>
 
             <Box className="correct-answer">
-               <Typography>Correct Answer:</Typography>
+               <Typography className="title">Correct Answer:</Typography>
 
                <Typography>{correctAnswer}</Typography>
             </Box>
@@ -66,7 +66,7 @@ const TypeWhatYouHear = ({ isDisabled, saveHandler }) => {
          <Typography className="user-answer">User`s Answer </Typography>
 
          <Box className="user-answers-box">
-            <Typography>Entered Statement:</Typography>
+            <Typography className="user-title">Entered Statement:</Typography>
 
             <Typography>{userAnswer}</Typography>
          </Box>
@@ -160,6 +160,10 @@ const StyledContainer = styled(Box)(() => ({
          display: 'flex',
          gap: '0.4rem',
          marginLeft: '1rem',
+
+         '& > .title': {
+            fontWeight: 600,
+         },
       },
    },
 
@@ -170,6 +174,10 @@ const StyledContainer = styled(Box)(() => ({
       alignItems: 'center',
       flexWrap: 'wrap',
       margin: '1rem 0 1rem 0',
+
+      '& > .user-title': {
+         fontWeight: 600,
+      },
    },
 
    '& > .buttons-box': {

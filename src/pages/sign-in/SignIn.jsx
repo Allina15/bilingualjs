@@ -1,9 +1,12 @@
 import { useState } from 'react'
-import { useFormik } from 'formik'
-import { signInWithPopup } from 'firebase/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { signInWithPopup } from 'firebase/auth'
 import { Box, InputAdornment, Typography, styled } from '@mui/material'
+import Input from '../../components/UI/Input'
+import Button from '../../components/UI/buttons/Button'
+import Checkbox from '../../components/UI/Checkbox'
 import {
    ExitIcon,
    EyeIcon,
@@ -17,19 +20,16 @@ import { AUTH_THUNKS } from '../../store/slices/auth/authThunk'
 import { auth, provider } from '../../configs/firebase'
 import { showErrorSignIn } from '../../utils/helpers'
 import { VALIDATION_SIGN_IN } from '../../utils/helpers/validation'
-import Input from '../../components/UI/Input'
-import Button from '../../components/UI/buttons/Button'
-import Checkbox from '../../components/UI/Checkbox'
 
 const SignIn = () => {
    const { isLoading } = useSelector((state) => state.auth)
 
+   const [showPassword, setShowPassword] = useState(false)
+   const [isPasswordFieldActive, setIsPasswordFieldActive] = useState(false)
+
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
-
-   const [showPassword, setShowPassword] = useState(false)
-   const [isPasswordFieldActive, setIsPasswordFieldActive] = useState(false)
 
    const handleShowPassword = () => setShowPassword((prev) => !prev)
 
@@ -56,6 +56,7 @@ const SignIn = () => {
          Object.entries(values).map(([key, value]) => {
             const trimmedValue =
                typeof value === 'string' ? value.trim() : value
+
             return [key, trimmedValue]
          })
       )
@@ -242,7 +243,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             },
          },
 
-         '& .check': {
+         '& > div > .check': {
             marginRight: '9px',
          },
 
@@ -282,14 +283,14 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             },
          },
 
-         '& .text-checkbox': {
+         '& > div > .text-checkbox': {
             color: '#757575',
             fontFamily: 'Poppins',
             fontSize: '0.875rem',
             fontWeight: '400',
          },
 
-         '& .google-button': {
+         '& > .google-button': {
             '&.MuiButton-root': {
                backgroundColor: theme.palette.primary.white,
                color: '#757575',
@@ -313,7 +314,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             },
          },
 
-         '& .text-account': {
+         '& > .text-account': {
             display: 'flex',
             justifyContent: 'center',
             gap: '0.5rem',
@@ -337,7 +338,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             },
          },
 
-         '& .forgot-account': {
+         '& > .forgot-account': {
             display: 'flex',
             justifyContent: 'center',
             margin: '-1.5rem 0',

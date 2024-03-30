@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { PRACTICE_TEST_THUNKS } from './practiceTestThunk'
-import { showNotification } from '../../../utils/helpers/notification'
+import { showNotification } from '../../../../utils/helpers/notification'
 
 const initialState = {
    questions: [],
@@ -21,7 +21,7 @@ const practiceTestSlice = createSlice({
       },
 
       deleteCorrectOption: (state, { payload }) => {
-         state.correctOptions = state.correctOptions.filter(
+         state.correctOptions = state.correctOptions?.filter(
             (correctOption) => correctOption.id !== payload
          )
       },
@@ -41,12 +41,12 @@ const practiceTestSlice = createSlice({
 
    extraReducers: (builder) => {
       builder
-         .addCase(PRACTICE_TEST_THUNKS.getAllQuestions.pending, (state) => {
+         .addCase(PRACTICE_TEST_THUNKS.getQuestions.pending, (state) => {
             state.isLoading = true
          })
 
          .addCase(
-            PRACTICE_TEST_THUNKS.getAllQuestions.fulfilled,
+            PRACTICE_TEST_THUNKS.getQuestions.fulfilled,
             (state, { payload }) => {
                if (typeof payload !== 'string') {
                   state.questions = payload
@@ -59,7 +59,7 @@ const practiceTestSlice = createSlice({
             }
          )
 
-         .addCase(PRACTICE_TEST_THUNKS.getAllQuestions.rejected, (state) => {
+         .addCase(PRACTICE_TEST_THUNKS.getQuestions.rejected, (state) => {
             state.isLoading = false
          })
 

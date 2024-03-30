@@ -1,15 +1,15 @@
-import { useDropzone } from 'react-dropzone'
-import { useDispatch, useSelector } from 'react-redux'
 import { useState, useRef, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useDropzone } from 'react-dropzone'
 import { Box, InputLabel, Typography, styled } from '@mui/material'
-import { showNotification } from '../../../utils/helpers/notification'
+import Input from '../../UI/Input'
+import Button from '../../UI/buttons/Button'
+import Loading from '../../Loading'
+import { ROUTES } from '../../../routes/routes'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { QUESTION_TITLES } from '../../../utils/constants'
-import { ROUTES } from '../../../routes/routes'
-import Loading from '../../Loading'
-import Button from '../../UI/buttons/Button'
-import Input from '../../UI/Input'
+import { showNotification } from '../../../utils/helpers/notification'
 
 const DescribeImage = ({
    title,
@@ -23,13 +23,12 @@ const DescribeImage = ({
       (state) => state.question
    )
 
-   const { state } = useLocation()
-
    const [image, setImage] = useState(null)
    const [answer, setAnswer] = useState('')
    const [fileName, setFileName] = useState('')
 
    const { testId } = useParams()
+   const { state } = useLocation()
 
    const dispatch = useDispatch()
 
@@ -37,19 +36,6 @@ const DescribeImage = ({
 
    const inputFileRef = useRef(null)
    const inputRef = useRef(null)
-
-   const clickHandler = () => inputFileRef.current.click()
-
-   const changeAnswerHandler = (e) => {
-      const { value } = e.target
-
-      setAnswer(value || '')
-   }
-
-   const navigateGoBackHandler = () =>
-      navigate(
-         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
-      )
 
    useEffect(() => {
       if (state !== null) {
@@ -64,56 +50,37 @@ const DescribeImage = ({
       }
    }, [state, question])
 
-   const isDisabled =
-      isLoading ||
-      (!state &&
-         (!selectType ||
-            !duration ||
-            duration < 1 ||
-            !title?.trim() ||
-            !image ||
-            !answer?.trim() ||
-            !fileUrl)) ||
-      (title?.trim() === question?.title &&
-         image === question?.fileUrl &&
-         duration === question?.duration &&
-         answer?.trim() === question?.correctAnswer) ||
-      !duration ||
-      duration < 1
-
-   const changeFileHandler = (e) => {
-      const file = e.target.files[0]
-
-      if (file) {
-         const reader = new FileReader()
-
-         reader.onloadend = () => {
-            setImage(reader.result)
-         }
-
-         reader.readAsDataURL(file)
-
-         setFileName(file.name)
-
-         dispatch(QUESTION_THUNKS.addFileFile(file))
-      }
+   const changeAnswerHandler = (e) => {
+      const { value } = e.target
+      setAnswer(value || '')
    }
 
-   const onDrop = (acceptedFiles) => {
-      const file = acceptedFiles[0]
+   const clickHandler = () => inputFileRef.current.click()
 
+   const handleFileUpload = (file) => {
       if (file) {
          const reader = new FileReader()
 
          reader.onloadend = () => {
             setImage(reader.result)
          }
+
          reader.readAsDataURL(file)
 
          setFileName(file.name)
 
          dispatch(QUESTION_THUNKS.addFile(file))
       }
+   }
+
+   const changeFileHandler = (e) => {
+      const file = e.target.files[0]
+      handleFileUpload(file)
+   }
+
+   const onDrop = (acceptedFiles) => {
+      const file = acceptedFiles[0]
+      handleFileUpload(file)
    }
 
    const { getRootProps, getInputProps, fileRejections } = useDropzone({
@@ -189,6 +156,28 @@ const DescribeImage = ({
          }
       }
    }
+
+   const navigateGoBackHandler = () =>
+      navigate(
+         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
+      )
+
+   const isDisabled =
+      isLoading ||
+      (!state &&
+         (!selectType ||
+            !duration ||
+            duration < 1 ||
+            !title?.trim() ||
+            !image ||
+            !answer?.trim() ||
+            !fileUrl)) ||
+      (title?.trim() === question?.title &&
+         image === question?.fileUrl &&
+         duration === question?.duration &&
+         answer?.trim() === question?.correctAnswer) ||
+      !duration ||
+      duration < 1
 
    return (
       <StyledContainer>

@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { AppBar, Box, Typography, styled } from '@mui/material'
-import { AUTH_ACTIONS } from '../store/slices/auth/authSlice'
 import Button from '../components/UI/buttons/Button'
 import Modal from '../components/UI/modals/Modal'
 import { LogoImage } from '../assets/images'
 import { ROUTES } from '../routes/routes'
+import { AUTH_ACTIONS } from '../store/slices/auth/authSlice'
 import { useToggleModal } from '../hooks/useToogleModal'
 
 const Header = () => {
@@ -14,6 +14,7 @@ const Header = () => {
    const { isOpen, onOpenModal, onCloseModal } = useToggleModal('modal')
 
    const dispatch = useDispatch()
+
    const navigate = useNavigate()
 
    const handlelogOut = () => dispatch(AUTH_ACTIONS.logOut({ navigate }))
@@ -99,7 +100,7 @@ const StyledContainer = styled(AppBar)(({ theme }) => ({
    padding: '0 7.5rem',
    color: '#4C4859',
 
-   '&  .logo': {
+   '& a > .logo': {
       width: '10.875rem',
       height: '2.625rem',
       fontFamily: 'Gilroy',
@@ -110,13 +111,7 @@ const StyledContainer = styled(AppBar)(({ theme }) => ({
       alignItems: 'center',
       gap: '3.75rem',
 
-      '& .MuiTypography-root': {
-         fontSize: '0.9375rem',
-         fontWeight: '700',
-         cursor: 'pointer',
-      },
-
-      '& .navigation ': {
+      '& > .navigation ': {
          textDecoration: 'none',
          color: '#4c4859',
          fontFamily: 'Gilroy',

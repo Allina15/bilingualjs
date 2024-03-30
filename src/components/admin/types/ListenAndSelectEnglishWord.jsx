@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { styled, Box, Typography, InputLabel } from '@mui/material'
-import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
+import Option from '../../UI/Option'
+import Button from '../../UI/buttons/Button'
+import SaveModal from '../../UI/modals/SaveModal'
+import DeleteModal from '../../UI/modals/DeleteModal'
+import { ROUTES } from '../../../routes/routes'
+import { PlusIcon } from '../../../assets/icons'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { useToggleModal } from '../../../hooks/useToogleModal'
-import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
-import { PlusIcon } from '../../../assets/icons'
-import { ROUTES } from '../../../routes/routes'
-import DeleteModal from '../../UI/modals/DeleteModal'
-import SaveModal from '../../UI/modals/SaveModal'
-import Button from '../../UI/buttons/Button'
-import Option from '../../UI/Option'
+import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 
 const ListenAndSelectEnglishWord = ({
    title,
@@ -25,16 +24,13 @@ const ListenAndSelectEnglishWord = ({
    const { fileUrl, isLoading, options, inOpen, isUpdateDisabled, isCreate } =
       useSelector((state) => state.question)
 
-   const { questionId } = useParams()
-
    const [files, setFiles] = useState([])
    const [optionId, setOptionId] = useState(null)
    const [isUploaded, setIsUploaded] = useState(false)
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
 
-   const deleteModal = useToggleModal('delete')
-   const saveModal = useToggleModal('save')
+   const { questionId } = useParams()
 
    const { testId } = useParams()
 
@@ -42,17 +38,8 @@ const ListenAndSelectEnglishWord = ({
 
    const dispatch = useDispatch()
 
-   const changeTitleHandler = (e) => setOptionTitle(e.target.value)
-
-   const navigateGoBackHandler = () => {
-      navigate(
-         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
-      )
-
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-
-      dispatch(QUESTION_ACTIONS.clearOptions())
-   }
+   const deleteModal = useToggleModal('delete')
+   const saveModal = useToggleModal('save')
 
    useEffect(() => {
       if (questionId) {
@@ -66,32 +53,7 @@ const ListenAndSelectEnglishWord = ({
       }
    }, [dispatch, questionId])
 
-   useEffect(() => {
-      if (inOpen === false) {
-         if (options.listenAndSelectOptions?.length <= 1) {
-            dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-         } else {
-            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-         }
-      }
-   }, [options, inOpen])
-
-   const deleteOption = options?.listenAndSelectOptions?.find(
-      (option) => option.optionId === optionId
-   )?.optionTitle
-
-   const isDisabled =
-      !selectType ||
-      !duration ||
-      duration < 1 ||
-      !title?.trim() ||
-      options?.listenAndSelectOptions?.length < 2
-
-   const isDisabledModal =
-      optionTitle.trim() !== '' &&
-      isUploaded !== false &&
-      isLoading !== true &&
-      fileUrl !== ''
+   const changeTitleHandler = (e) => setOptionTitle(e.target.value)
 
    const fileChangeHandler = (e) => {
       const file = e.target.files[0]
@@ -106,6 +68,47 @@ const ListenAndSelectEnglishWord = ({
 
          setIsUploaded(true)
       }
+   }
+
+   const handleOnClose = () => {
+      saveModal.onCloseModal()
+
+      setOptionTitle('')
+      setCheckedOption(false)
+      setIsUploaded(false)
+   }
+
+   const addOptionHandler = () => {
+      const option = {
+         optionTitle: optionTitle.trim(),
+         isCorrectOption: checkedOption,
+         optionId: Math.floor(Math.random() * 999) + 200,
+         fileUrl,
+      }
+
+      dispatch(
+         QUESTION_ACTIONS.addOptionCheck({
+            option,
+            optionName: OPTIONS_NAME?.listenAndSelectOptions,
+         })
+      )
+
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
+
+      handleOnClose()
+   }
+
+   const checkedHandler = (optionId) => {
+      dispatch(
+         QUESTION_ACTIONS.handleIsChecked({
+            optionId,
+            optionName: OPTIONS_NAME?.listenAndSelectOptions,
+         })
+      )
+
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
 
    const deleteHandler = () => {
@@ -125,10 +128,11 @@ const ListenAndSelectEnglishWord = ({
          )
       } else {
          dispatch(
-            OPTIONS_THUNKS.deleteOption({
+            QUESTION_THUNKS.deleteOption({
                optionId,
                id: questionId,
                optionName: OPTIONS_NAME.listenAndSelectOptions,
+               addUpdateOption: QUESTION_ACTIONS,
             })
          )
       }
@@ -139,17 +143,9 @@ const ListenAndSelectEnglishWord = ({
       deleteModal.onCloseModal()
    }
 
-   const checkedHandler = (optionId) => {
-      dispatch(
-         QUESTION_ACTIONS.handleIsChecked({
-            optionId,
-            optionName: OPTIONS_NAME?.listenAndSelectOptions,
-         })
-      )
-
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      dispatch(QUESTION_ACTIONS.changeInOpen(false))
-   }
+   const deleteOption = options?.listenAndSelectOptions?.find(
+      (option) => option.optionId === optionId
+   )?.optionTitle
 
    const onSubmit = () => {
       if (selectType !== '' && +duration !== 0 && title !== '') {
@@ -209,30 +205,37 @@ const ListenAndSelectEnglishWord = ({
       }
    }
 
-   const addOptionHandler = () => {
-      const option = {
-         optionTitle: optionTitle.trim(),
-         isCorrectOption: checkedOption,
-         optionId: Math.floor(Math.random() * 999) + 200,
-         fileUrl,
-      }
-
-      dispatch(
-         QUESTION_ACTIONS.addOptionCheck({
-            option,
-            optionName: OPTIONS_NAME?.listenAndSelectOptions,
-         })
+   const navigateGoBackHandler = () => {
+      navigate(
+         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
       )
 
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      dispatch(QUESTION_ACTIONS.changeInOpen(false))
-
-      saveModal.onCloseModal()
-
-      setOptionTitle('')
-      setCheckedOption(false)
-      setIsUploaded(false)
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+      dispatch(QUESTION_ACTIONS.clearOptions())
    }
+
+   const isDisabled =
+      !selectType ||
+      !duration ||
+      duration < 1 ||
+      !title?.trim() ||
+      options?.listenAndSelectOptions?.length < 2
+
+   const isDisabledModal =
+      optionTitle.trim() !== '' &&
+      isUploaded !== false &&
+      isLoading !== true &&
+      fileUrl !== ''
+
+   useEffect(() => {
+      if (inOpen === false) {
+         if (options.listenAndSelectOptions?.length <= 1) {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+         } else {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+         }
+      }
+   }, [options, inOpen])
 
    return (
       <StyledContainer>
@@ -278,7 +281,7 @@ const ListenAndSelectEnglishWord = ({
             isCloseIcon
             title={optionTitle}
             isVisible={saveModal.isOpen}
-            toggleModal={saveModal.onCloseModal}
+            toggleModal={handleOnClose}
             isLoading={isLoading}
             isDisabledModal={isDisabledModal}
             addOptionHandler={addOptionHandler}
@@ -369,15 +372,6 @@ const StyledContainer = styled(Box)(() => ({
             textOverflow: 'ellipsis',
             cursor: 'pointer',
             whiteSpace: 'nowrap',
-
-            '&:active': {
-               maxWidth: '261px',
-               maxHeight: 'none',
-               overflow: 'visible',
-               textOverflow: 'unset',
-               whiteSpace: 'normal',
-               wordBreak: 'break-all',
-            },
          },
       },
    },

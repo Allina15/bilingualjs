@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Box, Typography, styled } from '@mui/material'
 import { Howl, Howler } from 'howler'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
+import { Box, Typography, styled } from '@mui/material'
 import Button from '../../UI/buttons/Button'
 import { NoData } from '../../../assets/images'
 import { AnimationSoundIcon, CheckIcon, SoundIcon } from '../../../assets/icons'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const ListenAndSelectWord = ({ questions, nextHandler }) => {
    const options = questions?.optionResponses
@@ -74,10 +74,6 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
       })
    }
 
-   const isDisabled = !Object.values(optionState).find(
-      (option) => option.isChecked
-   )
-
    const onSubmit = () => {
       const selectedOptions = Object.values(optionState).filter(
          (option) => option.isChecked
@@ -96,6 +92,11 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
 
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
    }
+
+   const isDisabled = !Object.values(optionState).find(
+      (option) => option.isChecked
+   )
+
    return (
       <StyledContainer>
          {options?.length > 0 ? (
@@ -156,6 +157,8 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
 export default ListenAndSelectWord
 
 const StyledContainer = styled(Box)(({ theme }) => ({
+   userSelect: 'none',
+
    '& > .no-data': {
       width: '25rem',
       margin: '0 0 0 15rem',

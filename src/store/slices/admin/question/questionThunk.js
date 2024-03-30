@@ -163,6 +163,33 @@ const deleteQuestion = createAsyncThunk(
    }
 )
 
+const deleteOption = createAsyncThunk(
+   'question/deleteOption',
+
+   async (
+      { optionId, id, optionName, addUpdateOption },
+      { rejectWithValue, dispatch }
+   ) => {
+      try {
+         const response = await axiosInstance.delete(
+            `/api/option?optionId=${optionId}`
+         )
+
+         dispatch(
+            getQuestion({
+               id,
+               addUpdateOption,
+               optionName,
+            })
+         )
+
+         return response.data
+      } catch (error) {
+         return rejectWithValue.message
+      }
+   }
+)
+
 const updateQuestion = createAsyncThunk(
    'question/updateQuestion',
 
@@ -229,6 +256,7 @@ export const QUESTION_THUNKS = {
    getQuestion,
    addQuestion,
    deleteQuestion,
+   deleteOption,
    updateQuestion,
    updateQuestionByEnable,
 }

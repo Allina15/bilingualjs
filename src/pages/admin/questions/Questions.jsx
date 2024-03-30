@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Box, Skeleton, Typography, styled } from '@mui/material'
+import Switcher from '../../../components/UI/Switcher'
+import Button from '../../../components/UI/buttons/Button'
+import TestContainer from '../../../components/UI/TestContainer'
+import DeleteModal from '../../../components/UI/modals/DeleteModal'
+import { NoDataImage } from '../../../assets/images'
 import { EditIcon, PlusIcon, TrashIcon } from '../../../assets/icons'
-import { questionTypeHandler } from '../../../utils/helpers'
+import { ROUTES } from '../../../routes/routes'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
-import { NoDataImage } from '../../../assets/images'
-import { ROUTES } from '../../../routes/routes'
-import TestContainer from '../../../components/UI/TestContainer'
-import DeleteModal from '../../../components/UI/modals/DeleteModal'
-import Switcher from '../../../components/UI/Switcher'
-import Button from '../../../components/UI/buttons/Button'
+import { questionTypeHandler } from '../../../utils/helpers'
 
 const Questions = () => {
    const { test, isLoading } = useSelector((state) => state.tests)
@@ -32,17 +32,6 @@ const Questions = () => {
       if (testId) dispatch(TESTS_THUNKS.getTest({ id: testId }))
    }, [testId])
 
-   const deleteQuestionHandler = () => {
-      dispatch(
-         QUESTION_THUNKS.deleteQuestion({
-            questionId: selectedQuestionId,
-            testId,
-         })
-      )
-
-      setIsVisible(false)
-   }
-
    const toggleModal = (questionId) => {
       setSelectedQuestionId(questionId)
       setIsVisible((prev) => !prev)
@@ -57,6 +46,21 @@ const Questions = () => {
          })
       )
    }
+
+   const deleteQuestionHandler = () => {
+      dispatch(
+         QUESTION_THUNKS.deleteQuestion({
+            questionId: selectedQuestionId,
+            testId,
+         })
+      )
+
+      setIsVisible(false)
+   }
+
+   const deleteQuestion = test?.question?.find(
+      (test) => test.id === selectedQuestionId
+   )?.title
 
    const navigateHandler = () => {
       navigate(
@@ -74,10 +78,6 @@ const Questions = () => {
 
       dispatch(QUESTION_ACTIONS.changeInOpen(true))
    }
-
-   const deleteQuestion = test?.question?.find(
-      (test) => test.id === selectedQuestionId
-   )?.title
 
    return (
       <StyledContainer>

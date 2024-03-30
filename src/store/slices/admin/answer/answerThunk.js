@@ -2,16 +2,16 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
 
-const getAnswers = createAsyncThunk(
-   'answersSlice/getAnswers',
+const getAnswer = createAsyncThunk(
+   'answer/getAnswer',
 
    async ({ answerId }, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get(
+         const { data } = await axiosInstance.get(
             `api/answer?answerId=${answerId}`
          )
 
-         return response.data
+         return data
       } catch (error) {
          return rejectWithValue.message
       }
@@ -19,29 +19,29 @@ const getAnswers = createAsyncThunk(
 )
 
 const postResult = createAsyncThunk(
-   'answersSlice/postResult',
+   'answer/postResult',
 
    async (
       { answerId, scoreValue, navigate },
       { rejectWithValue, dispatch }
    ) => {
       try {
-         const response = await axiosInstance.post(
+         const { data } = await axiosInstance.post(
             `api/result?answerId=${answerId}`,
             scoreValue
          )
 
          navigate(-1)
 
-         showNotification({ message: response.data.message })
+         showNotification({ message: data.message })
 
-         return response.data
+         return data
       } catch (error) {
-         dispatch(getAnswers({ answerId }))
+         dispatch(getAnswer({ answerId }))
 
          return rejectWithValue.message
       }
    }
 )
 
-export const ANSWERS_THUNKS = { getAnswers, postResult }
+export const ANSWER_THUNKS = { getAnswer, postResult }

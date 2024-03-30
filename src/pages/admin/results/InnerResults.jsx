@@ -3,21 +3,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { format } from 'date-fns'
 import { Box, Skeleton, Typography, styled } from '@mui/material'
+import Button from '../../../components/UI/buttons/Button'
+import TestContainer from '../../../components/UI/TestContainer'
+import IconButton from '../../../components/UI/buttons/IconButton'
+import { NoDataImage } from '../../../assets/images'
 import { CheckedIcon, EyeIcon } from '../../../assets/icons'
+import { ROUTES } from '../../../routes/routes'
 import { SUBMITTED_RESULTS_THUNKS } from '../../../store/slices/admin/results/submitedResultsThunk'
 import {
    questionTypeHandler,
    resultsStatusHandler,
 } from '../../../utils/helpers'
-import { NoDataImage } from '../../../assets/images'
-import TestContainer from '../../../components/UI/TestContainer'
-import IconButton from '../../../components/UI/buttons/IconButton'
-import Button from '../../../components/UI/buttons/Button'
-import { ROUTES } from '../../../routes/routes'
 
 const InnerResults = () => {
    const { evaluations, isLoading, isSendLoading } = useSelector(
-      (state) => state.submitedResultsSlice
+      (state) => state.submitedResults
    )
    const { resultId } = useParams()
 
@@ -26,7 +26,7 @@ const InnerResults = () => {
    const dispatch = useDispatch()
 
    useEffect(() => {
-      dispatch(SUBMITTED_RESULTS_THUNKS.getResults({ resultId }))
+      dispatch(SUBMITTED_RESULTS_THUNKS.getResult({ resultId }))
    }, [dispatch])
 
    const formatDate = (dateString) => {
@@ -40,7 +40,7 @@ const InnerResults = () => {
    const stopPropagationHandler = (e) => e.stopPropagation()
 
    const sendResultsHandler = () => {
-      dispatch(SUBMITTED_RESULTS_THUNKS.postResults({ resultId, navigate }))
+      dispatch(SUBMITTED_RESULTS_THUNKS.postResult({ resultId, navigate }))
    }
 
    const navigateHandler = (answerId) => {
@@ -345,11 +345,11 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       },
    },
 
-   '& .evaluated': {
+   '& > .evaluated': {
       color: '#2AB930',
    },
 
-   '& .skeleton-box': {
+   '& > .skeleton-box': {
       backgroundColor: '#e5e5e567',
       marginBottom: '8px',
    },
@@ -403,7 +403,7 @@ const StyledBox = styled(Box)(() => ({
       cursor: 'pointer',
    },
 
-   '& .evaluated': {
+   '& > .evaluated': {
       color: '#2AB930',
    },
 }))

@@ -83,15 +83,15 @@ const authSlice = createSlice({
             state.isLoading = true
          })
 
-         .addCase(AUTH_THUNKS.forgotPasswordEmail.fulfilled, (state) => {
+         .addCase(AUTH_THUNKS.forgotPassword.fulfilled, (state) => {
             state.isLoading = false
          })
 
-         .addCase(AUTH_THUNKS.forgotPasswordEmail.rejected, (state) => {
+         .addCase(AUTH_THUNKS.forgotPassword.rejected, (state) => {
             state.isLoading = false
          })
 
-         .addCase(AUTH_THUNKS.forgotPasswordEmail.pending, (state) => {
+         .addCase(AUTH_THUNKS.forgotPassword.pending, (state) => {
             state.isLoading = true
          })
 
@@ -111,15 +111,15 @@ const authSlice = createSlice({
             state.isLoading = true
          })
 
-         .addCase(AUTH_THUNKS.passwordChange.fulfilled, (state) => {
+         .addCase(AUTH_THUNKS.changePassword.fulfilled, (state) => {
             state.isLoading = false
          })
 
-         .addCase(AUTH_THUNKS.passwordChange.rejected, (state) => {
+         .addCase(AUTH_THUNKS.changePassword.rejected, (state) => {
             state.isLoading = false
          })
 
-         .addCase(AUTH_THUNKS.passwordChange.pending, (state) => {
+         .addCase(AUTH_THUNKS.changePassword.pending, (state) => {
             state.isLoading = true
          })
    },

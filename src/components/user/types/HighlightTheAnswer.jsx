@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
 import Input from '../../UI/Input'
 import Button from '../../UI/buttons/Button'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
 import { NoData } from '../../../assets/images'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const HighlightTheAnswer = ({ questions, nextHandler }) => {
    const [highlightAnswer, setHighlightAnswer] = useState('')

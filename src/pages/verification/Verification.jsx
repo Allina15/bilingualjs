@@ -1,6 +1,6 @@
-import { useFormik } from 'formik'
-import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
 import { Box, Typography, styled } from '@mui/material'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/buttons/Button'
@@ -45,6 +45,7 @@ const Verification = () => {
          validationSchema: VALIDATION_VERIFICATION,
          onSubmit,
       })
+
    return (
       <StyledContainer>
          <form className="form" autoComplete="off" onSubmit={handleSubmit}>

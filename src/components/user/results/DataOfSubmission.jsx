@@ -2,7 +2,6 @@ import { Typography, styled } from '@mui/material'
 
 const DataOfSubmission = ({ row }) => {
    const dataTime = row.original.submissionTime.slice(0, 5)
-
    const dataDate = row.original.submissionDate.split('-').reverse().join('.')
 
    return (

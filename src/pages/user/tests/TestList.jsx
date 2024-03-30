@@ -17,7 +17,7 @@ const TestList = () => {
    const dispatch = useDispatch()
 
    useEffect(() => {
-      dispatch(TESTS_LIST_THUNKS.getAllTests())
+      dispatch(TESTS_LIST_THUNKS.getTests())
    }, [dispatch])
 
    const navigateHandler = (id) =>

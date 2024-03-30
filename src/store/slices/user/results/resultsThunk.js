@@ -2,14 +2,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
 
-const getResults = createAsyncThunk(
-   'resultsSlice/getResult',
+const getResult = createAsyncThunk(
+   'results/getResult',
 
    async (_, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get('/api/result/getResult')
+         const { data } = await axiosInstance.get('/api/result/getResult')
 
-         return response.data
+         return data
       } catch (error) {
          return rejectWithValue.message
       }
@@ -17,21 +17,21 @@ const getResults = createAsyncThunk(
 )
 
 const deleteResult = createAsyncThunk(
-   'resultsSlice/deleteResults',
+   'results/deleteResults',
 
    async ({ resultId }, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axiosInstance.delete(
+         const { data } = await axiosInstance.delete(
             `/api/result?resultId=${resultId}`
          )
 
          showNotification({
-            message: `${response.data.message}`,
+            message: `${data.message}`,
          })
 
-         dispatch(getResults())
+         dispatch(getResult())
 
-         return response.data
+         return data
       } catch (error) {
          showNotification({
             title: 'Error',
@@ -44,4 +44,4 @@ const deleteResult = createAsyncThunk(
    }
 )
 
-export const MY_RESULTS_THUNKS = { getResults, deleteResult }
+export const MY_RESULTS_THUNKS = { getResult, deleteResult }

@@ -4,9 +4,9 @@ import { Box, Typography, styled } from '@mui/material'
 import Button from '../../../UI/buttons/Button'
 
 const HighlightTheAnswer = ({ isDisabled, saveHandler }) => {
-   const { answers } = useSelector((state) => state.answersSlice)
+   const { answer } = useSelector((state) => state.answer)
 
-   const { passage, correctAnswer, userAnswer, statement } = answers
+   const { passage, correctAnswer, userAnswer, statement } = answer
 
    const navigate = useNavigate()
 
@@ -15,7 +15,7 @@ const HighlightTheAnswer = ({ isDisabled, saveHandler }) => {
    return (
       <StyledContainer>
          <Box className="admin-answers-box">
-            <Typography>Passage:</Typography>
+            <Typography className="passage-title">Passage:</Typography>
 
             <Typography className="passage">{passage}</Typography>
          </Box>
@@ -37,7 +37,7 @@ const HighlightTheAnswer = ({ isDisabled, saveHandler }) => {
          <Typography className="user-answer">User`s Answer </Typography>
 
          <Box className="user-answers-box">
-            <Typography>Respond:</Typography>
+            <Typography className="user-title">Respond:</Typography>
 
             <Typography>{userAnswer}</Typography>
          </Box>
@@ -76,6 +76,10 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       display: 'flex',
       margin: '0.8rem 0 0.7rem 0',
 
+      '& > .passage-title': {
+         fontWeight: 600,
+      },
+
       '& > .passage': {
          marginBottom: '1rem',
       },
@@ -89,10 +93,12 @@ const StyledContainer = styled(Box)(({ theme }) => ({
 
       '& > .answer': {
          width: '10rem',
+         fontWeight: 600,
       },
 
       '& > .question-statement': {
          margin: '0.6rem 0 1rem 0',
+         fontWeight: 600,
       },
 
       '& > .statement': {
@@ -105,6 +111,10 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       gap: '0.5rem',
       display: 'flex',
       margin: '0.8rem 0 0.7rem 0',
+
+      '& > .user-title': {
+         fontWeight: 600,
+      },
    },
 
    '& > .buttons-box': {

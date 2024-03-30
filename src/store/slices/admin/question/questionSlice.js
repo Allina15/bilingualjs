@@ -35,7 +35,7 @@ const questionSlice = createSlice({
       addUpdateOption: (state, { payload }) => {
          if (state.options[payload?.optionName]) {
             state.options[payload?.optionName] =
-               payload.optionResponses.questionOptionResponses
+               payload?.optionResponses?.questionOptionResponses
          }
       },
 
@@ -52,28 +52,28 @@ const questionSlice = createSlice({
       },
 
       addOptionRadio: (state, { payload }) => {
-         if (payload && payload.option) {
+         if (payload && payload?.option) {
             const isFirstOption =
-               state.options[payload.optionName]?.length === 0
+               state.options[payload?.optionName]?.length === 0
 
             const newOption = {
-               ...payload.option,
+               ...payload?.option,
                isCorrectOption: isFirstOption,
             }
 
-            state.options[payload.optionName] = [
-               ...state.options[payload.optionName],
+            state.options[payload?.optionName] = [
+               ...state.options[payload?.optionName],
                newOption,
             ]
 
-            state.options[payload.optionName] = state.options[
+            state.options[payload?.optionName] = state.options[
                payload.optionName
             ].map((option) => {
-               if (payload.option.isCorrectOption) {
-                  if (payload.option.optionId === option.optionId) {
+               if (payload?.option?.isCorrectOption) {
+                  if (payload?.option?.optionId === option?.optionId) {
                      return {
                         ...option,
-                        isCorrectOption: payload.option.isCorrectOption,
+                        isCorrectOption: payload?.option?.isCorrectOption,
                      }
                   }
 
@@ -93,11 +93,11 @@ const questionSlice = createSlice({
             payload?.optionName
          ].map((option) => {
             if (option?.optionId === payload?.optionId) {
-               return { ...option, isCorrectOption: !option.isCorrectOption }
+               return { ...option, isCorrectOption: !option?.isCorrectOption }
             }
             return {
                ...option,
-               isCorrectOption: option.isCorrectOption,
+               isCorrectOption: option?.isCorrectOption,
             }
          })
       },
@@ -109,7 +109,7 @@ const questionSlice = createSlice({
             if (option?.optionId === payload?.optionId) {
                return {
                   ...option,
-                  isCorrectOption: !option.isCorrectOption,
+                  isCorrectOption: !option?.isCorrectOption,
                }
             }
             return {
@@ -143,7 +143,7 @@ const questionSlice = createSlice({
       updateOptions: (state, { payload }) => {
          state.options = {
             ...state.options,
-            [payload?.optionName]: payload.options,
+            [payload?.optionName]: payload?.options,
          }
       },
    },
@@ -193,9 +193,9 @@ const questionSlice = createSlice({
             state.error = null
          })
 
-         .addCase(QUESTION_THUNKS.addFile.fulfilled, (state, action) => {
+         .addCase(QUESTION_THUNKS.addFile.fulfilled, (state, { payload }) => {
             state.isLoading = false
-            state.fileUrl = action.payload.link
+            state.fileUrl = payload.link
          })
 
          .addCase(QUESTION_THUNKS.addFile.rejected, (state, { payload }) => {
@@ -236,6 +236,18 @@ const questionSlice = createSlice({
          })
 
          .addCase(QUESTION_THUNKS.updateQuestion.rejected, (state) => {
+            state.isLoading = false
+         })
+
+         .addCase(QUESTION_THUNKS.deleteOption.pending, (state) => {
+            state.isLoading = true
+         })
+
+         .addCase(QUESTION_THUNKS.deleteOption.fulfilled, (state) => {
+            state.isLoading = false
+         })
+
+         .addCase(QUESTION_THUNKS.deleteOption.rejected, (state) => {
             state.isLoading = false
          })
    },

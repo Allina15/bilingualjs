@@ -1,15 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router'
 import { Box, InputLabel, Typography, styled } from '@mui/material'
+import Input from '../../UI/Input'
+import Button from '../../UI/buttons/Button'
+import Loading from '../../Loading'
 import { PauseIcon, PlayIcon } from '../../../assets/icons'
+import { ROUTES } from '../../../routes/routes'
+import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { QUESTION_TITLES } from '../../../utils/constants'
-import { ROUTES } from '../../../routes/routes'
-import Loading from '../../Loading'
-import Button from '../../UI/buttons/Button'
-import Input from '../../UI/Input'
-import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 
 const TypeWhatYouHear = ({
    title,
@@ -23,8 +23,6 @@ const TypeWhatYouHear = ({
       (state) => state.question
    )
 
-   const { state } = useLocation()
-
    const [file, setFile] = useState('')
    const [fileName, setFileName] = useState('')
    const [attempts, setAttempts] = useState(1)
@@ -32,45 +30,13 @@ const TypeWhatYouHear = ({
    const [correctAnswer, setCorrectAnswer] = useState('')
 
    const { testId } = useParams()
+   const { state } = useLocation()
 
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
 
    const audioRef = useRef(null)
-
-   const navigateGoBackHandler = () =>
-      navigate(
-         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
-      )
-
-   const attemptsChangeHandler = (e) => {
-      let newValue = e.target.value.replace(/\D/g, '')
-      newValue = newValue.slice(0, 2)
-
-      const value = parseInt(newValue, 10)
-      if (value > 15) {
-         newValue = '15'
-      }
-
-      setDuration(newValue)
-
-      if (
-         value === 0 ||
-         newValue === '' ||
-         state?.duration === value.toString()
-      ) {
-         dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-      } else {
-         dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      }
-   }
-
-   const correctAnswerChangeHandler = (e) => {
-      const { value } = e.target
-
-      setCorrectAnswer(value || '')
-   }
 
    useEffect(() => {
       if (state !== null) {
@@ -89,6 +55,34 @@ const TypeWhatYouHear = ({
          audioRef.current.src = question?.fileUrl
       }
    }, [state, question])
+
+   const attemptsChangeHandler = (e) => {
+      let newValue = e.target.value.replace(/\D/g, '')
+      newValue = newValue.slice(0, 2)
+
+      const value = parseInt(newValue, 10)
+      if (value > 15) {
+         newValue = '15'
+      }
+
+      setAttempts(newValue)
+
+      if (
+         value === 0 ||
+         newValue === '' ||
+         state?.duration === value.toString()
+      ) {
+         dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+      } else {
+         dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      }
+   }
+
+   const correctAnswerChangeHandler = (e) => {
+      const { value } = e.target
+
+      setCorrectAnswer(value || '')
+   }
 
    const toggleHandler = () => {
       if (isPlaying) {
@@ -118,25 +112,6 @@ const TypeWhatYouHear = ({
          dispatch(QUESTION_THUNKS.addFile(file))
       }
    }
-
-   const isDisabled =
-      isLoading ||
-      (!state &&
-         (!selectType ||
-            !duration ||
-            duration < 1 ||
-            !title?.trim() ||
-            !file ||
-            !attempts ||
-            !correctAnswer?.trim())) ||
-      (title?.trim() === question?.title &&
-         duration === question?.duration &&
-         file === question?.fileUrl &&
-         attempts === question?.attempts &&
-         correctAnswer?.trim() === question?.correctAnswer) ||
-      !duration ||
-      duration < 1 ||
-      !attempts
 
    const endedHandler = () => setIsPlaying(false)
 
@@ -197,6 +172,29 @@ const TypeWhatYouHear = ({
       }
    }
 
+   const navigateGoBackHandler = () =>
+      navigate(
+         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
+      )
+
+   const isDisabled =
+      isLoading ||
+      (!state &&
+         (!selectType ||
+            !duration ||
+            duration < 1 ||
+            !title?.trim() ||
+            !file ||
+            !attempts ||
+            !correctAnswer?.trim())) ||
+      (title?.trim() === question?.title &&
+         duration === question?.duration &&
+         file === question?.fileUrl &&
+         attempts === question?.attempts &&
+         correctAnswer?.trim() === question?.correctAnswer) ||
+      !duration ||
+      duration < 1 ||
+      !attempts
    return (
       <StyledContainer>
          {state !== null ? isLoading && <Loading /> : null}
@@ -369,7 +367,7 @@ const StyledContainer = styled(Box)(() => ({
       },
    },
 
-   '& .MuiInputLabel-root': {
+   '& div > .MuiInputLabel-root': {
       fontFamily: 'Poppins',
       fontStyle: 'normal',
       fontWeight: 500,

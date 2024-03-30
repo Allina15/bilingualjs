@@ -24,12 +24,12 @@ import { VALIDATION_SIGN_UP } from '../../utils/helpers/validation'
 const SignUp = () => {
    const { isLoading } = useSelector((state) => state.auth)
 
+   const [showPassword, setShowPassword] = useState(false)
+   const [focusedInput, setFocusedInput] = useState(null)
+
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
-
-   const [showPassword, setShowPassword] = useState(false)
-   const [focusedInput, setFocusedInput] = useState(null)
 
    const handlePasswordShow = () => setShowPassword((prev) => !prev)
 
@@ -56,6 +56,7 @@ const SignUp = () => {
          Object.entries(values).map(([key, value]) => {
             const trimmedValue =
                typeof value === 'string' ? value.trim() : value
+
             return [key, trimmedValue]
          })
       )
@@ -257,7 +258,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             },
          },
 
-         '& .google-button': {
+         '& > .google-button': {
             '&.MuiButton-root': {
                backgroundColor: theme.palette.primary.white,
                color: '#757575',
@@ -282,7 +283,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             },
          },
 
-         '& .text-account': {
+         '& > .text-account': {
             display: 'flex',
             justifyContent: 'center',
             gap: '0.5rem',
@@ -300,7 +301,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
                },
             },
 
-            '& .log-in': {
+            '& > .log-in': {
                cursor: 'pointer',
                color: theme.palette.primary.main,
             },

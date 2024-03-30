@@ -8,29 +8,13 @@ const initialState = {
    isSendLoading: false,
 }
 
-export const submitedResultsSlice = createSlice({
-   name: 'submitedResultsSlice',
+const submitedResultsSlice = createSlice({
+   name: 'submitedResults',
    initialState,
    reducers: {},
 
    extraReducers: (builder) => {
       builder
-         .addCase(SUBMITTED_RESULTS_THUNKS.getAllResults.pending, (state) => {
-            state.isLoading = true
-         })
-
-         .addCase(
-            SUBMITTED_RESULTS_THUNKS.getAllResults.fulfilled,
-            (state, { payload }) => {
-               state.results = payload
-               state.isLoading = false
-            }
-         )
-
-         .addCase(SUBMITTED_RESULTS_THUNKS.getAllResults.rejected, (state) => {
-            state.isLoading = false
-         })
-
          .addCase(SUBMITTED_RESULTS_THUNKS.getResults.pending, (state) => {
             state.isLoading = true
          })
@@ -38,7 +22,7 @@ export const submitedResultsSlice = createSlice({
          .addCase(
             SUBMITTED_RESULTS_THUNKS.getResults.fulfilled,
             (state, { payload }) => {
-               state.evaluations = payload
+               state.results = payload
                state.isLoading = false
             }
          )
@@ -47,37 +31,55 @@ export const submitedResultsSlice = createSlice({
             state.isLoading = false
          })
 
-         .addCase(SUBMITTED_RESULTS_THUNKS.deleteResults.pending, (state) => {
+         .addCase(SUBMITTED_RESULTS_THUNKS.getResult.pending, (state) => {
             state.isLoading = true
          })
 
          .addCase(
-            SUBMITTED_RESULTS_THUNKS.deleteResults.fulfilled,
+            SUBMITTED_RESULTS_THUNKS.getResult.fulfilled,
+            (state, { payload }) => {
+               state.evaluations = payload
+               state.isLoading = false
+            }
+         )
+
+         .addCase(SUBMITTED_RESULTS_THUNKS.getResult.rejected, (state) => {
+            state.isLoading = false
+         })
+
+         .addCase(SUBMITTED_RESULTS_THUNKS.deleteResult.pending, (state) => {
+            state.isLoading = true
+         })
+
+         .addCase(
+            SUBMITTED_RESULTS_THUNKS.deleteResult.fulfilled,
             (state, action) => {
                state.isLoading = false
 
                state.results = state.results.filter(
-                  (result) => result.id !== action.meta.arg
+                  (result) => result.id !== action?.meta?.arg
                )
             }
          )
 
-         .addCase(SUBMITTED_RESULTS_THUNKS.deleteResults.rejected, (state) => {
+         .addCase(SUBMITTED_RESULTS_THUNKS.deleteResult.rejected, (state) => {
             state.isLoading = false
          })
 
-         .addCase(SUBMITTED_RESULTS_THUNKS.postResults.pending, (state) => {
+         .addCase(SUBMITTED_RESULTS_THUNKS.postResult.pending, (state) => {
             state.isSendLoading = true
          })
 
-         .addCase(SUBMITTED_RESULTS_THUNKS.postResults.fulfilled, (state) => {
+         .addCase(SUBMITTED_RESULTS_THUNKS.postResult.fulfilled, (state) => {
             state.isSendLoading = false
          })
 
-         .addCase(SUBMITTED_RESULTS_THUNKS.postResults.rejected, (state) => {
+         .addCase(SUBMITTED_RESULTS_THUNKS.postResult.rejected, (state) => {
             state.isSendLoading = false
          })
    },
 })
 
-export default submitedResultsSlice.reducer
+const SUBMITTED_RESULTS_ACTIONS = submitedResultsSlice.actions
+
+export { submitedResultsSlice, SUBMITTED_RESULTS_ACTIONS }

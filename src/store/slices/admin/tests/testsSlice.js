@@ -19,8 +19,8 @@ const testsSlice = createSlice({
             state.isLoading = true
          })
 
-         .addCase(TESTS_THUNKS.getTests.fulfilled, (state, action) => {
-            state.tests = action.payload
+         .addCase(TESTS_THUNKS.getTests.fulfilled, (state, { payload }) => {
+            state.tests = payload
             state.isLoading = false
          })
 
@@ -68,7 +68,7 @@ const testsSlice = createSlice({
             state.isLoading = false
 
             state.tests = state.tests.filter(
-               (test) => test.id !== action.meta.arg
+               (test) => test.id !== action?.meta?.arg
             )
          })
 

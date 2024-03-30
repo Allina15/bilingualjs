@@ -35,12 +35,13 @@ const ChangePassword = () => {
          Object.entries(values).map(([key, value]) => {
             const trimmedValue =
                typeof value === 'string' ? value.trim() : value
+
             return [key, trimmedValue]
          })
       )
 
       dispatch(
-         AUTH_THUNKS.passwordChange({
+         AUTH_THUNKS.changePassword({
             values: trimmedValues,
             passwordToken,
             resetForm,

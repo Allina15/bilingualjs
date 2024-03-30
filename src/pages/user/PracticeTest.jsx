@@ -1,22 +1,27 @@
-/* eslint-disable radix */
-import { useEffect, useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
-import TestContainer from '../../components/UI/TestContainer'
-import ProgressBar from '../../components/UI/ProgressBar'
 import Button from '../../components/UI/buttons/Button'
+import ProgressBar from '../../components/UI/ProgressBar'
+import TestContainer from '../../components/UI/TestContainer'
 import Modal from '../../components/UI/modals/Modal'
 import { NoData } from '../../assets/images'
-import { useToggleModal } from '../../hooks/useToogleModal'
 import { ROUTES } from '../../routes/routes'
-import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practiceTestSlice'
-import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practiceTestThunk'
-import { QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
+import { useToggleModal } from '../../hooks/useToogleModal'
+import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practice-test/practiceTestSlice'
+import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practice-test/practiceTestThunk'
+import { QUESTION_COMPONENTS } from '../../utils/constants/QuestionComponents'
 import { showNotification } from '../../utils/helpers/notification'
 
 const PracticeTest = () => {
    const { questions } = useSelector((state) => state.practiceTest)
+
+   const [searchParams] = useSearchParams()
+   const savedCount = parseInt(searchParams.get('count'), 10) || 0
+
+   const [count, setCount] = useState(savedCount)
+   const [warningCount, setWarningCount] = useState(4)
 
    const { testId } = useParams()
 
@@ -24,41 +29,39 @@ const PracticeTest = () => {
 
    const navigate = useNavigate()
 
-   const [searchParams] = useSearchParams()
-
-   const savedCount = parseInt(searchParams.get('count')) || 0
-
-   const [count, setCount] = useState(savedCount)
-
-   const [warningCount, setWarningCount] = useState(4)
-
    useEffect(() => {
-      dispatch(PRACTICE_TEST_THUNKS.getAllQuestions({ testId }))
+      dispatch(PRACTICE_TEST_THUNKS.getQuestions({ testId }))
    }, [dispatch, testId])
 
    useEffect(() => {
       const queryParams = new URLSearchParams()
-
       queryParams.set('count', count)
 
       navigate({ search: queryParams.toString() })
    }, [count, navigate])
 
-   const { isOpen, onCloseModal, onOpenModal } = useToggleModal('modal')
+   const { isOpen, onCloseModal, onOpenModal } =
+      useToggleModal('practiceTestModal')
 
    const quitHandler = () => {
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
-      navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`)
+      dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
+
+      navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`, {
+         replace: true,
+      })
    }
 
-   const QuestionComponent =
-      questions && questions[count]
-         ? QUESTION_COMPONENTS[questions[count].questionType]
-         : null
+   const nextHandler = () => setCount((prev) => prev + 1)
 
-   const nextHandler = () => setCount((prevCount) => prevCount + 1)
-
-   const lastQuestion = count === questions.length - 1
+   const lastQuestionHandler = () => {
+      if (count === questions.length - 1) {
+         navigate(
+            `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}/${ROUTES.USER.PRACTICE_TEST}/${ROUTES.USER.COMPLETE}`,
+            { replace: true }
+         )
+      }
+   }
 
    const timeIsUpHandler = () => {
       const answerDate = {
@@ -71,66 +74,62 @@ const PracticeTest = () => {
 
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerDate))
 
-      setCount((prevCount) => prevCount + 1)
+      setCount((prev) => prev + 1)
 
-      if (lastQuestion) {
-         navigate(
-            `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}/${ROUTES.USER.PRACTICE_TEST}/${ROUTES.USER.COMPLETE}`
-         )
-      }
-   }
-
-   const lastQuestionHandler = () => {
-      if (lastQuestion) {
-         navigate(
-            `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}/${ROUTES.USER.PRACTICE_TEST}/${ROUTES.USER.COMPLETE}`
-         )
-      }
+      lastQuestionHandler()
    }
 
    useEffect(() => {
-      document.addEventListener('keyup', (e) => {
+      const handleWarning = (e) => {
          if (e.key === 'PrintScreen') {
+            e.preventDefault()
+
             navigator.clipboard.writeText('')
-            setWarningCount((prevCount) => {
-               const newCount = prevCount - 1
-               if (newCount < 0) {
-                  return 0
+
+            setWarningCount((prev) => {
+               const newCount = prev - 1
+               if (newCount >= 0) {
+                  showNotification({
+                     title: 'Error',
+                     message: `You can't take a screenshot! You have ${
+                        newCount + 1
+                     } tries!`,
+                     type: 'error',
+                  })
                }
-               showNotification({
-                  title: 'Error',
-                  message: `You can't take a screenshot! You have ${newCount} tries!`,
-                  type: 'error',
-               })
+
                if (newCount === 0) {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
+                  dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
+
                   navigate(
-                     `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`
+                     `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
+                     { replace: true }
                   )
                }
                return newCount
             })
          }
-      })
-   }, [])
+      }
 
-   useEffect(() => {
       const handleVisibilityChange = () => {
          if (document.hidden) {
-            setWarningCount((prevCount) => {
-               const newCount = prevCount - 1
-               if (newCount < 0) {
-                  return 0
+            setWarningCount((prev) => {
+               const newCount = prev - 1
+
+               if (newCount >= 0) {
+                  showNotification({
+                     title: 'Error',
+                     message: `You cannot leave the test page. Please complete the test! You have ${newCount} tries!`,
+                     type: 'error',
+                  })
                }
-               showNotification({
-                  title: 'Error',
-                  message: `You cannot leave the test page.  Please complete the test!  You have ${newCount} tries!`,
-                  type: 'error',
-               })
+
                if (newCount === 0) {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
                   navigate(
-                     `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`
+                     `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
+                     { replace: true }
                   )
                }
                return newCount
@@ -138,15 +137,36 @@ const PracticeTest = () => {
          }
       }
 
+      document.addEventListener('keyup', handleWarning)
       document.addEventListener('visibilitychange', handleVisibilityChange)
 
       return () => {
+         document.removeEventListener('keyup', handleWarning)
          document.removeEventListener(
             'visibilitychange',
             handleVisibilityChange
          )
       }
-   }, [warningCount])
+   }, [warningCount, dispatch, navigate, testId])
+
+   useEffect(() => {
+      const handleBeforeUnload = (event) => {
+         event.preventDefault()
+         event.returnValue = ''
+      }
+
+      window.addEventListener('beforeunload', handleBeforeUnload)
+
+      return () => {
+         window.removeEventListener('beforeunload', handleBeforeUnload)
+      }
+   }, [])
+
+   const QuestionComponent = useMemo(() => {
+      return questions && questions[count]
+         ? QUESTION_COMPONENTS[questions[count].questionType]
+         : null
+   }, [count, questions])
 
    return (
       <StyledContainer>
@@ -166,7 +186,11 @@ const PracticeTest = () => {
             {QuestionComponent ? (
                <QuestionComponent
                   questions={questions[count]}
-                  nextHandler={lastQuestion ? lastQuestionHandler : nextHandler}
+                  nextHandler={
+                     count === questions.length - 1
+                        ? lastQuestionHandler
+                        : nextHandler
+                  }
                />
             ) : (
                <img src={NoData} alt="no-data" className="no-data" />
@@ -204,12 +228,10 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       justifyContent: 'flex-end',
       alignItems: 'center',
       margin: '2rem 2rem -3rem 0',
-
       '& > .quit': {
          color: '#4C4C4C',
          fontWeight: '700',
          border: '0.125rem solid #4C4859',
-
          '&:hover': {
             borderColor: theme.palette.primary.main,
             background: theme.palette.primary.main,
@@ -217,8 +239,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          },
       },
    },
-
-   '& .no-data': {
+   '& > .no-data': {
       width: '30rem',
       margin: '0 0 0 12rem',
    },

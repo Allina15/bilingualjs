@@ -13,16 +13,19 @@ const testsListSlice = createSlice({
 
    extraReducers: (builder) => {
       builder
-         .addCase(TESTS_LIST_THUNKS.getAllTests.pending, (state) => {
+         .addCase(TESTS_LIST_THUNKS.getTests.pending, (state) => {
             state.isLoading = true
          })
 
-         .addCase(TESTS_LIST_THUNKS.getAllTests.fulfilled, (state, action) => {
-            state.tests = action.payload
-            state.isLoading = false
-         })
+         .addCase(
+            TESTS_LIST_THUNKS.getTests.fulfilled,
+            (state, { payload }) => {
+               state.tests = payload
+               state.isLoading = false
+            }
+         )
 
-         .addCase(TESTS_LIST_THUNKS.getAllTests.rejected, (state) => {
+         .addCase(TESTS_LIST_THUNKS.getTests.rejected, (state) => {
             state.isLoading = false
          })
 
