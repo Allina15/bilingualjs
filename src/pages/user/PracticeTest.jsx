@@ -11,7 +11,7 @@ import { ROUTES } from '../../routes/routes'
 import { useToggleModal } from '../../hooks/useToogleModal'
 import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practice-test/practiceTestSlice'
 import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practice-test/practiceTestThunk'
-import { QUESTION_COMPONENTS } from '../../utils/constants/QuestionComponents'
+import { QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 import { showNotification } from '../../utils/helpers/notification'
 
 const PracticeTest = () => {
@@ -88,6 +88,7 @@ const PracticeTest = () => {
 
             setWarningCount((prev) => {
                const newCount = prev - 1
+
                if (newCount >= 0) {
                   showNotification({
                      title: 'Error',
@@ -127,6 +128,7 @@ const PracticeTest = () => {
 
                if (newCount === 0) {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
+
                   navigate(
                      `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
                      { replace: true }
@@ -150,9 +152,9 @@ const PracticeTest = () => {
    }, [warningCount, dispatch, navigate, testId])
 
    useEffect(() => {
-      const handleBeforeUnload = (event) => {
-         event.preventDefault()
-         event.returnValue = ''
+      const handleBeforeUnload = (e) => {
+         e.preventDefault()
+         e.returnValue = ''
       }
 
       window.addEventListener('beforeunload', handleBeforeUnload)

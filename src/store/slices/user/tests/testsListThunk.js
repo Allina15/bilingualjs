@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../../../configs/axiosInstance'
+import { showNotification } from '../../../../utils/helpers/notification'
 
 const getTests = createAsyncThunk(
    'testsList/getAllTests',
@@ -10,7 +11,13 @@ const getTests = createAsyncThunk(
 
          return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -24,7 +31,13 @@ const getTest = createAsyncThunk(
 
          return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )

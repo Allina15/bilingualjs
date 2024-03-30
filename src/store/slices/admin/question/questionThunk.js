@@ -18,13 +18,13 @@ const addTest = createAsyncThunk(
       { rejectWithValue, dispatch }
    ) => {
       try {
-         const response = await axiosInstance.post(
+         const { data } = await axiosInstance.post(
             `/api/question?testId=${testId}&questionType=${questionType}`,
             requestData
          )
 
          showNotification({
-            message: `${response.data.message}!`,
+            message: data.message,
          })
 
          navigate(
@@ -35,7 +35,7 @@ const addTest = createAsyncThunk(
             dispatch(clearOptions.clearOptions())
          }
 
-         return response.data
+         return data
       } catch (error) {
          showNotification({
             title: 'Error',
@@ -47,7 +47,7 @@ const addTest = createAsyncThunk(
          setTitle()
          setDuration()
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -71,7 +71,7 @@ const addFile = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -84,22 +84,28 @@ const getQuestion = createAsyncThunk(
       { rejectWithValue, dispatch }
    ) => {
       try {
-         const response = await axiosInstance.get(
+         const { data } = await axiosInstance.get(
             `/api/question/getById?id=${id}`
          )
 
          if (addUpdateOption) {
             dispatch(
                addUpdateOption.addUpdateOption({
-                  optionResponses: response.data,
+                  optionResponses: data,
                   optionName,
                })
             )
          }
 
-         return response.data
+         return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -109,18 +115,18 @@ const addQuestion = createAsyncThunk(
 
    async ({ testId, questionType, navigate }, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.post(
+         const { data } = await axiosInstance.post(
             `/api/question?testId=${testId}&questionType=${questionType}`
          )
          showNotification({
-            message: `${response.data.message}`,
+            message: data.message,
          })
 
          navigate(
             `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/:${ROUTES.ADMIN.TEST_ID}`
          )
 
-         return response.data
+         return data
       } catch (error) {
          showNotification({
             title: 'Error',
@@ -128,7 +134,7 @@ const addQuestion = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -138,7 +144,7 @@ const deleteQuestion = createAsyncThunk(
 
    async ({ questionId, testId }, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axiosInstance.delete(
+         const { data } = await axiosInstance.delete(
             `/api/question?questionId=${questionId}`
          )
 
@@ -146,11 +152,11 @@ const deleteQuestion = createAsyncThunk(
 
          showNotification({
             title: 'Success',
-            message: `${response.data.message}`,
+            message: data.message,
             type: 'success',
          })
 
-         return response.data
+         return data
       } catch (error) {
          showNotification({
             title: 'Error',
@@ -158,7 +164,7 @@ const deleteQuestion = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -171,7 +177,7 @@ const deleteOption = createAsyncThunk(
       { rejectWithValue, dispatch }
    ) => {
       try {
-         const response = await axiosInstance.delete(
+         const { data } = await axiosInstance.delete(
             `/api/option?optionId=${optionId}`
          )
 
@@ -183,9 +189,15 @@ const deleteOption = createAsyncThunk(
             })
          )
 
-         return response.data
+         return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -198,14 +210,14 @@ const updateQuestion = createAsyncThunk(
       { rejectWithValue, dispatch }
    ) => {
       try {
-         const response = await axiosInstance.patch(
+         const { data } = await axiosInstance.patch(
             `api/question?id=${id}`,
             requestData
          )
 
          showNotification({
             title: 'Success',
-            message: `${response.data.message}`,
+            message: data.message,
             type: 'success',
          })
 
@@ -217,9 +229,15 @@ const updateQuestion = createAsyncThunk(
             dispatch(clearOptions.clearOptions())
          }
 
-         return response.data
+         return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -229,13 +247,13 @@ const updateQuestionByEnable = createAsyncThunk(
 
    async ({ testId, questionId, isEnable }, { dispatch, rejectWithValue }) => {
       try {
-         const response = await axiosInstance.patch(
+         const { data } = await axiosInstance.patch(
             `/api/question/IsEnable?questionId=${questionId}&isEnable=${isEnable}`
          )
 
          dispatch(TESTS_THUNKS.getTest({ id: testId }))
 
-         return response.data
+         return data
       } catch (error) {
          dispatch(TESTS_THUNKS.getTest({ id: testId }))
 

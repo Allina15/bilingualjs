@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { showNotification } from '../../../utils/helpers/notification'
 import { axiosInstance } from '../../../configs/axiosInstance'
@@ -16,6 +17,7 @@ const signUp = createAsyncThunk(
          })
 
          const { email, role, token } = data
+
          if (email && role && token) {
             resetForm()
 
@@ -30,7 +32,7 @@ const signUp = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -61,6 +63,12 @@ const signIn = createAsyncThunk(
                   navigate(ROUTES.USER.INDEX)
                }
             }
+
+            if (values.rememberMe !== false) {
+               Cookies.set('BILINGUAL', JSON.stringify(values))
+
+               navigate(ROUTES[data.role].index)
+            }
          }
 
          return data
@@ -71,7 +79,7 @@ const signIn = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -100,7 +108,7 @@ const authWithGoogle = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -126,7 +134,7 @@ const forgotPassword = createAsyncThunk(
             message: `${error.response.data.message}`,
             type: 'error',
          })
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -153,7 +161,7 @@ const verificationCode = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -186,7 +194,7 @@ const changePassword = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
