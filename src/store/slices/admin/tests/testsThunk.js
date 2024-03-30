@@ -11,7 +11,13 @@ const getTests = createAsyncThunk(
 
          return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -25,7 +31,13 @@ const getTest = createAsyncThunk(
 
          return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -37,7 +49,7 @@ const addTest = createAsyncThunk(
       try {
          const { data } = await axiosInstance.post('/api/test', testData)
 
-         showNotification({ message: `${data.message}` })
+         showNotification({ message: data.message })
 
          navigate('/')
 
@@ -49,7 +61,7 @@ const addTest = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -63,7 +75,7 @@ const deleteTest = createAsyncThunk(
             `/api/test?testId=${testId}`
          )
 
-         showNotification({ message: `${data.message}` })
+         showNotification({ message: data.message })
 
          return data
       } catch (error) {
@@ -73,7 +85,7 @@ const deleteTest = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -88,7 +100,7 @@ const updateTest = createAsyncThunk(
             updatedTest
          )
 
-         showNotification({ message: 'Test successfully updated' })
+         showNotification({ message: data.message })
 
          navigate('/')
 
@@ -100,7 +112,7 @@ const updateTest = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -124,7 +136,7 @@ const updateTestByEnable = createAsyncThunk(
 
          dispatch(getTests())
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )

@@ -89,6 +89,7 @@ export default HighlightTheAnswer
 const StyledContainer = styled(Box)(({ theme }) => ({
    color: '#4C4859',
    fontFamily: 'Poppins',
+   userSelect: 'none',
 
    '& > img': {
       width: '25rem',
@@ -113,6 +114,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          color: '#5b5867',
          width: '30.438rem',
          padding: '1rem 2rem 2rem 1rem',
+         userSelect: 'text',
 
          '::selection': {
             backgroundColor: '#3A10E52E',
