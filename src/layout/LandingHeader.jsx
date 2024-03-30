@@ -2,22 +2,21 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
-import { AUTH_ACTIONS } from '../store/slices/auth/authSlice'
-import Button from '../components/UI/buttons/Button'
 import Modal from '../components/UI/modals/Modal'
+import Button from '../components/UI/buttons/Button'
 import { LogoImage } from '../assets/images'
 import { ROUTES } from '../routes/routes'
+import { AUTH_ACTIONS } from '../store/slices/auth/authSlice'
 
 const LandingHeader = () => {
    const { role } = useSelector((state) => state.auth)
 
+   const [isVisibleModal, setIsVisibleModal] = useState(false)
+   const [isScrolled, setIsScrolled] = useState(false)
+
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
-
-   const [isVisibleModal, setIsVisibleModal] = useState(false)
-
-   const [isScrolled, setIsScrolled] = useState(false)
 
    const handlelogOut = () => dispatch(AUTH_ACTIONS.logOut({ navigate }))
 

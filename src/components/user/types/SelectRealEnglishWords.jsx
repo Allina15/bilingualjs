@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 import Button from '../../UI/buttons/Button'
 import DragAndDrop from '../../DragAndDrop'
 import { NoData } from '../../../assets/images'
@@ -64,18 +64,19 @@ const StyledContainer = styled(Box)(() => ({
    flexDirection: 'column',
    alignItems: 'center',
    justifyContent: 'center',
+   userSelect: 'none',
 
    '& > img': {
       width: '25rem',
    },
 
-   '& .title': {
+   '& > .title': {
       padding: '1rem 0 0 0',
       fontFamily: 'Poppins',
       color: '#4c4859',
    },
 
-   '& .content': {
+   '& > .content': {
       maxWidth: '66.25rem',
       width: '100%',
       display: 'flex',
@@ -91,7 +92,7 @@ const StyledContainer = styled(Box)(() => ({
       borderTop: '0.0956rem solid #D4D0D0',
       padding: '2rem 0 0 0 ',
 
-      '& .MuiButtonBase-root': {
+      '& > .MuiButtonBase-root': {
          padding: '12px 54px',
       },
    },

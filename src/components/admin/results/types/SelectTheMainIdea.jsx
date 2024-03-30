@@ -1,51 +1,26 @@
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
-import Button from '../../../UI/buttons/Button'
 import Radio from '../../../UI/Radio'
+import Button from '../../../UI/buttons/Button'
 
 const SelectTheMainIdea = ({ saveHandler }) => {
-   const { answers } = useSelector((state) => state.answersSlice)
+   const { answer } = useSelector((state) => state.answer)
+
    const navigate = useNavigate()
 
    const navigateHandler = () => navigate(-1)
-
-   const renderUserOptions = () => {
-      return answers?.userOptionResponses?.map(({ optionId, optionTitle }) => {
-         const matchedOption = answers.questionOptionResponses.find(
-            (questionOption) => questionOption.optionTitle === optionTitle
-         )
-
-         if (matchedOption) {
-            return (
-               <Box key={optionId} className="option">
-                  <Typography className="number">
-                     {matchedOption.number}
-                  </Typography>
-
-                  <Typography>{optionTitle}</Typography>
-               </Box>
-            )
-         }
-
-         return (
-            <Box key={optionId} className="option">
-               <Typography>{optionTitle}</Typography>
-            </Box>
-         )
-      })
-   }
 
    return (
       <StyledContainer>
          <Box className="passage-box">
             <Typography className="title">Passage:</Typography>
 
-            <Typography className="passage">{answers?.passage}</Typography>
+            <Typography className="passage">{answer?.passage}</Typography>
          </Box>
 
          <Box className="admin-options-box">
-            {answers?.questionOptionResponses?.map(
+            {answer?.questionOptionResponses?.map(
                ({ optionId, optionTitle, isCorrectOption, number }) => (
                   <Box key={optionId} className="option">
                      <Typography className="number">{number}</Typography>
@@ -60,7 +35,23 @@ const SelectTheMainIdea = ({ saveHandler }) => {
 
          <Typography className="user-answer">User`s Answer </Typography>
 
-         <Box className="user-options-box">{renderUserOptions()}</Box>
+         <Box className="user-options-box">
+            {answer?.userOptionResponses?.map(({ optionId, optionTitle }) => {
+               const selectedOption = answer?.questionOptionResponses?.find(
+                  (questionOption) => questionOption.optionTitle === optionTitle
+               )
+
+               return (
+                  <Box key={optionId} className="option">
+                     <Typography className="number">
+                        {selectedOption ? selectedOption.number : ''}
+                     </Typography>
+
+                     <Typography>{optionTitle}</Typography>
+                  </Box>
+               )
+            })}
+         </Box>
 
          <Box className="buttons-box">
             <Button variant="secondary" onClick={navigateHandler}>
@@ -93,8 +84,8 @@ const StyledContainer = styled(Box)(() => ({
       gap: '0.4rem',
       marginTop: '1.4rem',
 
-      '& >.title': {
-         fontWeight: 500,
+      '& > .title': {
+         fontWeight: 600,
       },
 
       '& > .passage': {

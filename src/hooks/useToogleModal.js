@@ -8,9 +8,7 @@ export const useToggleModal = (query) => {
    const openModalHandler = () => {
       searchParams.set(query, 'open')
 
-      setSearchParams(searchParams, {
-         replace: true,
-      })
+      setSearchParams(searchParams)
    }
 
    const closeModalHandler = () => {

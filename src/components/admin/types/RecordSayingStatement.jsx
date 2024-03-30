@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
+import Input from '../../UI/Input'
+import Button from '../../UI/buttons/Button'
+import Loading from '../../Loading'
+import { ROUTES } from '../../../routes/routes'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { QUESTION_TITLES } from '../../../utils/constants'
-import { ROUTES } from '../../../routes/routes'
-import Loading from '../../Loading'
-import Button from '../../UI/buttons/Button'
-import Input from '../../UI/Input'
 
 const RecordSayingStatement = ({
    title,
@@ -19,26 +19,14 @@ const RecordSayingStatement = ({
 }) => {
    const { question, isLoading } = useSelector((state) => state.question)
 
-   const { state } = useLocation()
-
    const [statement, setStatement] = useState('')
+
+   const { testId } = useParams()
+   const { state } = useLocation()
 
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
-
-   const { testId } = useParams()
-
-   const navigateGoBackHandler = () =>
-      navigate(
-         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
-      )
-
-   const statementChangeHandler = (e) => {
-      const { value } = e.target
-
-      setStatement(value || '')
-   }
 
    useEffect(() => {
       if (state !== null) {
@@ -52,19 +40,11 @@ const RecordSayingStatement = ({
       }
    }, [state, question])
 
-   const isDisabled =
-      isLoading ||
-      (!state &&
-         (!selectType ||
-            !duration ||
-            duration < 1 ||
-            !title?.trim() ||
-            !statement?.trim())) ||
-      (title?.trim() === question?.title &&
-         duration === question?.duration &&
-         statement?.trim() === question?.correctAnswer) ||
-      !duration ||
-      duration < 1
+   const statementChangeHandler = (e) => {
+      const { value } = e.target
+
+      setStatement(value || '')
+   }
 
    const onSubmit = () => {
       if (selectType !== '' && +duration !== 0 && title !== '') {
@@ -111,6 +91,25 @@ const RecordSayingStatement = ({
          }
       }
    }
+
+   const navigateGoBackHandler = () =>
+      navigate(
+         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
+      )
+
+   const isDisabled =
+      isLoading ||
+      (!state &&
+         (!selectType ||
+            !duration ||
+            duration < 1 ||
+            !title?.trim() ||
+            !statement?.trim())) ||
+      (title?.trim() === question?.title &&
+         duration === question?.duration &&
+         statement?.trim() === question?.correctAnswer) ||
+      !duration ||
+      duration < 1
 
    return (
       <StyledContainer>

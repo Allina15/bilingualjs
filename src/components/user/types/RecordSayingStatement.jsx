@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import { RecordingIcon, SpeakManIcon } from '../../../assets/icons'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
-import { showNotification } from '../../../utils/helpers/notification'
 import Button from '../../UI/buttons/Button'
 import { NoData } from '../../../assets/images'
-import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practiceTestThunk'
+import { RecordingIcon, SpeakManIcon } from '../../../assets/icons'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
+import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practice-test/practiceTestThunk'
+import { showNotification } from '../../../utils/helpers/notification'
 
 const RecordSayingStatement = ({ questions, nextHandler }) => {
    const { fileUrl, isLoading } = useSelector((state) => state.practiceTest)
@@ -54,16 +54,20 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
    const startRecordingHandler = () => {
       setIsRecording(true)
       setShowNextButton(false)
+
       const audioContext = new window.AudioContext()
       const newAnalyser = audioContext.createAnalyser()
+
       setAnalyser(newAnalyser)
 
       navigator.mediaDevices
          .getUserMedia({ audio: true, video: false })
          .then((stream) => {
             setStream(stream)
+
             const mediaRecorderInstance = new MediaRecorder(stream)
             const src = audioContext.createMediaStreamSource(stream)
+
             src.connect(newAnalyser)
 
             const chunks = []
@@ -116,6 +120,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
          optionId: [],
          questionID: questions.questionId,
       }
+
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
 
       nextHandler()
@@ -123,16 +128,16 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
    }
 
    return (
-      <Container>
+      <StyledContainer>
          {questions.statement ? (
-            <Box className="styled-container">
+            <Box className="main-container">
                <Box>
-                  <Box className="record-saying-title">
+                  <Box className="record-saying-title-block">
                      <Typography className="title">
                         Record yourself saying the statement below:
                      </Typography>
 
-                     <Box className="block">
+                     <Box className="speak-block">
                         <SpeakManIcon className="speak" />
 
                         <Typography>{questions.statement}</Typography>
@@ -184,43 +189,29 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
          ) : (
             <img src={NoData} alt="no-data" className="no-data" />
          )}
-      </Container>
+      </StyledContainer>
    )
 }
 
 export default RecordSayingStatement
 
-const Container = styled(Box)(() => ({
+const StyledContainer = styled(Box)(() => ({
    display: 'flex',
    alignItems: 'center',
    justifyContent: 'center',
+   userSelect: 'none',
 
    '& > .no-data': {
       width: '25rem',
       margin: 'auto',
    },
 
-   '& > .styled-container': {
+   '& > .main-container': {
       width: '100%',
       display: 'flex',
       flexDirection: 'column',
 
-      '& .block': {
-         display: 'flex',
-         alignItems: 'center',
-         justifyContent: 'center',
-         gap: '1rem',
-         marginBottom: '2.3rem',
-
-         '& > .speak': {
-            width: '7.5rem',
-            height: '7.5rem',
-            cursor: 'pointer',
-            transition: '0.3s',
-            marginTop: '1.5rem',
-         },
-      },
-      '& .record-saying-title': {
+      '& div > .record-saying-title-block': {
          display: 'flex',
          flexDirection: 'column',
          justifyContent: 'center',
@@ -235,9 +226,25 @@ const Container = styled(Box)(() => ({
             display: 'flex',
             justifyContent: 'center',
          },
+
+         '& > .speak-block': {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '1rem',
+            marginBottom: '2.3rem',
+
+            '& > .speak': {
+               width: '7.5rem',
+               height: '7.5rem',
+               cursor: 'pointer',
+               transition: '0.3s',
+               marginTop: '1.5rem',
+            },
+         },
       },
 
-      '& .container-button': {
+      '& div > .container-button': {
          width: '95%',
          display: 'flex',
          justifyContent: 'end',
@@ -254,11 +261,6 @@ const Container = styled(Box)(() => ({
             justifyContent: 'center',
             alignItems: 'center',
          },
-      },
-      '& .audio': {
-         marginRight: '9rem',
-         width: '7.875rem',
-         height: '3.75rem',
       },
    },
 }))

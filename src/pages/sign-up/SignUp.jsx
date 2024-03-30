@@ -24,12 +24,12 @@ import { VALIDATION_SIGN_UP } from '../../utils/helpers/validation'
 const SignUp = () => {
    const { isLoading } = useSelector((state) => state.auth)
 
+   const [showPassword, setShowPassword] = useState(false)
+   const [focusedInput, setFocusedInput] = useState(null)
+
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
-
-   const [showPassword, setShowPassword] = useState(false)
-   const [focusedInput, setFocusedInput] = useState(null)
 
    const handlePasswordShow = () => setShowPassword((prev) => !prev)
 
@@ -51,8 +51,20 @@ const SignUp = () => {
          })
    }
 
-   const onSubmit = (values, { resetForm }) =>
-      dispatch(AUTH_THUNKS.signUp({ values, resetForm, navigate }))
+   const onSubmit = (values, { resetForm }) => {
+      const trimmedValues = Object.fromEntries(
+         Object.entries(values).map(([key, value]) => {
+            const trimmedValue =
+               typeof value === 'string' ? value.trim() : value
+
+            return [key, trimmedValue]
+         })
+      )
+
+      dispatch(
+         AUTH_THUNKS.signUp({ values: trimmedValues, resetForm, navigate })
+      )
+   }
 
    const { values, errors, handleChange, handleSubmit, handleBlur, touched } =
       useFormik({
@@ -161,6 +173,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
    background: 'linear-gradient(180deg, #833fac, #3b10e5d8)',
    display: 'flex',
    justifyContent: 'center',
+   alignItems: 'center',
    width: '100%',
    height: '100vh',
    fontFamily: 'Poppins',
@@ -245,7 +258,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             },
          },
 
-         '& .google-button': {
+         '& > .google-button': {
             '&.MuiButton-root': {
                backgroundColor: theme.palette.primary.white,
                color: '#757575',
@@ -270,7 +283,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             },
          },
 
-         '& .text-account': {
+         '& > .text-account': {
             display: 'flex',
             justifyContent: 'center',
             gap: '0.5rem',
@@ -288,7 +301,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
                },
             },
 
-            '& .log-in': {
+            '& > .log-in': {
                cursor: 'pointer',
                color: theme.palette.primary.main,
             },

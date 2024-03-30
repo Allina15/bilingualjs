@@ -1,21 +1,19 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
 import Radio from '../../UI/Radio'
 import Button from '../../UI/buttons/Button'
 import { NoData } from '../../../assets/images'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const SelectTheMainIdea = ({ questions, nextHandler }) => {
    const options = questions?.optionResponses
 
-   const dispatch = useDispatch()
-
    const [selectedOptionId, setSelectedOptionId] = useState(null)
 
-   const optionSelectHandler = (id) => setSelectedOptionId(id)
+   const dispatch = useDispatch()
 
-   const isDisabled = selectedOptionId === null
+   const optionSelectHandler = (id) => setSelectedOptionId(id)
 
    const onSubmit = () => {
       const answerData = {
@@ -32,6 +30,8 @@ const SelectTheMainIdea = ({ questions, nextHandler }) => {
 
       setSelectedOptionId(null)
    }
+
+   const isDisabled = selectedOptionId === null
 
    return (
       <StyledContainer>
@@ -88,6 +88,7 @@ export default SelectTheMainIdea
 const StyledContainer = styled(Box)(({ theme }) => ({
    color: '#4C4859',
    fontFamily: 'Poppins',
+   userSelect: 'none',
 
    '& > img': {
       width: '25rem',

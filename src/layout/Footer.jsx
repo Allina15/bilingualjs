@@ -1,4 +1,4 @@
-import { Typography, styled, IconButton, Box } from '@mui/material'
+import { Typography, styled, IconButton, Box, Tooltip } from '@mui/material'
 import FAQ from '../components/landing/FAQ'
 import { FooterLogoImage } from '../assets/images'
 import { FacebookIcon, InstagramIcon, YouTubeIcon } from '../assets/icons'
@@ -22,17 +22,27 @@ const Footer = () => {
                </IconButton>
 
                <Box>
-                  <IconButton href="https://www.youtube.com/@peaksofthouse2429">
-                     <img src={YouTubeIcon} alt="youtube" className="youtube" />
-                  </IconButton>
+                  <Tooltip title="@peaksofthouse2429">
+                     <IconButton href="https://www.youtube.com/@peaksofthouse2429">
+                        <img
+                           src={YouTubeIcon}
+                           alt="youtube"
+                           className="youtube"
+                        />
+                     </IconButton>
+                  </Tooltip>
 
-                  <IconButton href="https://ru-ru.facebook.com/">
-                     <FacebookIcon />
-                  </IconButton>
+                  <Tooltip title="facebook">
+                     <IconButton href="https://ru-ru.facebook.com/">
+                        <FacebookIcon />
+                     </IconButton>
+                  </Tooltip>
 
-                  <IconButton href="https://www.instagram.com/peaksoft.house/">
-                     <InstagramIcon />
-                  </IconButton>
+                  <Tooltip title="@peaksoft.house">
+                     <IconButton href="https://www.instagram.com/peaksoft.house/">
+                        <InstagramIcon />
+                     </IconButton>
+                  </Tooltip>
                </Box>
             </StyledFooter>
 
@@ -78,17 +88,12 @@ const StyledFooter = styled(Box)(() => ({
    textAlign: 'center',
    width: '100%',
 
-   '& .logo': {
+   '& > button > .logo': {
       width: '12.06763rem',
       height: '2.875rem',
    },
 
-   '& .icon-button': {
-      width: '3.5rem',
-      height: '4.5rem',
-   },
-
-   '& .youtube': {
+   '& > div > a > .youtube': {
       width: '2rem',
       borderRadius: '2rem',
       margin: '0.10rem 0 0 0 ',

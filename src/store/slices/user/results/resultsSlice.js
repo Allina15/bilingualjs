@@ -7,22 +7,25 @@ const initialState = {
 }
 
 const resultsSlice = createSlice({
-   name: 'resultsSlice',
+   name: 'results',
    initialState,
    reducers: {},
 
    extraReducers: (builder) => {
       builder
-         .addCase(MY_RESULTS_THUNKS.getResults.pending, (state) => {
+         .addCase(MY_RESULTS_THUNKS.getResult.pending, (state) => {
             state.isLoading = true
          })
 
-         .addCase(MY_RESULTS_THUNKS.getResults.fulfilled, (state, action) => {
-            state.results = action.payload
-            state.isLoading = false
-         })
+         .addCase(
+            MY_RESULTS_THUNKS.getResult.fulfilled,
+            (state, { payload }) => {
+               state.results = payload
+               state.isLoading = false
+            }
+         )
 
-         .addCase(MY_RESULTS_THUNKS.getResults.rejected, (state) => {
+         .addCase(MY_RESULTS_THUNKS.getResult.rejected, (state) => {
             state.isLoading = false
          })
 
@@ -34,7 +37,7 @@ const resultsSlice = createSlice({
             state.isLoading = false
 
             state.results = state.results.filter(
-               (result) => result.id !== action.meta.arg
+               (result) => result.id !== action?.meta?.arg
             )
          })
 

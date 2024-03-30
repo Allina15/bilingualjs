@@ -1,12 +1,12 @@
 import DescribeImage from '../../components/admin/results/types/DescribeImage'
+import TypeWhatYouHear from '../../components/admin/results/types/TypeWhatYouHear'
+import SelectTheMainIdea from '../../components/admin/results/types/SelectTheMainIdea'
+import SelectTheBestTitle from '../../components/admin/results/types/SelectTheBestTitle'
 import HighlightTheAnswer from '../../components/admin/results/types/HighlightTheAnswer'
 import ListenAndSelectWords from '../../components/admin/results/types/ListenAndSelectWords'
-import RecordSayingStatement from '../../components/admin/results/types/RecordSayingStatement'
 import RespondInAtLeastWords from '../../components/admin/results/types/RespondInAtLeastWords'
+import RecordSayingStatement from '../../components/admin/results/types/RecordSayingStatement'
 import SelectRealEnglishWords from '../../components/admin/results/types/SelectRealEnglishWords'
-import SelectTheBestTitle from '../../components/admin/results/types/SelectTheBestTitle'
-import SelectTheMainIdea from '../../components/admin/results/types/SelectTheMainIdea'
-import TypeWhatYouHear from '../../components/admin/results/types/TypeWhatYouHear'
 
 export const ADMIN_QUESTION_COMPONENTS = {
    SELECT_REAL_ENGLISH_WORD: SelectRealEnglishWords,

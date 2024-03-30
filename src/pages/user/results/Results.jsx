@@ -4,15 +4,15 @@ import { Box, styled } from '@mui/material'
 import Table from '../../../components/UI/Table'
 import { NoDataImage } from '../../../assets/images'
 import { MY_RESULTS_THUNKS } from '../../../store/slices/user/results/resultsThunk'
-import { COLUMNS } from '../../../utils/constants/columns'
+import { COLUMNS } from '../../../utils/constants/columns/columns'
 
 const Results = () => {
-   const { results, isLoading } = useSelector((state) => state.resultsSlice)
+   const { results, isLoading } = useSelector((state) => state.results)
 
    const dispatch = useDispatch()
 
    useEffect(() => {
-      dispatch(MY_RESULTS_THUNKS.getResults())
+      dispatch(MY_RESULTS_THUNKS.getResult())
    }, [dispatch])
 
    if (results?.length === 0) {
@@ -33,7 +33,7 @@ const StyledContainer = styled(Box)(() => ({
    maxWidth: '33rem',
    maxHeight: '20rem',
 
-   '& img': {
+   '& > img': {
       width: '100%',
       height: '100%',
    },

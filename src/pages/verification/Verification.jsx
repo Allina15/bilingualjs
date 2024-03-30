@@ -1,6 +1,6 @@
-import { useFormik } from 'formik'
-import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
 import { Box, Typography, styled } from '@mui/material'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/buttons/Button'
@@ -16,14 +16,23 @@ const Verification = () => {
 
    const navigate = useNavigate()
 
-   const onSubmit = (values, { resetForm }) =>
+   const onSubmit = (values, { resetForm }) => {
+      const trimmedValues = Object.fromEntries(
+         Object.entries(values).map(([key, value]) => {
+            const trimmedValue =
+               typeof value === 'string' ? value.trim() : value
+            return [key, trimmedValue]
+         })
+      )
+
       dispatch(
          AUTH_THUNKS.verificationCode({
-            values,
+            values: trimmedValues,
             resetForm,
             navigate,
          })
       )
+   }
 
    const { values, errors, touched, handleChange, handleSubmit, handleBlur } =
       useFormik({
@@ -36,6 +45,7 @@ const Verification = () => {
          validationSchema: VALIDATION_VERIFICATION,
          onSubmit,
       })
+
    return (
       <StyledContainer>
          <form className="form" autoComplete="off" onSubmit={handleSubmit}>

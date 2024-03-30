@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Box, Typography, styled } from '@mui/material'
+import { Box, Tooltip, Typography, styled } from '@mui/material'
 import { Howl, Howler } from 'howler'
 import Checkbox from './Checkbox'
 import Radio from './Radio'
@@ -97,7 +97,9 @@ const Option = ({
             </audio>
          </Box>
 
-         <Typography className="title-option">{title}</Typography>
+         <Tooltip title={title}>
+            <Typography className="title-option">{title}</Typography>
+         </Tooltip>
 
          <Box className="actions">
             {isRadio ? (

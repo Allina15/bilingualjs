@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
-import Button from '../../UI/buttons/Button'
 import TextArea from '../../UI/TextArea'
+import Button from '../../UI/buttons/Button'
 import { NoData } from '../../../assets/images'
 import { GradientListenerIcon } from '../../../assets/icons'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const TypeWhatYouHear = ({ questions, nextHandler }) => {
    const [description, setDescription] = useState('')
@@ -106,7 +106,12 @@ const TypeWhatYouHear = ({ questions, nextHandler }) => {
                </Box>
 
                <Box className="container-button">
-                  <Button disabled={!description} onClick={onSubmit}>
+                  <Button
+                     disabled={
+                        !description || replays !== questions.attempts - 1
+                     }
+                     onClick={onSubmit}
+                  >
                      NEXT
                   </Button>
                </Box>
@@ -124,6 +129,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
    display: 'flex',
    flexDirection: 'column',
    alignItems: 'center',
+   userSelect: 'none',
 
    '& > .no-data': {
       width: '25rem',

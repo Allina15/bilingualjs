@@ -1,26 +1,28 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Typography } from '@mui/material'
-import { MY_RESULTS_THUNKS } from '../../../store/slices/user/results/resultsThunk'
 import DeleteModal from '../../UI/modals/DeleteModal'
 import IconButton from '../../UI/buttons/IconButton'
 import { TrashIcon } from '../../../assets/icons'
+import { MY_RESULTS_THUNKS } from '../../../store/slices/user/results/resultsThunk'
 
-const DeleteResults = ({ resultId, row }) => {
-   const dispatch = useDispatch()
-
+const DeleteResults = ({ row }) => {
    const [isVisible, setIsVisible] = useState(false)
 
-   const deleteHandler = () => {
-      dispatch(MY_RESULTS_THUNKS.deleteResult({ resultId }))
-
-      setIsVisible(false)
-   }
+   const dispatch = useDispatch()
 
    const isVisibleHandler = (e) => {
       e.preventDefault()
 
       setIsVisible((prev) => !prev)
+   }
+
+   const deleteHandler = () => {
+      dispatch(
+         MY_RESULTS_THUNKS.deleteResult({ resultId: row.original.resultId })
+      )
+
+      setIsVisible(false)
    }
 
    return (

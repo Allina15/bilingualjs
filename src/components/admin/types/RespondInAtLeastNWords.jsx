@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router'
 import { InputLabel, styled, Box } from '@mui/material'
+import Input from '../../UI/Input'
+import Button from '../../UI/buttons/Button'
+import Loading from '../../Loading'
+import { ROUTES } from '../../../routes/routes'
+import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { QUESTION_TITLES } from '../../../utils/constants'
-import { ROUTES } from '../../../routes/routes'
-import Loading from '../../Loading'
-import Button from '../../UI/buttons/Button'
-import Input from '../../UI/Input'
 
 const RespondInAtLeastNWords = ({
    title,
@@ -19,33 +20,15 @@ const RespondInAtLeastNWords = ({
 }) => {
    const { isLoading, question } = useSelector((state) => state.question)
 
-   const { state } = useLocation()
-
    const [attempts, setAttempts] = useState(1)
    const [statement, setStatement] = useState('')
 
    const { testId } = useParams()
+   const { state } = useLocation()
 
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
-
-   const statementChangeHandler = (e) => {
-      const { value } = e.target
-
-      setStatement(value || '')
-   }
-
-   const attemptsChangeHandler = (e) => {
-      const { value } = e.target
-
-      setAttempts(value || '')
-   }
-
-   const navigateGoBackHandler = () =>
-      navigate(
-         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
-      )
 
    useEffect(() => {
       if (state !== null) {
@@ -60,21 +43,33 @@ const RespondInAtLeastNWords = ({
       }
    }, [state, question])
 
-   const isDisabled =
-      isLoading ||
-      (!state &&
-         (!selectType ||
-            !duration ||
-            duration < 1 ||
-            !title?.trim() ||
-            !statement?.trim())) ||
-      (title?.trim() === question?.title &&
-         duration === question?.duration &&
-         statement?.trim() === question?.statement &&
-         attempts === question?.attempts) ||
-      !duration ||
-      duration < 1 ||
-      !attempts
+   const statementChangeHandler = (e) => {
+      const { value } = e.target
+
+      setStatement(value || '')
+   }
+
+   const attemptsChangeHandler = (e) => {
+      let newValue = e.target.value.replace(/\D/g, '')
+      newValue = newValue.slice(0, 2)
+
+      const value = parseInt(newValue, 10)
+      if (value > 50) {
+         newValue = '50'
+      }
+
+      setAttempts(newValue)
+
+      if (
+         value === 0 ||
+         newValue === '' ||
+         state?.duration === value.toString()
+      ) {
+         dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+      } else {
+         dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      }
+   }
 
    const onSubmit = () => {
       if (
@@ -129,6 +124,27 @@ const RespondInAtLeastNWords = ({
          }
       }
    }
+
+   const navigateGoBackHandler = () =>
+      navigate(
+         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
+      )
+
+   const isDisabled =
+      isLoading ||
+      (!state &&
+         (!selectType ||
+            !duration ||
+            duration < 1 ||
+            !title?.trim() ||
+            !statement?.trim())) ||
+      (title?.trim() === question?.title &&
+         duration === question?.duration &&
+         statement?.trim() === question?.statement &&
+         attempts === question?.attempts) ||
+      !duration ||
+      duration < 1 ||
+      !attempts
 
    return (
       <StyledContainer>

@@ -4,9 +4,9 @@ import { Box, Typography, styled } from '@mui/material'
 import Button from '../../../UI/buttons/Button'
 
 const DescribeImage = ({ isDisabled, saveHandler }) => {
-   const { answers } = useSelector((state) => state.answersSlice)
+   const { answer } = useSelector((state) => state.answer)
 
-   const { fileUrl, correctAnswer, userAnswer } = answers
+   const { fileUrl, correctAnswer, userAnswer } = answer
 
    const navigate = useNavigate()
 
@@ -27,7 +27,7 @@ const DescribeImage = ({ isDisabled, saveHandler }) => {
          <Typography className="user-answer">User`s Answer </Typography>
 
          <Box className="user-answers-box">
-            <Typography>Entered Statement:</Typography>
+            <Typography className="user-title">Entered Statement:</Typography>
 
             <Typography>{userAnswer}</Typography>
          </Box>
@@ -82,6 +82,7 @@ const StyledContainer = styled(Box)(() => ({
 
       '& > .correct-answer': {
          marginLeft: '1rem',
+         fontWeight: 600,
       },
    },
 
@@ -92,6 +93,10 @@ const StyledContainer = styled(Box)(() => ({
       alignItems: 'center',
       flexWrap: 'wrap',
       margin: '1rem 0 1rem 0',
+
+      '& > .user-title': {
+         fontWeight: 600,
+      },
    },
 
    '& > .buttons-box': {

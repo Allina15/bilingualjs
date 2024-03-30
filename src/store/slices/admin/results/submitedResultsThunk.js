@@ -2,54 +2,54 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
 
-const getAllResults = createAsyncThunk(
-   'submitedResultsSlice/getAllResults',
+const getResults = createAsyncThunk(
+   'submitedResults/getAllResults',
 
    async (_, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get('/api/result/getAll')
+         const { data } = await axiosInstance.get('/api/result/getAll')
 
-         return response.data
+         return data
       } catch (error) {
          return rejectWithValue.message
       }
    }
 )
 
-const getResults = createAsyncThunk(
-   'submitedResultsSlice/getResults',
+const getResult = createAsyncThunk(
+   'submitedResults/getResults',
 
    async ({ resultId }, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get(
+         const { data } = await axiosInstance.get(
             `/api/result?resultId=${resultId}`
          )
 
-         return response.data
+         return data
       } catch (error) {
          return rejectWithValue.message
       }
    }
 )
 
-const postResults = createAsyncThunk(
-   'submitedResultsSlice/postResults',
+const postResult = createAsyncThunk(
+   'submitedResults/postResults',
 
    async ({ resultId, navigate }, { rejectWithValue, dispatch }) => {
       try {
          const link = 'http://localhost:3001/user/results'
 
-         const response = await axiosInstance.post(
+         const { data } = await axiosInstance.post(
             `/api/result/${resultId}?link=${link}`
          )
 
          showNotification({
-            message: response.data.message,
+            message: data.message,
          })
 
          navigate(-1)
 
-         return response.data
+         return data
       } catch (error) {
          dispatch(getResults({ resultId }))
 
@@ -64,12 +64,12 @@ const postResults = createAsyncThunk(
    }
 )
 
-const deleteResults = createAsyncThunk(
-   'submitedResultsSlice/deleteResults',
+const deleteResult = createAsyncThunk(
+   'submitedResults/deleteResults',
 
    async ({ resultId }, { rejectWithValue, dispatch }) => {
       try {
-         const response = await axiosInstance.delete(
+         const { data } = await axiosInstance.delete(
             `/api/result?resultId=${resultId}`
          )
 
@@ -79,9 +79,9 @@ const deleteResults = createAsyncThunk(
             type: 'success',
          })
 
-         dispatch(getAllResults())
+         dispatch(getResults())
 
-         return response.data
+         return data
       } catch (error) {
          showNotification({
             title: 'Error',
@@ -95,8 +95,8 @@ const deleteResults = createAsyncThunk(
 )
 
 export const SUBMITTED_RESULTS_THUNKS = {
-   getAllResults,
    getResults,
-   postResults,
-   deleteResults,
+   getResult,
+   postResult,
+   deleteResult,
 }

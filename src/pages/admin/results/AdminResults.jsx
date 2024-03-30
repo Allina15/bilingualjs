@@ -4,17 +4,15 @@ import { Box, styled } from '@mui/material'
 import Table from '../../../components/UI/Table'
 import { NoDataImage } from '../../../assets/images'
 import { SUBMITTED_RESULTS_THUNKS } from '../../../store/slices/admin/results/submitedResultsThunk'
-import { ADMIN_COLUMNS } from '../../../utils/constants/admin-columns'
+import { ADMIN_COLUMNS } from '../../../utils/constants/columns/admin-columns'
 
 const AdminResults = () => {
-   const { results, isLoading } = useSelector(
-      (state) => state.submitedResultsSlice
-   )
+   const { results, isLoading } = useSelector((state) => state.submitedResults)
 
    const dispatch = useDispatch()
 
    useEffect(() => {
-      dispatch(SUBMITTED_RESULTS_THUNKS.getAllResults())
+      dispatch(SUBMITTED_RESULTS_THUNKS.getResults())
    }, [dispatch])
 
    if (results.length === 0) {

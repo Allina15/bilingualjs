@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Box, TextField, Typography, styled } from '@mui/material'
-import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
-import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
-import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
-import { useToggleModal } from '../../../hooks/useToogleModal'
-import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
-import { PlusIcon } from '../../../assets/icons'
-import { ROUTES } from '../../../routes/routes'
-import DeleteModal from '../../UI/modals/DeleteModal'
-import SaveModal from '../../UI/modals/SaveModal'
 import Loading from '../../Loading'
 import Option from '../../UI/Option'
 import Button from '../../UI/buttons/Button'
+import SaveModal from '../../UI/modals/SaveModal'
+import DeleteModal from '../../UI/modals/DeleteModal'
+import { PlusIcon } from '../../../assets/icons'
+import { ROUTES } from '../../../routes/routes'
+import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
+import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
+import { useToggleModal } from '../../../hooks/useToogleModal'
+import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 
 const SelectTheMainIdea = ({
    title,
@@ -35,13 +34,11 @@ const SelectTheMainIdea = ({
    const deleteModal = useToggleModal('delete')
    const saveModal = useToggleModal('save')
 
-   const { questionId } = useParams()
+   const { testId, questionId } = useParams()
 
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
-
-   const { testId } = useParams()
 
    const changeCheckbox = (e) => setCheckedOption(e.target.checked)
 
@@ -61,15 +58,6 @@ const SelectTheMainIdea = ({
       } else {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       }
-   }
-
-   const navigateGoBackHandler = () => {
-      navigate(
-         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
-      )
-
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-      dispatch(QUESTION_ACTIONS.clearOptions())
    }
 
    useEffect(() => {
@@ -100,6 +88,49 @@ const SelectTheMainIdea = ({
       }
    }, [options, inOpen])
 
+   const handleOnClose = () => {
+      saveModal.onCloseModal()
+
+      setOptionTitle('')
+      setCheckedOption(false)
+   }
+
+   const addOptionHandler = () => {
+      const option = {
+         optionTitle: optionTitle.trim(),
+         isCorrectOption: checkedOption,
+         optionId: Math.floor(Math.random() * 999) + 200,
+      }
+
+      dispatch(
+         QUESTION_ACTIONS.addOptionRadio({
+            option,
+            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+         })
+      )
+
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
+
+      handleOnClose()
+
+      if (options.selectTheMainIdeaOptions.length === 0 || checkedOption) {
+         setSelectedOptionId(option.optionId)
+      }
+   }
+
+   const checkedHandler = (optionId) => {
+      dispatch(
+         QUESTION_ACTIONS.handleIsCorrect({
+            optionId,
+            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+         })
+      )
+
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
+   }
+
    const deleteHandler = () => {
       if (isCreate) {
          dispatch(
@@ -117,10 +148,11 @@ const SelectTheMainIdea = ({
          )
       } else {
          dispatch(
-            OPTIONS_THUNKS.deleteOption({
+            QUESTION_THUNKS.deleteOption({
                optionId,
                id: questionId,
                optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+               addUpdateOption: QUESTION_ACTIONS,
             })
          )
       }
@@ -130,28 +162,6 @@ const SelectTheMainIdea = ({
 
       deleteModal.onCloseModal()
    }
-
-   const checkedHandler = (optionId) => {
-      dispatch(
-         QUESTION_ACTIONS.handleIsCorrect({
-            optionId,
-            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
-         })
-      )
-
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      dispatch(QUESTION_ACTIONS.changeInOpen(false))
-   }
-
-   const isDisabled =
-      !selectType ||
-      !duration ||
-      duration < 1 ||
-      !title ||
-      !passage ||
-      options.selectTheMainIdeaOptions?.length < 2
-
-   const isDisabledModal = !optionTitle.trim()
 
    const onSubmit = () => {
       if (selectType !== '' && +duration !== 0 && title !== '') {
@@ -215,32 +225,24 @@ const SelectTheMainIdea = ({
       }
    }
 
-   const addOptionHandler = () => {
-      const option = {
-         optionTitle: optionTitle.trim(),
-         isCorrectOption: checkedOption,
-         optionId: Math.floor(Math.random() * 999) + 200,
-      }
-
-      dispatch(
-         QUESTION_ACTIONS.addOptionRadio({
-            option,
-            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
-         })
+   const navigateGoBackHandler = () => {
+      navigate(
+         `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
       )
 
-      dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      dispatch(QUESTION_ACTIONS.changeInOpen(false))
-
-      saveModal.onCloseModal()
-
-      setOptionTitle('')
-      setCheckedOption(false)
-
-      if (options.selectTheMainIdeaOptions.length === 0 || checkedOption) {
-         setSelectedOptionId(option.optionId)
-      }
+      dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+      dispatch(QUESTION_ACTIONS.clearOptions())
    }
+
+   const isDisabled =
+      !selectType ||
+      !duration ||
+      duration < 1 ||
+      !title ||
+      !passage ||
+      options.selectTheMainIdeaOptions?.length < 2
+
+   const isDisabledModal = !optionTitle.trim()
 
    return (
       <StyledContainer>
@@ -315,7 +317,7 @@ const SelectTheMainIdea = ({
             title={optionTitle}
             checked={checkedOption}
             isVisible={saveModal.isOpen}
-            toggleModal={saveModal.onCloseModal}
+            toggleModal={handleOnClose}
             isDisabledModal={!isDisabledModal}
             addOptionHandler={addOptionHandler}
             changeTitleHandler={changeTitleHandler}

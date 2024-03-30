@@ -17,11 +17,15 @@ const TestList = () => {
    const dispatch = useDispatch()
 
    useEffect(() => {
-      dispatch(TESTS_LIST_THUNKS.getAllTests())
+      dispatch(TESTS_LIST_THUNKS.getTests())
    }, [dispatch])
 
    const navigateHandler = (id) =>
       navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${id}`)
+
+   const enabledTests = Array.isArray(tests)
+      ? tests.filter((test) => test.enable)
+      : []
 
    return (
       <>
@@ -33,30 +37,38 @@ const TestList = () => {
             <TestContainer>
                <MainContent>
                   {Array.isArray(tests) &&
-                     tests?.map(({ id, duration, title, shortDescription }) => (
-                        <Box className="content" key={id}>
-                           <img src={ListImage} alt="list" className="list" />
+                     enabledTests?.map(
+                        ({ id, duration, title, shortDescription }) => (
+                           <Box className="content" key={id}>
+                              <img
+                                 src={ListImage}
+                                 alt="list"
+                                 className="list"
+                              />
 
-                           <Box className="texts">
-                              <Typography className="duration">
-                                 {duration % 60} minutes
-                              </Typography>
+                              <Box className="texts">
+                                 <Typography className="duration">
+                                    {duration % 60} minutes
+                                 </Typography>
 
-                              <Typography className="title">{title}</Typography>
+                                 <Typography className="title">
+                                    {title}
+                                 </Typography>
 
-                              <Typography>{shortDescription}</Typography>
+                                 <Typography>{shortDescription}</Typography>
+                              </Box>
+
+                              <Box className="button-container">
+                                 <Button
+                                    variant="secondary"
+                                    onClick={() => navigateHandler(id)}
+                                 >
+                                    TRY TEST
+                                 </Button>
+                              </Box>
                            </Box>
-
-                           <Box className="button-container">
-                              <Button
-                                 variant="secondary"
-                                 onClick={() => navigateHandler(id)}
-                              >
-                                 TRY TEST
-                              </Button>
-                           </Box>
-                        </Box>
-                     ))}
+                        )
+                     )}
                </MainContent>
             </TestContainer>
          )}

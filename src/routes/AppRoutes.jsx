@@ -17,7 +17,7 @@ const ForgotPassword = lazy(
    () => import('../pages/forgot-password/ForgotPassword')
 )
 const ChangePassword = lazy(
-   () => import('../pages/password-change/ChangePassword')
+   () => import('../pages/change-password/ChangePassword')
 )
 
 const AppRoutes = () => {

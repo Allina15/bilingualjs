@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
-import Button from '../../../UI/buttons/Button'
 import Option from '../../../UI/Option'
+import Button from '../../../UI/buttons/Button'
 
 const SelectRealEnglishWords = ({ isDisabled, saveHandler }) => {
-   const { answers } = useSelector((state) => state.answersSlice)
+   const { answer } = useSelector((state) => state.answer)
 
    const navigate = useNavigate()
 
@@ -14,7 +14,7 @@ const SelectRealEnglishWords = ({ isDisabled, saveHandler }) => {
    return (
       <StyledContainer>
          <Box className="admin-options-box">
-            {answers?.questionOptionResponses?.map((option, index) => (
+            {answer?.questionOptionResponses?.map((option, index) => (
                <Option
                   key={option.optionId}
                   index={index}
@@ -28,7 +28,7 @@ const SelectRealEnglishWords = ({ isDisabled, saveHandler }) => {
          <Typography className="user-answer">User`s Answer </Typography>
 
          <Box className="user-options-box">
-            {answers?.userOptionResponses?.map(({ optionId, optionTitle }) => (
+            {answer?.userOptionResponses?.map(({ optionId, optionTitle }) => (
                <Box key={optionId} className="option">
                   {optionTitle}
                </Box>

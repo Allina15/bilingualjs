@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import Button from '../../UI/buttons/Button'
 import TextArea from '../../UI/TextArea'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practiceTestSlice'
+import Button from '../../UI/buttons/Button'
 import { NoData } from '../../../assets/images'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const DescribeImage = ({ questions, nextHandler }) => {
    const [description, setDescription] = useState('')
@@ -72,6 +72,7 @@ export default DescribeImage
 
 const StyledContainer = styled(Box)(() => ({
    color: '#4C4859',
+   userSelect: 'none',
 
    '& > .no-data': {
       width: '25rem',
@@ -112,7 +113,9 @@ const StyledContainer = styled(Box)(() => ({
          marginTop: '50px',
 
          '& > .image': {
-            width: '11.375rem',
+            maxWidth: '12rem',
+            width: '100%',
+            height: '10.5rem',
             backgroundPosition: 'center',
             borderRadius: '2px',
          },

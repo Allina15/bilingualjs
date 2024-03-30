@@ -2,28 +2,27 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
-import { questionTypeHandler } from '../../../utils/helpers'
+import Input from '../../../components/UI/Input'
+import Dropdown from '../../../components/UI/Dropdown'
+import TestType from '../../../components/admin/TestType'
+import TestContainer from '../../../components/UI/TestContainer'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { OPTIONS } from '../../../utils/constants'
-import TestContainer from '../../../components/UI/TestContainer'
-import TestType from '../../../components/admin/TestType'
-import Dropdown from '../../../components/UI/Dropdown'
-import Input from '../../../components/UI/Input'
+import { questionTypeHandler } from '../../../utils/helpers'
 
 const Question = () => {
    const { options } = useSelector((state) => state.question)
 
-   const dispatch = useDispatch()
-
    const { state } = useLocation()
 
+   const [searchParams, setSearchParams] = useSearchParams()
    const [title, setTitle] = useState(state?.title || '')
    const [duration, setDuration] = useState(state?.duration || 0)
    const [selectType, setSelectType] = useState(
       questionTypeHandler(state?.questionType) || ''
    )
 
-   const [searchParams, setSearchParams] = useSearchParams()
+   const dispatch = useDispatch()
 
    useEffect(() => {
       const typeParam = searchParams.get('type')
