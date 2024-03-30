@@ -1,13 +1,13 @@
+import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
 import { Box, Skeleton, Typography, styled } from '@mui/material'
-import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
-import DeleteModal from '../../UI/modals/DeleteModal'
-import Switcher from '../../UI/Switcher'
 import { EditIcon, TrashIcon } from '../../../assets/icons'
+import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
 import { NoDataImage } from '../../../assets/images'
 import { ROUTES } from '../../../routes/routes'
+import DeleteModal from '../../UI/modals/DeleteModal'
+import Switcher from '../../UI/Switcher'
 
 const AdminTestList = () => {
    const { tests, isLoading } = useSelector((state) => state.tests)

@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams, useLocation } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
-import TestType from '../../../components/admin/TestType'
-import Input from '../../../components/UI/Input'
-import Dropdown from '../../../components/UI/Dropdown'
-import TestContainer from '../../../components/UI/TestContainer'
+import { questionTypeHandler } from '../../../utils/helpers'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { OPTIONS } from '../../../utils/constants'
-import { questionTypeHandler } from '../../../utils/helpers'
+import TestContainer from '../../../components/UI/TestContainer'
+import TestType from '../../../components/admin/TestType'
+import Dropdown from '../../../components/UI/Dropdown'
+import Input from '../../../components/UI/Input'
 
 const Question = () => {
    const { options } = useSelector((state) => state.question)
@@ -27,6 +27,7 @@ const Question = () => {
 
    useEffect(() => {
       const typeParam = searchParams.get('type')
+
       if (typeParam) {
          setSelectType(typeParam)
       }
@@ -36,7 +37,6 @@ const Question = () => {
       const newSelectType = e.target.value
 
       setSearchParams({ type: newSelectType })
-
       setSelectType(newSelectType)
    }
 
@@ -60,9 +60,9 @@ const Question = () => {
       setDuration(newValue)
 
       if (
-         state?.duration === e.target.value ||
-         e.target.value === '0' ||
-         e.target.value === ''
+         value === 0 ||
+         newValue === '' ||
+         state?.duration === value.toString()
       ) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
       } else {

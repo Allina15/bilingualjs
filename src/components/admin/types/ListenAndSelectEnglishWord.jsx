@@ -6,6 +6,7 @@ import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { useToggleModal } from '../../../hooks/useToogleModal'
+import { OPTIONS_THUNKS } from '../../../store/slices/admin/options/optionsThunk'
 import { PlusIcon } from '../../../assets/icons'
 import { ROUTES } from '../../../routes/routes'
 import DeleteModal from '../../UI/modals/DeleteModal'
@@ -21,7 +22,7 @@ const ListenAndSelectEnglishWord = ({
    setDuration,
    setSelectType,
 }) => {
-   const { fileUrl, isLoading, options, isUpdateDisabled, isCreate } =
+   const { fileUrl, isLoading, options, inOpen, isUpdateDisabled, isCreate } =
       useSelector((state) => state.question)
 
    const { questionId } = useParams()
@@ -65,6 +66,16 @@ const ListenAndSelectEnglishWord = ({
       }
    }, [dispatch, questionId])
 
+   useEffect(() => {
+      if (inOpen === false) {
+         if (options.listenAndSelectOptions?.length <= 1) {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
+         } else {
+            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+         }
+      }
+   }, [options, inOpen])
+
    const deleteOption = options?.listenAndSelectOptions?.find(
       (option) => option.optionId === optionId
    )?.optionTitle
@@ -98,14 +109,32 @@ const ListenAndSelectEnglishWord = ({
    }
 
    const deleteHandler = () => {
-      dispatch(
-         QUESTION_ACTIONS.deleteOption({
-            optionId,
-            optionName: OPTIONS_NAME?.listenAndSelectOptions,
-         })
-      )
+      if (isCreate) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.listenAndSelectOptions,
+            })
+         )
+      } else if (optionId > 200) {
+         dispatch(
+            QUESTION_ACTIONS.deleteOption({
+               optionId,
+               optionName: OPTIONS_NAME.listenAndSelectOptions,
+            })
+         )
+      } else {
+         dispatch(
+            OPTIONS_THUNKS.deleteOption({
+               optionId,
+               id: questionId,
+               optionName: OPTIONS_NAME.listenAndSelectOptions,
+            })
+         )
+      }
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       deleteModal.onCloseModal()
    }
@@ -119,6 +148,7 @@ const ListenAndSelectEnglishWord = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
 
    const onSubmit = () => {
@@ -183,7 +213,7 @@ const ListenAndSelectEnglishWord = ({
       const option = {
          optionTitle: optionTitle.trim(),
          isCorrectOption: checkedOption,
-         optionId: Math.floor(Math.random() * 200) + 50,
+         optionId: Math.floor(Math.random() * 999) + 200,
          fileUrl,
       }
 
@@ -195,6 +225,7 @@ const ListenAndSelectEnglishWord = ({
       )
 
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
+      dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
       saveModal.onCloseModal()
 
@@ -314,7 +345,7 @@ const StyledContainer = styled(Box)(() => ({
       display: 'flex',
       gap: '1.1rem',
       position: 'relative',
-      right: '-35.5rem',
+      right: '-35.4rem',
 
       '& > .MuiButton-root ': {
          width: '118px',
