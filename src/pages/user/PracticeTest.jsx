@@ -88,7 +88,6 @@ const PracticeTest = () => {
 
             setWarningCount((prev) => {
                const newCount = prev - 1
-
                if (newCount >= 0) {
                   showNotification({
                      title: 'Error',
@@ -128,7 +127,6 @@ const PracticeTest = () => {
 
                if (newCount === 0) {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
-
                   navigate(
                      `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
                      { replace: true }
@@ -152,9 +150,9 @@ const PracticeTest = () => {
    }, [warningCount, dispatch, navigate, testId])
 
    useEffect(() => {
-      const handleBeforeUnload = (e) => {
-         e.preventDefault()
-         e.returnValue = ''
+      const handleBeforeUnload = (event) => {
+         event.preventDefault()
+         event.returnValue = ''
       }
 
       window.addEventListener('beforeunload', handleBeforeUnload)

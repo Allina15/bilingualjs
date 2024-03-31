@@ -345,11 +345,11 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       },
    },
 
-   '& > .evaluated': {
+   '&  .evaluated': {
       color: '#2AB930',
    },
 
-   '& > .skeleton-box': {
+   '&  .skeleton-box': {
       backgroundColor: '#e5e5e567',
       marginBottom: '8px',
    },

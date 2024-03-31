@@ -251,8 +251,6 @@ const updateQuestionByEnable = createAsyncThunk(
             `/api/question/IsEnable?questionId=${questionId}&isEnable=${isEnable}`
          )
 
-         dispatch(TESTS_THUNKS.getTest({ id: testId }))
-
          return data
       } catch (error) {
          dispatch(TESTS_THUNKS.getTest({ id: testId }))

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
-import { motion } from 'framer-motion'
 import { Box, Typography, styled } from '@mui/material'
+import { motion } from 'framer-motion'
 import LandingButton from '../UI/buttons/LandingButton'
 import { BackgroundIntroImage } from '../../assets/images'
 import {
@@ -22,7 +22,7 @@ import { ROUTES } from '../../routes/routes'
 import { AUTH_THUNKS } from '../../store/slices/auth/authThunk'
 
 const Intro = () => {
-   const { isAuth } = useSelector((state) => state.auth)
+   const { isAuth, token } = useSelector((state) => state.auth)
 
    const [isVisible, setIsVisible] = useState(false)
 
@@ -42,12 +42,14 @@ const Intro = () => {
    }, [])
 
    useEffect(() => {
-      const storedUserData = Cookies.get('BILINGUAL')
+      if (!token) {
+         const storedUserData = Cookies.get('BILINGUAL')
 
-      if (storedUserData) {
-         const userData = JSON.parse(storedUserData)
+         if (storedUserData) {
+            const userData = JSON.parse(storedUserData)
 
-         dispatch(AUTH_THUNKS.signIn({ values: userData, navigate }))
+            dispatch(AUTH_THUNKS.signIn({ values: userData, navigate }))
+         }
       }
    }, [])
 

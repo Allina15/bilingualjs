@@ -4,7 +4,7 @@ import { Box, Typography, styled } from '@mui/material'
 import Option from '../../../UI/Option'
 import Button from '../../../UI/buttons/Button'
 
-const ListenAndSelectWords = ({ isDisabled, saveHandler }) => {
+const ResultListenAndSelectWords = ({ isDisabled, saveHandler }) => {
    const { answer } = useSelector((state) => state.answer)
 
    const navigate = useNavigate()
@@ -53,7 +53,7 @@ const ListenAndSelectWords = ({ isDisabled, saveHandler }) => {
    )
 }
 
-export default ListenAndSelectWords
+export default ResultListenAndSelectWords
 
 const StyledContainer = styled(Box)(() => ({
    color: '#4C4859',
