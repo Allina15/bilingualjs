@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-// import { StrictMode } from 'react'
+import { StrictMode } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { injectStore } from './configs/axiosInstance'
@@ -17,14 +17,14 @@ fileInjectStore(store)
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 root.render(
-   // <StrictMode>
-   <Provider store={store}>
-      <PersistGate loading={<Loading />} persistor={persistor}>
-         <Themes>
-            <Notification />
-            <App />
-         </Themes>
-      </PersistGate>
-   </Provider>
-   // </StrictMode>
+   <StrictMode>
+      <Provider store={store}>
+         <PersistGate loading={<Loading />} persistor={persistor}>
+            <Themes>
+               <Notification />
+               <App />
+            </Themes>
+         </PersistGate>
+      </Provider>
+   </StrictMode>
 )

@@ -40,7 +40,7 @@ const addAnswer = createAsyncThunk(
 
          navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}`)
 
-         showNotification({ message: `${data.message}` })
+         showNotification({ message: data.message })
 
          dispatch(clearAnswer.clearCorrectAnswer())
 
@@ -52,7 +52,7 @@ const addAnswer = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -75,7 +75,7 @@ const addAnswerFile = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )

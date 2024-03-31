@@ -11,7 +11,13 @@ const getResult = createAsyncThunk(
 
          return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -26,7 +32,7 @@ const deleteResult = createAsyncThunk(
          )
 
          showNotification({
-            message: `${data.message}`,
+            message: data.message,
          })
 
          dispatch(getResult())
@@ -39,7 +45,7 @@ const deleteResult = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )

@@ -13,7 +13,13 @@ const getAnswer = createAsyncThunk(
 
          return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -21,10 +27,7 @@ const getAnswer = createAsyncThunk(
 const postResult = createAsyncThunk(
    'answer/postResult',
 
-   async (
-      { answerId, scoreValue, navigate },
-      { rejectWithValue, dispatch }
-   ) => {
+   async ({ answerId, scoreValue, navigate }, { rejectWithValue }) => {
       try {
          const { data } = await axiosInstance.post(
             `api/result?answerId=${answerId}`,
@@ -37,9 +40,13 @@ const postResult = createAsyncThunk(
 
          return data
       } catch (error) {
-         dispatch(getAnswer({ answerId }))
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
