@@ -6,7 +6,7 @@ import { Box, Typography, styled } from '@mui/material'
 import Button from '../../../UI/buttons/Button'
 import { SmallPauseIcon, SmallPlayIcon } from '../../../../assets/icons'
 
-const TypeWhatYouHear = ({ isDisabled, saveHandler }) => {
+const ResultTypeWhatYouHear = ({ isDisabled, saveHandler }) => {
    const { answer } = useSelector((state) => state.answer)
 
    const { fileUrl, correctAnswer, userAnswer, answerAttempts } = answer
@@ -94,7 +94,7 @@ const TypeWhatYouHear = ({ isDisabled, saveHandler }) => {
    )
 }
 
-export default TypeWhatYouHear
+export default ResultTypeWhatYouHear
 
 const StyledContainer = styled(Box)(() => ({
    color: '#4C4859',

@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
 import Button from '../../../UI/buttons/Button'
 
-const DescribeImage = ({ isDisabled, saveHandler }) => {
+const ResultHighlightTheAnswer = ({ isDisabled, saveHandler }) => {
    const { answer } = useSelector((state) => state.answer)
 
-   const { fileUrl, correctAnswer, userAnswer } = answer
+   const { passage, correctAnswer, userAnswer, statement } = answer
 
    const navigate = useNavigate()
 
@@ -15,19 +15,29 @@ const DescribeImage = ({ isDisabled, saveHandler }) => {
    return (
       <StyledContainer>
          <Box className="admin-answers-box">
-            <Box>
-               <img src={fileUrl} alt="img" />
-            </Box>
+            <Typography className="passage-title">Passage:</Typography>
 
-            <Typography className="correct-answer">Correct Answer:</Typography>
+            <Typography className="passage">{passage}</Typography>
+         </Box>
 
-            <Typography>{correctAnswer}</Typography>
+         <Box className="admin-answers-box">
+            <Typography className="question-statement">
+               Question Statement:
+            </Typography>
+
+            <Typography className="statement">{statement}</Typography>
+         </Box>
+
+         <Box className="admin-answers-box">
+            <Typography className="answer">Correct Answer:</Typography>
+
+            <Typography className="correct-answer">{correctAnswer}</Typography>
          </Box>
 
          <Typography className="user-answer">User`s Answer </Typography>
 
          <Box className="user-answers-box">
-            <Typography className="user-title">Entered Statement:</Typography>
+            <Typography className="user-title">Respond:</Typography>
 
             <Typography>{userAnswer}</Typography>
          </Box>
@@ -49,50 +59,58 @@ const DescribeImage = ({ isDisabled, saveHandler }) => {
    )
 }
 
-export default DescribeImage
+export default ResultHighlightTheAnswer
 
-const StyledContainer = styled(Box)(() => ({
+const StyledContainer = styled(Box)(({ theme }) => ({
    color: '#4C4859',
    fontFamily: 'Poppins',
    fontWeight: 300,
 
    '& > .user-answer': {
-      fontWeight: 500,
       fontSize: '18px',
       marginTop: '1.4rem',
    },
 
    '& > .admin-answers-box': {
-      gap: '0.4rem',
+      gap: '0.3rem',
       display: 'flex',
-      alignItems: 'center',
-      margin: '2rem 0 2rem 0',
+      margin: '0.8rem 0 0.7rem 0',
 
-      '& > div > img': {
-         width: '181.59px',
-         height: '177.39px',
-         borderRadius: '8px',
-         cursor: 'pointer',
+      '& > .passage-title': {
+         fontWeight: 600,
+      },
 
-         '&:hover': {
-            filter: 'brightness(0.6)',
-            transition: 'transform 0.3s ease',
-         },
+      '& > .passage': {
+         marginBottom: '1rem',
       },
 
       '& > .correct-answer': {
-         marginLeft: '1rem',
+         color: theme.palette.primary.main,
+         width: '785px',
+         marginLeft: '-2.5rem',
+         marginBottom: '1rem',
+      },
+
+      '& > .answer': {
+         width: '10rem',
          fontWeight: 600,
+      },
+
+      '& > .question-statement': {
+         margin: '0.6rem 0 1rem 0',
+         fontWeight: 600,
+      },
+
+      '& > .statement': {
+         margin: '0.6rem 1rem 0.6rem 0',
       },
    },
 
    '& > .user-answers-box': {
       width: '100%',
-      gap: '0.4rem',
+      gap: '0.5rem',
       display: 'flex',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      margin: '1rem 0 1rem 0',
+      margin: '0.8rem 0 0.7rem 0',
 
       '& > .user-title': {
          fontWeight: 600,

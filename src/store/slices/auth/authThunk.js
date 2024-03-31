@@ -67,7 +67,7 @@ const signIn = createAsyncThunk(
             if (values.rememberMe !== false) {
                Cookies.set('BILINGUAL', JSON.stringify(values))
 
-               navigate(ROUTES[data.role].index)
+               navigate(ROUTES[data.role].INDEX)
             }
          }
 

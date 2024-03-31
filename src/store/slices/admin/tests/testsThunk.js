@@ -123,7 +123,7 @@ const updateTestByEnable = createAsyncThunk(
    async ({ testId, enable }, { rejectWithValue, dispatch }) => {
       try {
          const { data } = await axiosInstance.patch(
-            `/api/test/update?testId=${testId}&enable=${enable}`
+            `/api/test/update?tesId=${testId}&enable=${enable}`
          )
 
          return data

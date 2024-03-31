@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
 import Button from '../../../UI/buttons/Button'
 
-const RespondInAtLeastWords = ({ isDisabled, saveHandler }) => {
+const ResultRespondInAtLeastWords = ({ isDisabled, saveHandler }) => {
    const { answer } = useSelector((state) => state.answer)
 
    const navigate = useNavigate()
@@ -47,7 +47,7 @@ const RespondInAtLeastWords = ({ isDisabled, saveHandler }) => {
    )
 }
 
-export default RespondInAtLeastWords
+export default ResultRespondInAtLeastWords
 
 const StyledContainer = styled(Box)(({ theme }) => ({
    color: '#4C4859',
