@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Box, TextField, Typography, styled } from '@mui/material'
 import Loading from '../../Loading'
 import Option from '../../UI/Option'
@@ -11,7 +11,6 @@ import { PlusIcon } from '../../../assets/icons'
 import { ROUTES } from '../../../routes/routes'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
-import { useToggleModal } from '../../../hooks/useToogleModal'
 import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 
 const SelectTheMainIdea = ({
@@ -22,7 +21,7 @@ const SelectTheMainIdea = ({
    setDuration,
    setSelectType,
 }) => {
-   const { options, question, isLoading, isCreate, inOpen, isUpdateDisabled } =
+   const { options, question, isLoading, inOpen, isUpdateDisabled } =
       useSelector((state) => state.question)
 
    const [passage, setPassage] = useState('')
@@ -31,14 +30,18 @@ const SelectTheMainIdea = ({
    const [checkedOption, setCheckedOption] = useState(false)
    const [selectedOptionId, setSelectedOptionId] = useState(null)
 
-   const deleteModal = useToggleModal('delete')
-   const saveModal = useToggleModal('save')
+   const [modals, setModals] = useState({
+      delete: false,
+      save: false,
+   })
 
    const { testId, questionId } = useParams()
 
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
+
+   const { state } = useLocation()
 
    const changeCheckbox = (e) => setCheckedOption(e.target.checked)
 
@@ -60,17 +63,27 @@ const SelectTheMainIdea = ({
       }
    }
 
+   const toggleModal = (modalName) => {
+      setModals((prevModals) => ({
+         ...prevModals,
+         [modalName]: !prevModals[modalName],
+      }))
+
+      setOptionTitle('')
+      setCheckedOption(false)
+   }
+
    useEffect(() => {
-      if (questionId) {
+      if (state !== null) {
          dispatch(
             QUESTION_THUNKS.getQuestion({
-               id: questionId,
+               id: state.id,
                addUpdateOption: QUESTION_ACTIONS,
                optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
             })
          )
       }
-   }, [dispatch, questionId, isCreate])
+   }, [dispatch, state])
 
    useEffect(() => {
       if (questionId && question) {
@@ -87,13 +100,6 @@ const SelectTheMainIdea = ({
          }
       }
    }, [options, inOpen])
-
-   const handleOnClose = () => {
-      saveModal.onCloseModal()
-
-      setOptionTitle('')
-      setCheckedOption(false)
-   }
 
    const addOptionHandler = () => {
       const option = {
@@ -112,7 +118,7 @@ const SelectTheMainIdea = ({
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
-      handleOnClose()
+      toggleModal('save')
 
       if (options.selectTheMainIdeaOptions.length === 0 || checkedOption) {
          setSelectedOptionId(option.optionId)
@@ -132,7 +138,7 @@ const SelectTheMainIdea = ({
    }
 
    const deleteHandler = () => {
-      if (isCreate) {
+      if (state === null) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
@@ -160,7 +166,7 @@ const SelectTheMainIdea = ({
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
-      deleteModal.onCloseModal()
+      toggleModal('delete')
    }
 
    const onSubmit = () => {
@@ -175,7 +181,7 @@ const SelectTheMainIdea = ({
             })),
          }
 
-         if (isCreate) {
+         if (state === null) {
             dispatch(
                QUESTION_THUNKS.addTest({
                   requestData,
@@ -264,7 +270,7 @@ const SelectTheMainIdea = ({
          <Box className="add-button">
             <Button
                icon={<PlusIcon className="plus" />}
-               onClick={saveModal.onOpenModal}
+               onClick={() => toggleModal('save')}
             >
                ADD OPTIONS
             </Button>
@@ -278,7 +284,7 @@ const SelectTheMainIdea = ({
                   option={option}
                   isRadio
                   deletion
-                  toggleModal={deleteModal.onOpenModal}
+                  toggleModal={() => toggleModal('delete')}
                   setOptionId={setOptionId}
                   checkedHandler={checkedHandler}
                   selectedOptionId={selectedOptionId}
@@ -295,17 +301,17 @@ const SelectTheMainIdea = ({
 
             <Button
                variant="primary"
-               disabled={isCreate ? isDisabled : isUpdateDisabled}
+               disabled={state === null ? isDisabled : isUpdateDisabled}
                onClick={onSubmit}
             >
-               {isCreate ? 'SAVE' : 'UPDATE'}
+               {state === null ? 'SAVE' : 'UPDATE'}
             </Button>
          </Box>
 
          <DeleteModal
             isCloseIcon
-            isVisible={deleteModal.isOpen}
-            toggleModal={deleteModal.onCloseModal}
+            isVisible={modals.delete}
+            toggleModal={() => toggleModal('delete')}
             deleteHandler={deleteHandler}
          >
             <Typography className="modal-message">You can`t restore</Typography>
@@ -316,8 +322,8 @@ const SelectTheMainIdea = ({
             checkbox
             title={optionTitle}
             checked={checkedOption}
-            isVisible={saveModal.isOpen}
-            toggleModal={handleOnClose}
+            isVisible={modals.save}
+            toggleModal={() => toggleModal('save')}
             isDisabledModal={!isDisabledModal}
             addOptionHandler={addOptionHandler}
             changeTitleHandler={changeTitleHandler}
