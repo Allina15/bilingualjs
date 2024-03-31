@@ -6,10 +6,10 @@ import { Box, Typography, styled } from '@mui/material'
 import Button from '../../../UI/buttons/Button'
 import { SmallPauseIcon, SmallPlayIcon } from '../../../../assets/icons'
 
-const RecordSayingStatement = ({ isDisabled, saveHandler }) => {
+const ResultTypeWhatYouHear = ({ isDisabled, saveHandler }) => {
    const { answer } = useSelector((state) => state.answer)
 
-   const { audioFile, correctAnswer } = answer
+   const { fileUrl, correctAnswer, userAnswer, answerAttempts } = answer
 
    const [isPlaying, setIsPlaying] = useState(false)
 
@@ -26,14 +26,14 @@ const RecordSayingStatement = ({ isDisabled, saveHandler }) => {
       }
 
       const sound = new Howl({
-         src: audioFile,
+         src: fileUrl,
          html5: true,
          onend: () => setIsPlaying(false),
          onstop: () => setIsPlaying(false),
          onplay: () => setIsPlaying(true),
       })
-
       sound.play()
+
       setIsPlaying(true)
    }
 
@@ -41,7 +41,7 @@ const RecordSayingStatement = ({ isDisabled, saveHandler }) => {
 
    return (
       <StyledContainer>
-         <Box className="answers-box">
+         <Box className="admin-answers-box">
             <Button
                className={isPlaying ? 'stop-button' : 'play-button'}
                onClick={isPlaying ? stopSoundHandler : startSoundHandler}
@@ -63,6 +63,20 @@ const RecordSayingStatement = ({ isDisabled, saveHandler }) => {
             </Box>
          </Box>
 
+         <Typography className="user-answer">User`s Answer </Typography>
+
+         <Box className="user-answers-box">
+            <Typography className="user-title">Entered Statement:</Typography>
+
+            <Typography>{userAnswer}</Typography>
+         </Box>
+
+         <Box className="user-answers-box">
+            <Typography>Number of plays:</Typography>
+
+            <Typography>{answerAttempts}</Typography>
+         </Box>
+
          <Box className="buttons-box">
             <Button variant="secondary" onClick={navigateHandler}>
                GO BACK
@@ -80,7 +94,7 @@ const RecordSayingStatement = ({ isDisabled, saveHandler }) => {
    )
 }
 
-export default RecordSayingStatement
+export default ResultTypeWhatYouHear
 
 const StyledContainer = styled(Box)(() => ({
    color: '#4C4859',
@@ -93,7 +107,7 @@ const StyledContainer = styled(Box)(() => ({
       marginTop: '1.4rem',
    },
 
-   '& > .answers-box': {
+   '& > .admin-answers-box': {
       gap: '0.4rem',
       display: 'flex',
       alignItems: 'center',
@@ -150,6 +164,19 @@ const StyledContainer = styled(Box)(() => ({
          '& > .title': {
             fontWeight: 600,
          },
+      },
+   },
+
+   '& > .user-answers-box': {
+      width: '100%',
+      gap: '0.4rem',
+      display: 'flex',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      margin: '1rem 0 1rem 0',
+
+      '& > .user-title': {
+         fontWeight: 600,
       },
    },
 

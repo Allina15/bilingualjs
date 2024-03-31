@@ -4,7 +4,7 @@ import { Box, Typography, styled } from '@mui/material'
 import Radio from '../../../UI/Radio'
 import Button from '../../../UI/buttons/Button'
 
-const SelectTheMainIdea = ({ saveHandler }) => {
+const ResultSelectTheBestTitle = ({ saveHandler }) => {
    const { answer } = useSelector((state) => state.answer)
 
    const navigate = useNavigate()
@@ -66,7 +66,7 @@ const SelectTheMainIdea = ({ saveHandler }) => {
    )
 }
 
-export default SelectTheMainIdea
+export default ResultSelectTheBestTitle
 
 const StyledContainer = styled(Box)(() => ({
    color: '#4C4859',
