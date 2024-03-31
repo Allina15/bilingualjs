@@ -3,12 +3,26 @@ import { useState, useEffect, useCallback } from 'react'
 const useTimer = (durationInMinutes, timeIsUp, count) => {
    const durationInSeconds = durationInMinutes * 60
 
-   const [time, setTime] = useState(durationInSeconds)
+   const storedDuration = sessionStorage.getItem(`question-${count}-duration`)
+
+   const initialDuration = storedDuration
+      ? parseInt(storedDuration, 10)
+      : durationInSeconds
+
+   const [time, setTime] = useState(initialDuration)
    const [percent, setPercent] = useState(0)
 
    useEffect(() => {
-      setTime(durationInSeconds)
-   }, [durationInSeconds, count])
+      const timer = setInterval(() => {
+         sessionStorage.setItem(`question-${count}-duration`, time.toString())
+      }, 1000)
+
+      return () => clearInterval(timer)
+   }, [time, count])
+
+   useEffect(() => {
+      setTime(initialDuration)
+   }, [durationInSeconds, count, initialDuration])
 
    const calculatePercentage = useCallback(() => {
       const percent = (1 - time / durationInSeconds) * 100
