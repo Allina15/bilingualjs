@@ -28,7 +28,7 @@ const signUp = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data.message,
+            message: error.message,
             type: 'error',
          })
 
@@ -75,7 +75,7 @@ const signIn = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.message,
             type: 'error',
          })
 
@@ -104,7 +104,7 @@ const authWithGoogle = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to log in via Google!',
+            message: error.message,
             type: 'error',
          })
 
@@ -131,7 +131,7 @@ const forgotPassword = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: `${error.response.data.message}`,
+            message: error.message,
             type: 'error',
          })
          return rejectWithValue({ message: error.message })
@@ -157,7 +157,7 @@ const verificationCode = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: `${error.response.data.message}`,
+            message: error.message,
             type: 'error',
          })
 
@@ -190,7 +190,7 @@ const changePassword = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: `${error.response.data}`,
+            message: error.message,
             type: 'error',
          })
 

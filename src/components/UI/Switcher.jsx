@@ -10,10 +10,10 @@ const Switcher = forwardRef(({ checked, onChange, disabled, ...rest }, ref) => {
       setChecked(checked)
    }, [checked])
 
-   const handleChange = async (event) => {
+   const changeHandler = async (e) => {
       try {
-         setChecked(event.target.checked)
-         await onChange(event.target.checked)
+         setChecked(e.target.checked)
+         await onChange(e.target.checked)
       } catch (error) {
          setError(error.message)
       }
@@ -24,7 +24,7 @@ const Switcher = forwardRef(({ checked, onChange, disabled, ...rest }, ref) => {
          <FormControlLabel
             control={
                <StyledSwitch
-                  onChange={handleChange}
+                  onChange={changeHandler}
                   disabled={disabled}
                   ref={ref}
                   checked={isChecked}
@@ -32,6 +32,7 @@ const Switcher = forwardRef(({ checked, onChange, disabled, ...rest }, ref) => {
                />
             }
          />
+
          {error && <ErrorMessage>{error}</ErrorMessage>}
       </>
    )

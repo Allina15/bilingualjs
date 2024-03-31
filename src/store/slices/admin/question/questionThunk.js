@@ -6,7 +6,7 @@ import { TESTS_THUNKS } from '../tests/testsThunk'
 import { ROUTES } from '../../../../routes/routes'
 
 const addTest = createAsyncThunk(
-   'question/saveTest',
+   'question/addTest',
 
    async (
       {
@@ -39,7 +39,7 @@ const addTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to save question!',
+            message: error.message,
             type: 'error',
          })
 
@@ -67,7 +67,7 @@ const addFile = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to file!',
+            message: error.message,
             type: 'error',
          })
 
@@ -130,7 +130,7 @@ const addQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Error creating question',
+            message: error.message,
             type: 'error',
          })
 
@@ -160,7 +160,7 @@ const deleteQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to delete test',
+            message: error.message,
             type: 'error',
          })
 
@@ -258,12 +258,12 @@ const updateQuestionByEnable = createAsyncThunk(
          dispatch(TESTS_THUNKS.getTest({ id: testId }))
 
          showNotification({
-            message: 'Failed to update question',
-            type: 'error',
             title: 'Error',
+            message: error.message,
+            type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )

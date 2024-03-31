@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
 import Button from '../../UI/buttons/Button'
-import { NoData } from '../../../assets/images'
 import {
    ScrollBottomArrowIcon,
    ScrollTopArrowIcon,
 } from '../../../assets/icons'
+import { NoData } from '../../../assets/images'
 import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const RespondInAtLeastWord = ({ questions, nextHandler }) => {
@@ -14,7 +14,7 @@ const RespondInAtLeastWord = ({ questions, nextHandler }) => {
 
    const dispatch = useDispatch()
 
-   const changeTextHandler = (e) => setText(e.target.value)
+   const changeTextHandler = (e) => setText(e.target.value || '')
 
    const countWords = (text) => {
       const wordsArray = text.split(' ').filter((word) => word !== '')

@@ -4,7 +4,7 @@ import { styled, TextField } from '@mui/material'
 const TextArea = forwardRef(
    ({ handleChange, value, placeholder, rows, ...props }, ref) => {
       return (
-         <TextAreaStyle
+         <StyledTextArea
             {...props}
             multiline
             minRows={rows}
@@ -20,7 +20,7 @@ const TextArea = forwardRef(
 
 export default TextArea
 
-const TextAreaStyle = styled(TextField)(({ theme }) => ({
+const StyledTextArea = styled(TextField)(({ theme }) => ({
    width: '100%',
    fontStyle: 'normal',
    fontWeight: 400,
@@ -29,11 +29,12 @@ const TextAreaStyle = styled(TextField)(({ theme }) => ({
    letterSpacing: '0.03em',
    textTransform: 'uppercase',
 
-   ' & .MuiInputBase-root': {
+   '& .MuiInputBase-root': {
       borderRadius: '8px',
       padding: '14px 16px ',
    },
-   ' & .MuiInputBase-input': {
+
+   '& .MuiInputBase-input': {
       color: theme.palette.primary.fontColor,
       fontFamily: 'Poppins',
    },

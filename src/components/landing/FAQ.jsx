@@ -13,8 +13,9 @@ import { QUESTIONS } from '../../utils/constants'
 const FAQ = () => {
    const [expanded, setExpanded] = useState(null)
 
-   const handleExpandClick = (index) =>
+   const expandClickHandler = (index) => {
       setExpanded((prev) => (prev === index ? null : index))
+   }
 
    return (
       <StyledList className="list">
@@ -26,7 +27,7 @@ const FAQ = () => {
             <Fragment key={question}>
                <Divider className="divider" />
 
-               <ListItemButton onClick={() => handleExpandClick(index)}>
+               <ListItemButton onClick={() => expandClickHandler(index)}>
                   <Typography className="question">{question}</Typography>
 
                   <StyledPlus

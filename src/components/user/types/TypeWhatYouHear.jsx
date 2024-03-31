@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
 import TextArea from '../../UI/TextArea'
 import Button from '../../UI/buttons/Button'
-import { NoData } from '../../../assets/images'
 import { GradientListenerIcon } from '../../../assets/icons'
+import { NoData } from '../../../assets/images'
 import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const TypeWhatYouHear = ({ questions, nextHandler }) => {
@@ -12,9 +12,9 @@ const TypeWhatYouHear = ({ questions, nextHandler }) => {
    const [isPlaying, setIsPlaying] = useState(false)
    const [replays, setReplays] = useState(questions.attempts)
 
-   const soundRef = useRef(null)
-
    const dispatch = useDispatch()
+
+   const soundRef = useRef(null)
 
    const changeDescriptionHandler = (e) => setDescription(e.target.value)
 
@@ -32,12 +32,10 @@ const TypeWhatYouHear = ({ questions, nextHandler }) => {
       }
    }
 
-   const handleEnd = () => {
+   const endHandler = () => {
       setIsPlaying(false)
 
-      if (replays > 0) {
-         setReplays((prevReplays) => prevReplays - 1)
-      }
+      if (replays > 0) setReplays((prevReplays) => prevReplays - 1)
    }
 
    const onSubmit = () => {
@@ -69,7 +67,7 @@ const TypeWhatYouHear = ({ questions, nextHandler }) => {
                      ref={soundRef}
                      className="audio"
                      type="audio/mp3"
-                     onEnded={handleEnd}
+                     onEnded={endHandler}
                   >
                      <track kind="captions" srcLang="english" />
 

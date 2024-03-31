@@ -155,10 +155,12 @@ const Questions = () => {
             </StyledTable>
 
             {test && test?.question?.length > 0 ? (
-               test?.question?.map((item, index) =>
-                  isLoading ? (
+               test?.question?.map((question, index) => {
+                  const { id, title, duration, questionType, enable } = question
+
+                  return isLoading ? (
                      <Skeleton
-                        key={item.id}
+                        key={id}
                         variant="rounded"
                         width={900}
                         height={66}
@@ -166,48 +168,46 @@ const Questions = () => {
                         className="skeleton-questions"
                      />
                   ) : (
-                     <StyledBox key={item.id}>
+                     <StyledBox key={id}>
                         <Typography className="numbering">
                            {index + 1}
                         </Typography>
 
-                        <Tooltip title={item.title}>
+                        <Tooltip title={title}>
                            <Typography className="name-props">
-                              {item.title}
+                              {title}
                            </Typography>
                         </Tooltip>
 
                         <Typography className="duration-props">
-                           {item.duration} m
+                           {duration} m
                         </Typography>
 
                         <Typography className="question-type-props">
-                           {questionTypeHandler(item.questionType)}
+                           {questionTypeHandler(questionType)}
                         </Typography>
 
                         <Box className="icons">
                            <Switcher
-                              key={item.id}
+                              key={id}
                               className="switcher"
-                              checked={item.enable}
-                              onChange={(value) =>
-                                 enableHandler({ value, id: item.id })
-                              }
+                              checked={enable}
+                              onChange={(value) => enableHandler({ value, id })}
                            />
 
                            <EditIcon
                               className="edit"
-                              onClick={() => navigateEditHandler(item, item.id)}
+                              onClick={() => navigateEditHandler(question, id)}
                            />
 
                            <TrashIcon
                               className="delete"
-                              onClick={() => toggleModal(item.id)}
+                              onClick={() => toggleModal(id)}
                            />
                         </Box>
                      </StyledBox>
                   )
-               )
+               })
             ) : (
                <Box className="no-data-image">
                   <img src={NoDataImage} alt="no-data" />

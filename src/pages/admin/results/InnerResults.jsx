@@ -6,24 +6,25 @@ import { Box, Skeleton, Typography, styled } from '@mui/material'
 import Button from '../../../components/UI/buttons/Button'
 import TestContainer from '../../../components/UI/TestContainer'
 import IconButton from '../../../components/UI/buttons/IconButton'
-import { NoDataImage } from '../../../assets/images'
 import { CheckedIcon, EyeIcon } from '../../../assets/icons'
-import { ROUTES } from '../../../routes/routes'
-import { SUBMITTED_RESULTS_THUNKS } from '../../../store/slices/admin/results/submitedResultsThunk'
+import { NoDataImage } from '../../../assets/images'
 import {
    questionTypeHandler,
    resultsStatusHandler,
 } from '../../../utils/helpers'
+import { SUBMITTED_RESULTS_THUNKS } from '../../../store/slices/admin/results/submitedResultsThunk'
+import { ROUTES } from '../../../routes/routes'
 
 const InnerResults = () => {
    const { evaluations, isLoading, isSendLoading } = useSelector(
       (state) => state.submitedResults
    )
-   const { resultId } = useParams()
 
    const navigate = useNavigate()
 
    const dispatch = useDispatch()
+
+   const { resultId } = useParams()
 
    useEffect(() => {
       dispatch(SUBMITTED_RESULTS_THUNKS.getResult({ resultId }))

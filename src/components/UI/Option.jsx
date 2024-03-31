@@ -43,13 +43,12 @@ const Option = ({
 
    const stopSoundHandler = () => {
       Howler.stop()
+
       setIsPlaying(false)
    }
 
    const startSoundHandler = () => {
-      if (!isPlaying) {
-         stopSoundHandler()
-      }
+      if (!isPlaying) stopSoundHandler()
 
       const sound = new Howl({
          src: fileUrl,
@@ -58,6 +57,7 @@ const Option = ({
          onstop: () => setIsPlaying(false),
          onplay: () => setIsPlaying(true),
       })
+
       sound.play()
 
       setIsPlaying(true)
@@ -67,7 +67,6 @@ const Option = ({
       toggleModal((prev) => !prev)
 
       setOptionId(optionId)
-
       stopSoundHandler()
    }
 

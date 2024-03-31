@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
 import Button from '../../UI/buttons/Button'
-import { NoData } from '../../../assets/images'
 import { RecordingIcon, SpeakManIcon } from '../../../assets/icons'
+import { NoData } from '../../../assets/images'
+import { showNotification } from '../../../utils/helpers/notification'
 import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practice-test/practiceTestThunk'
-import { showNotification } from '../../../utils/helpers/notification'
 
 const RecordSayingStatement = ({ questions, nextHandler }) => {
    const { fileUrl, isLoading } = useSelector((state) => state.practiceTest)
@@ -36,17 +36,22 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
          const loop = () => {
             window.requestAnimationFrame(loop)
             analyser.getByteFrequencyData(array)
+
             const elements = []
+
             for (let i = 0; i < num; i += 1) {
                const height = array[i + num]
+
                elements.push({
                   height,
                   opacity: 0.008 * height,
                   key: Math.random(),
                })
             }
+
             setMyElements(elements)
          }
+
          loop()
       }
    }, [analyser, array])
@@ -89,7 +94,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
             mediaRecorderInstance.start()
          })
          .catch((error) => {
-            showNotification({ message: 'Something went wrong', type: error })
+            showNotification({ message: error.message, type: 'error' })
          })
    }
 
@@ -97,19 +102,13 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
       setIsRecording(false)
       setShowNextButton(true)
 
-      if (stream) {
-         stream.getTracks().forEach((track) => track.stop())
-      }
+      if (stream) stream.getTracks().forEach((track) => track.stop())
 
-      if (analyser) {
-         analyser.disconnect()
-      }
+      if (analyser) analyser.disconnect()
    }
 
    useEffect(() => {
-      return () => {
-         stopRecordingHandler()
-      }
+      return () => stopRecordingHandler()
    }, [])
 
    const onSubmit = () => {
@@ -124,6 +123,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
 
       nextHandler()
+
       setMediaRecorder(null)
    }
 

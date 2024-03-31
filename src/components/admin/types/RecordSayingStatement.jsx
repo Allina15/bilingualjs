@@ -5,8 +5,8 @@ import { Box, Typography, styled } from '@mui/material'
 import Input from '../../UI/Input'
 import Button from '../../UI/buttons/Button'
 import Loading from '../../Loading'
-import { ROUTES } from '../../../routes/routes'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
+import { ROUTES } from '../../../routes/routes'
 import { QUESTION_TITLES } from '../../../utils/constants'
 
 const RecordSayingStatement = ({
@@ -21,30 +21,25 @@ const RecordSayingStatement = ({
 
    const [statement, setStatement] = useState('')
 
-   const { testId } = useParams()
-   const { state } = useLocation()
-
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
+
+   const { testId } = useParams()
+
+   const { state } = useLocation()
 
    useEffect(() => {
       if (state !== null) {
          dispatch(QUESTION_THUNKS.getQuestion({ id: state?.id }))
       }
-   }, [dispatch, state])
+   }, [state])
 
    useEffect(() => {
-      if (state !== null && question) {
-         setStatement(question?.correctAnswer)
-      }
+      if (state !== null && question) setStatement(question?.correctAnswer)
    }, [state, question])
 
-   const statementChangeHandler = (e) => {
-      const { value } = e.target
-
-      setStatement(value || '')
-   }
+   const changeStatementHandler = (e) => setStatement(e.target.value || '')
 
    const onSubmit = () => {
       if (selectType !== '' && +duration !== 0 && title !== '') {
@@ -121,7 +116,7 @@ const RecordSayingStatement = ({
             <Input
                type="text"
                value={statement || ''}
-               onChange={statementChangeHandler}
+               onChange={changeStatementHandler}
                autoComplete="off"
             />
          </Box>
