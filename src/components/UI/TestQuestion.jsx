@@ -7,7 +7,7 @@ import TestContainer from './TestContainer'
 import Loading from '../Loading'
 import { ANSWER_THUNKS } from '../../store/slices/admin/answer/answerThunk'
 import { QUESTION_TITLES } from '../../utils/constants'
-import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/AdminQuestionComponents'
+import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 import { questionTypeHandler } from '../../utils/helpers'
 import { showNotification } from '../../utils/helpers/notification'
 

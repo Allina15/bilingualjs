@@ -214,9 +214,13 @@ const questionSlice = createSlice({
             state.isLoading = true
          })
 
-         .addCase(QUESTION_THUNKS.updateQuestionByEnable.fulfilled, (state) => {
-            state.isLoading = false
-         })
+         .addCase(
+            QUESTION_THUNKS.updateQuestionByEnable.fulfilled,
+            (state, { payload }) => {
+               state.isLoading = false
+               state.duration = payload.duration
+            }
+         )
 
          .addCase(QUESTION_THUNKS.updateQuestionByEnable.rejected, (state) => {
             state.isLoading = false

@@ -20,7 +20,6 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
    const [showNextButton, setShowNextButton] = useState(false)
 
    const dispatch = useDispatch()
-
    const num = 18
    const width = 7
 
@@ -105,12 +104,6 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
          analyser.disconnect()
       }
    }
-
-   useEffect(() => {
-      return () => {
-         stopRecordingHandler()
-      }
-   }, [])
 
    const onSubmit = () => {
       const answerData = {

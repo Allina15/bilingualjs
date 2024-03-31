@@ -124,8 +124,7 @@ const Questions = () => {
                   <Box className="text">
                      <Typography className="title">Duration:</Typography>
                      <Typography>
-                        {/* {test?.duration === 0 ? '00' : test?.duration}:00 */}
-                        {test?.duration}:00
+                        {test?.duration === 0 ? '00' : test?.duration}:00
                      </Typography>
                   </Box>
                )}

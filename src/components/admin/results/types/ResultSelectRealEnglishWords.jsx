@@ -4,7 +4,7 @@ import { Box, Typography, styled } from '@mui/material'
 import Option from '../../../UI/Option'
 import Button from '../../../UI/buttons/Button'
 
-const SelectRealEnglishWords = ({ isDisabled, saveHandler }) => {
+const ResultResultSelectRealEnglishWords = ({ isDisabled, saveHandler }) => {
    const { answer } = useSelector((state) => state.answer)
 
    const navigate = useNavigate()
@@ -24,9 +24,8 @@ const SelectRealEnglishWords = ({ isDisabled, saveHandler }) => {
                />
             ))}
          </Box>
-
+         Result
          <Typography className="user-answer">User`s Answer </Typography>
-
          <Box className="user-options-box">
             {answer?.userOptionResponses?.map(({ optionId, optionTitle }) => (
                <Box key={optionId} className="option">
@@ -34,7 +33,6 @@ const SelectRealEnglishWords = ({ isDisabled, saveHandler }) => {
                </Box>
             ))}
          </Box>
-
          <Box className="buttons-box">
             <Button variant="secondary" onClick={navigateHandler}>
                GO BACK
@@ -52,7 +50,7 @@ const SelectRealEnglishWords = ({ isDisabled, saveHandler }) => {
    )
 }
 
-export default SelectRealEnglishWords
+export default ResultResultSelectRealEnglishWords
 
 const StyledContainer = styled(Box)(() => ({
    color: '#4C4859',
