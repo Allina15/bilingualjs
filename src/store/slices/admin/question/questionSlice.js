@@ -8,7 +8,6 @@ const initialState = {
    statement: '',
    passage: '',
    attempts: 0,
-   isCreate: false,
    isUpdateDisabled: true,
    inOpen: true,
    correctAnswer: '',
@@ -37,10 +36,6 @@ const questionSlice = createSlice({
             state.options[payload?.optionName] =
                payload?.optionResponses?.questionOptionResponses
          }
-      },
-
-      changeIsUpdate: (state, { payload }) => {
-         state.isCreate = payload
       },
 
       changeIsdisabled: (state, { payload }) => {

@@ -1,8 +1,7 @@
+import Cookies from 'js-cookie'
 import { createSlice } from '@reduxjs/toolkit'
 import { AUTH_THUNKS } from './authThunk'
 import { ROLES } from '../../../routes/routes'
-
-const BILINGUAL = process.env.BINGUAL
 
 const initialState = {
    role: ROLES.GUEST,
@@ -24,7 +23,7 @@ const authSlice = createSlice({
          state.role = ROLES.GUEST
          state.email = null
 
-         localStorage.removeItem(BILINGUAL)
+         Cookies.remove('BILINGUAL')
 
          payload.navigate('/')
       },

@@ -5,7 +5,7 @@ import { showNotification } from '../../../../utils/helpers/notification'
 const initialState = {
    questions: [],
    correctOptions: [],
-   correctAnswer: [],
+   correctAnswer: JSON.parse(sessionStorage.getItem('correctAnswer')) || [],
    fileUrl: '',
    isDisabled: false,
    isLoading: false,
@@ -32,10 +32,17 @@ const practiceTestSlice = createSlice({
 
       addCorrectAnswer: (state, { payload }) => {
          state.correctAnswer.push(payload)
+
+         sessionStorage.setItem(
+            'correctAnswer',
+            JSON.stringify(state.correctAnswer)
+         )
       },
 
       clearCorrectAnswer: (state) => {
          state.correctAnswer = []
+
+         sessionStorage.removeItem('correctAnswer')
       },
    },
 

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Box, Typography, styled } from '@mui/material'
+import Cookies from 'js-cookie'
 import { motion } from 'framer-motion'
+import { Box, Typography, styled } from '@mui/material'
 import LandingButton from '../UI/buttons/LandingButton'
 import { BackgroundIntroImage } from '../../assets/images'
 import {
@@ -18,6 +19,7 @@ import {
    ThirdPaperIcon,
 } from '../../assets/icons'
 import { ROUTES } from '../../routes/routes'
+import { AUTH_THUNKS } from '../../store/slices/auth/authThunk'
 
 const Intro = () => {
    const { isAuth } = useSelector((state) => state.auth)
@@ -25,6 +27,8 @@ const Intro = () => {
    const [isVisible, setIsVisible] = useState(false)
 
    const navigate = useNavigate()
+
+   const dispatch = useDispatch()
 
    const beginHandler = () => {
       if (isAuth) navigate(ROUTES.USER.INDEX, { replace: true })
@@ -35,6 +39,16 @@ const Intro = () => {
       const timeoutId = setTimeout(() => setIsVisible(true), 100)
 
       return () => clearTimeout(timeoutId)
+   }, [])
+
+   useEffect(() => {
+      const storedUserData = Cookies.get('BILINGUAL')
+
+      if (storedUserData) {
+         const userData = JSON.parse(storedUserData)
+
+         dispatch(AUTH_THUNKS.signIn({ values: userData, navigate }))
+      }
    }, [])
 
    return (

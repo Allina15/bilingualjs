@@ -39,6 +39,7 @@ const OUR_TEAM = [
          borderRadius: '2.5rem 0rem',
       },
    },
+
    {
       id: 2,
       img: SecondMemberImage,
@@ -49,6 +50,7 @@ const OUR_TEAM = [
          borderRadius: '2.5rem 0rem 0rem 0rem',
       },
    },
+
    {
       id: 3,
       img: ThirdMemberImage,
@@ -59,6 +61,7 @@ const OUR_TEAM = [
          borderRadius: '0rem 2.5rem 0rem 0rem',
       },
    },
+
    {
       id: 4,
       img: FourthMemberImage,
@@ -69,6 +72,7 @@ const OUR_TEAM = [
          borderRadius: '2.5rem 0rem',
       },
    },
+
    {
       id: 5,
       img: FifthMemberImage,
@@ -79,6 +83,7 @@ const OUR_TEAM = [
          borderRadius: '0rem 0rem 2.5rem 0rem',
       },
    },
+
    {
       id: 6,
       img: SixthMemberImage,
@@ -89,6 +94,7 @@ const OUR_TEAM = [
          borderRadius: '2.5rem 0rem',
       },
    },
+
    {
       id: 7,
       img: SeventhMemberImage,
@@ -188,6 +194,7 @@ const VIDEOS = [
       name: 'The benefits of a bilingual brain',
       duration: 'Duration 5:03',
    },
+
    {
       id: 2,
       poster: SecondPosterVideoImage,
@@ -195,6 +202,7 @@ const VIDEOS = [
       name: 'Test Walkthrough',
       duration: 'Duration 1:02',
    },
+
    {
       id: 3,
       poster: ThirdPosterVideoImage,
@@ -213,6 +221,7 @@ const FEEDBACKS = [
       rating: 5,
       avatar: FirstPersonImage,
    },
+
    {
       id: 2,
       description:
@@ -221,6 +230,7 @@ const FEEDBACKS = [
       rating: 5,
       avatar: SecondPersonImage,
    },
+
    {
       id: 3,
       description:
@@ -229,6 +239,7 @@ const FEEDBACKS = [
       rating: 5,
       avatar: ThirdPersonImage,
    },
+
    {
       id: 4,
       description:
@@ -237,6 +248,7 @@ const FEEDBACKS = [
       rating: 4,
       avatar: FourthPersonImage,
    },
+
    {
       id: 5,
       description:
@@ -245,6 +257,7 @@ const FEEDBACKS = [
       rating: 5,
       avatar: FifthPersonImage,
    },
+
    {
       id: 6,
       description:
@@ -270,26 +283,31 @@ const PARTNERS = [
       partner: FirstPartnerImage,
       name: 'Rodonit',
    },
+
    {
       id: 2,
       partner: SecondPartnerImage,
       name: 'BASF',
    },
+
    {
       id: 3,
       partner: ThirdPartnerImage,
       name: 'Lidea',
    },
+
    {
       id: 4,
       partner: FourthPartnerImage,
       name: 'Adama',
    },
+
    {
       id: 5,
       partner: FifthPartnerImage,
       name: 'Dekalb',
    },
+
    {
       id: 6,
       partner: SixthPartnerImage,
@@ -302,23 +320,27 @@ const QUESTIONS = [
       question: 'What is Bilingual?',
       answer: 'Bilingual is a language testing service.',
    },
+
    {
       question: 'How can I show what I am typing during the test?',
       answer:
          'Please take the test in a separate, quiet room. Close all other windows and close all other programs before starting the test. An external USB keyboard or mouse can be used during the test. However, when answering test questions, you should only type on one keyboard and use one mouse. Dont switch between multiple keyboards or mice.',
    },
+
    {
       question: 'Why should I take the Bilingual English Test?',
       answer:
          'The Bilingual English Test is a reliable and accurate way to assess your English proficiency.',
    },
+
    {
       question: 'How can I make sure my microphone picks up my voice clearly?',
       answer: 'Speak clearly and directly into your microphone.',
    },
+
    {
-      question: 'How can I allow a test to record my computers screen?',
-      answer: 'You will be prompted during the test to allow screen recording.',
+      question: 'How can I take the test?',
+      answer: 'You can watch the video above among the useful videos.',
    },
 ]
 
@@ -331,16 +353,19 @@ const SIGN_UP_INPUTS = [
       label: 'First name',
       type: 'text',
    },
+
    {
       name: 'lastName',
       label: 'Last name',
       type: 'text',
    },
+
    {
       name: 'email',
       label: 'Email',
       type: 'email',
    },
+
    {
       name: 'password',
       label: 'Password',
@@ -353,34 +378,42 @@ const OPTIONS = [
       id: 1,
       title: 'Select the real english word',
    },
+
    {
       id: 2,
       title: 'Listen and select word',
    },
+
    {
       id: 3,
       title: 'Type what you hear',
    },
+
    {
       id: 4,
       title: 'Describe image',
    },
+
    {
       id: 5,
       title: 'Record saying statement',
    },
+
    {
       id: 6,
       title: 'Respond in at least N words',
    },
+
    {
       id: 7,
       title: 'Highlights the answer',
    },
+
    {
       id: 8,
       title: 'Select the main idea',
    },
+
    {
       id: 9,
       title: 'Select the best title',
