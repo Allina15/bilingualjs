@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
 import Option from '../../UI/Option'
 import Button from '../../UI/buttons/Button'
@@ -11,7 +11,6 @@ import { ROUTES } from '../../../routes/routes'
 import { PlusIcon } from '../../../assets/icons'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
-import { useToggleModal } from '../../../hooks/useToogleModal'
 import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 
 const SelectRealEnglish = ({
@@ -22,33 +21,48 @@ const SelectRealEnglish = ({
    setDuration,
    setSelectType,
 }) => {
-   const { options, isLoading, isCreate, inOpen, isUpdateDisabled } =
-      useSelector((state) => state.question)
+   const { options, isLoading, inOpen, isUpdateDisabled } = useSelector(
+      (state) => state.question
+   )
 
    const [optionId, setOptionId] = useState(null)
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
 
-   const { testId, questionId } = useParams()
+   const { testId } = useParams()
 
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
 
-   const deleteModal = useToggleModal('delete')
-   const saveModal = useToggleModal('save')
+   const { state } = useLocation()
+
+   const [modals, setModals] = useState({
+      delete: false,
+      save: false,
+   })
+
+   const toggleModal = (modalName) => {
+      setModals((prevModals) => ({
+         ...prevModals,
+         [modalName]: !prevModals[modalName],
+      }))
+
+      setOptionTitle('')
+      setCheckedOption(false)
+   }
 
    useEffect(() => {
-      if (questionId) {
+      if (state !== null) {
          dispatch(
             QUESTION_THUNKS.getQuestion({
-               id: questionId,
+               id: state.id,
                addUpdateOption: QUESTION_ACTIONS,
                optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
             })
          )
       }
-   }, [dispatch, questionId])
+   }, [dispatch, state])
 
    useEffect(() => {
       if (inOpen === false) {
@@ -63,13 +77,6 @@ const SelectRealEnglish = ({
    const changeCheckbox = (e) => setCheckedOption(e.target.checked)
 
    const changeTitleHandler = (e) => setOptionTitle(e.target.value)
-
-   const handleOnClose = () => {
-      saveModal.onCloseModal()
-
-      setOptionTitle('')
-      setCheckedOption(false)
-   }
 
    const addOptionHandler = () => {
       const option = {
@@ -88,7 +95,7 @@ const SelectRealEnglish = ({
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
-      handleOnClose()
+      toggleModal('save')
    }
 
    const checkedHandler = (optionId) => {
@@ -104,7 +111,7 @@ const SelectRealEnglish = ({
    }
 
    const deleteHandler = () => {
-      if (isCreate) {
+      if (state === null) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
@@ -122,7 +129,7 @@ const SelectRealEnglish = ({
          dispatch(
             QUESTION_THUNKS.deleteOption({
                optionId,
-               id: questionId,
+               id: state.id,
                optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
                addUpdateOption: QUESTION_ACTIONS,
             })
@@ -132,7 +139,7 @@ const SelectRealEnglish = ({
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
-      deleteModal.onCloseModal()
+      toggleModal('delete')
    }
 
    const deleteOption = options?.selectRealEnglishWordsOptions?.find(
@@ -150,7 +157,7 @@ const SelectRealEnglish = ({
             })),
          }
 
-         if (isCreate) {
+         if (state === null) {
             dispatch(
                QUESTION_THUNKS.addTest({
                   requestData,
@@ -186,7 +193,7 @@ const SelectRealEnglish = ({
 
             dispatch(
                QUESTION_THUNKS.updateQuestion({
-                  id: questionId,
+                  id: state.id,
                   requestData,
                   testId,
                   navigate,
@@ -224,7 +231,7 @@ const SelectRealEnglish = ({
 
             <Box className="add-button">
                <Button
-                  onClick={saveModal.onOpenModal}
+                  onClick={() => toggleModal('save')}
                   icon={<PlusIcon className="plus" />}
                >
                   Add Options
@@ -238,7 +245,7 @@ const SelectRealEnglish = ({
                      index={index}
                      deletion
                      option={option}
-                     toggleModal={deleteModal.onOpenModal}
+                     toggleModal={() => toggleModal('delete')}
                      setOptionId={setOptionId}
                      checkedHandler={checkedHandler}
                   />
@@ -252,18 +259,18 @@ const SelectRealEnglish = ({
 
                <Button
                   variant="primary"
-                  disabled={isCreate ? isDisabled : isUpdateDisabled}
+                  disabled={state === null ? isDisabled : isUpdateDisabled}
                   onClick={onSubmit}
                >
-                  {isCreate ? 'SAVE' : 'UPDATE'}
+                  {state === null ? 'SAVE' : 'UPDATE'}
                </Button>
             </Box>
          </StyledContainer>
 
          <DeleteModal
             isCloseIcon
-            isVisible={deleteModal.isOpen}
-            toggleModal={deleteModal.onCloseModal}
+            isVisible={modals.delete}
+            toggleModal={() => toggleModal('delete')}
             deleteHandler={deleteHandler}
          >
             <Typography className="title" variant="p">
@@ -280,8 +287,8 @@ const SelectRealEnglish = ({
             checkbox
             title={optionTitle}
             checked={checkedOption}
-            isVisible={saveModal.isOpen}
-            toggleModal={handleOnClose}
+            isVisible={modals.save}
+            toggleModal={() => toggleModal('save')}
             isDisabledModal={!isDisabledModal}
             addOptionHandler={addOptionHandler}
             changeTitleHandler={changeTitleHandler}
