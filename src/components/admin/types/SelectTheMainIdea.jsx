@@ -29,38 +29,29 @@ const SelectTheMainIdea = ({
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
    const [selectedOptionId, setSelectedOptionId] = useState(null)
-
    const [modals, setModals] = useState({
       delete: false,
       save: false,
    })
 
-   const { testId, questionId } = useParams()
-
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
 
+   const { testId, questionId } = useParams()
+
    const { state } = useLocation()
 
-   const changeCheckbox = (e) => setCheckedOption(e.target.checked)
+   const changeCheckboxHandler = (e) => setCheckedOption(e.target.checked)
 
-   const changeTitleHandler = (e) => {
-      const { value } = e.target
-
-      setOptionTitle(value || '')
-   }
+   const changeTitleHandler = (e) => setOptionTitle(e.target.value || '')
 
    const changeTextAreaHandler = (e) => {
-      const { value } = e.target
-
-      setPassage(value || '')
+      setPassage(e.target.value || '')
 
       if (passage === options?.passage) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-      } else {
-         dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      }
+      } else dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
    }
 
    const toggleModal = (modalName) => {
@@ -68,7 +59,6 @@ const SelectTheMainIdea = ({
          ...prevModals,
          [modalName]: !prevModals[modalName],
       }))
-
       setOptionTitle('')
       setCheckedOption(false)
    }
@@ -83,21 +73,17 @@ const SelectTheMainIdea = ({
             })
          )
       }
-   }, [dispatch, state])
+   }, [state])
 
    useEffect(() => {
-      if (questionId && question) {
-         setPassage(question?.passage)
-      }
+      if (questionId && question) setPassage(question?.passage)
    }, [questionId, question])
 
    useEffect(() => {
       if (inOpen === false) {
          if (options.selectTheMainIdeaOptions?.length <= 1) {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-         } else {
-            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-         }
+         } else dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       }
    }, [options, inOpen])
 
@@ -114,7 +100,6 @@ const SelectTheMainIdea = ({
             optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
          })
       )
-
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
@@ -132,7 +117,6 @@ const SelectTheMainIdea = ({
             optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
          })
       )
-
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
@@ -225,7 +209,6 @@ const SelectTheMainIdea = ({
                   clearOptions: QUESTION_ACTIONS,
                })
             )
-
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
          }
       }
@@ -277,10 +260,10 @@ const SelectTheMainIdea = ({
          </Box>
 
          <Box className="cards">
-            {options.selectTheMainIdeaOptions?.map((option, index) => (
+            {options.selectTheMainIdeaOptions?.map((option, i) => (
                <Option
                   key={option.optionId}
-                  index={index}
+                  index={i}
                   option={option}
                   isRadio
                   deletion
@@ -327,7 +310,7 @@ const SelectTheMainIdea = ({
             isDisabledModal={!isDisabledModal}
             addOptionHandler={addOptionHandler}
             changeTitleHandler={changeTitleHandler}
-            changeCheckboxHandler={changeCheckbox}
+            changeCheckboxHandler={changeCheckboxHandler}
          />
       </StyledContainer>
    )

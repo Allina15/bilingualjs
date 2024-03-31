@@ -7,7 +7,7 @@ import { ROUTES } from '../../../../routes/routes'
 const getQuestions = createAsyncThunk(
    'practiceTest/getQuestions',
 
-   async ({ testId }) => {
+   async ({ testId }, { rejectWithValue }) => {
       try {
          const { data } = await axiosInstance.get(
             `/api/question?testId=${testId}`
@@ -15,21 +15,19 @@ const getQuestions = createAsyncThunk(
 
          return data
       } catch (error) {
-         if (error.response) {
-            showNotification({
-               title: 'Error',
-               message: `${error.response.data.message}`,
-               type: 'error',
-            })
-         }
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
 
-         return error.response.data.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
 
 const addAnswer = createAsyncThunk(
-   'practiceTest/postTest',
+   'practiceTest/addAnswer',
 
    async (
       { correctAnswer, navigate, clearAnswer },
@@ -48,7 +46,7 @@ const addAnswer = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: `${error.response.data.message}`,
+            message: error.message,
             type: 'error',
          })
 
@@ -71,7 +69,7 @@ const addAnswerFile = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to file!',
+            message: error.message,
             type: 'error',
          })
 

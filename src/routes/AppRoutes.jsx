@@ -1,11 +1,11 @@
 import { lazy } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { ROLES, ROUTES } from './routes'
-import { ADMIN_ROUTES } from './AdminRoutes'
-import { USER_ROUTES } from './UserRoutes'
 import ProtectedRoute from './ProtectedRoute'
 import Suspense from './Suspense'
 import Home from '../pages/home/Home'
+import { ADMIN_ROUTES } from './AdminRoutes'
+import { USER_ROUTES } from './UserRoutes'
+import { ROLES, ROUTES } from './routes'
 
 const Verification = lazy(() => import('../pages/verification/Verification'))
 const AdminLayout = lazy(() => import('../layout/admin/AdminLayout'))

@@ -5,7 +5,7 @@ import { NotFoundImage } from '../assets/images'
 const NotFound = () => {
    const navigate = useNavigate()
 
-   const handleGoBack = () => navigate(-1)
+   const goBackHandler = () => navigate(-1)
 
    return (
       <StyledContainer>
@@ -21,7 +21,7 @@ const NotFound = () => {
                occurred, go back to home page.
             </Typography>
 
-            <Button className="go-back" onClick={handleGoBack}>
+            <Button className="go-back" onClick={goBackHandler}>
                GO BACK
             </Button>
          </Box>

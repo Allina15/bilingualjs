@@ -57,7 +57,7 @@ const addTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Error creating test',
+            message: error.message,
             type: 'error',
          })
 
@@ -81,7 +81,7 @@ const deleteTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to delete test',
+            message: error.message,
             type: 'error',
          })
 
@@ -108,7 +108,7 @@ const updateTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to update test',
+            message: error.message,
             type: 'error',
          })
 
@@ -129,9 +129,9 @@ const updateTestByEnable = createAsyncThunk(
          return data
       } catch (error) {
          showNotification({
-            message: 'Failed to update test',
-            type: 'error',
             title: 'Error',
+            message: error.message,
+            type: 'error',
          })
 
          dispatch(getTests())

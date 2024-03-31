@@ -3,7 +3,7 @@ import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
 
 const getTests = createAsyncThunk(
-   'testsList/getAllTests',
+   'testsList/getTests',
 
    async (_, { rejectWithValue }) => {
       try {

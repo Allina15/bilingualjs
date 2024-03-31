@@ -5,11 +5,11 @@ import { Box, Typography, styled } from '@mui/material'
 import Input from './Input'
 import TestContainer from './TestContainer'
 import Loading from '../Loading'
-import { ANSWER_THUNKS } from '../../store/slices/admin/answer/answerThunk'
-import { QUESTION_TITLES } from '../../utils/constants'
-import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 import { questionTypeHandler } from '../../utils/helpers'
 import { showNotification } from '../../utils/helpers/notification'
+import { ANSWER_THUNKS } from '../../store/slices/admin/answer/answerThunk'
+import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/adminQuestionComponents'
+import { QUESTION_TITLES } from '../../utils/constants'
 
 const TestQuestion = () => {
    const { answer, isLoading } = useSelector((state) => state.answer)

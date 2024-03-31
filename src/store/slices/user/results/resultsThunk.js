@@ -41,7 +41,7 @@ const deleteResult = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to delete test',
+            message: error.message,
             type: 'error',
          })
 
