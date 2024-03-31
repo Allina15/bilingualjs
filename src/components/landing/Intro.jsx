@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Cookies from 'js-cookie'
 import { motion } from 'framer-motion'
 import { Box, Typography, styled } from '@mui/material'
+import Cookies from 'js-cookie'
 import LandingButton from '../UI/buttons/LandingButton'
 import { BackgroundIntroImage } from '../../assets/images'
 import {
