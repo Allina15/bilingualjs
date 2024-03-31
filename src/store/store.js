@@ -1,4 +1,4 @@
-import storage from 'redux-persist/lib/storage'
+import storageSession from 'redux-persist/lib/storage/session'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
 import { submitedResultsSlice } from './slices/admin/results/submitedResultsSlice'
@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
    key: 'BILINGUAL',
-   storage,
+   storage: storageSession,
    whitelist: [authSlice.name],
 }
 

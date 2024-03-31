@@ -27,7 +27,13 @@ const getResult = createAsyncThunk(
 
          return data
       } catch (error) {
-         return rejectWithValue.message
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -37,7 +43,7 @@ const postResult = createAsyncThunk(
 
    async ({ resultId, navigate }, { rejectWithValue, dispatch }) => {
       try {
-         const link = 'http://localhost:3001/user/results'
+         const link = 'http://localhost:3000/user/results'
 
          const { data } = await axiosInstance.post(
             `/api/result/${resultId}?link=${link}`
@@ -47,7 +53,7 @@ const postResult = createAsyncThunk(
             message: data.message,
          })
 
-         navigate(-1)
+         navigate(-1, { replace: true })
 
          return data
       } catch (error) {
@@ -59,7 +65,7 @@ const postResult = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
@@ -75,7 +81,7 @@ const deleteResult = createAsyncThunk(
 
          showNotification({
             title: 'Success',
-            message: 'Test successfully deleted',
+            message: data.message,
             type: 'success',
          })
 
@@ -89,7 +95,7 @@ const deleteResult = createAsyncThunk(
             type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )

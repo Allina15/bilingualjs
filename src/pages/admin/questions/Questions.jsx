@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Box, Skeleton, Typography, styled } from '@mui/material'
+import { Box, Skeleton, Tooltip, Typography, styled } from '@mui/material'
 import Switcher from '../../../components/UI/Switcher'
 import Button from '../../../components/UI/buttons/Button'
 import TestContainer from '../../../components/UI/TestContainer'
@@ -66,8 +66,6 @@ const Questions = () => {
       navigate(
          `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}/${ROUTES.ADMIN.CREATE_QUESTION}`
       )
-
-      dispatch(QUESTION_ACTIONS.changeIsUpdate(true))
    }
 
    const navigateEditHandler = (question, questionId) => {
@@ -126,7 +124,8 @@ const Questions = () => {
                   <Box className="text">
                      <Typography className="title">Duration:</Typography>
                      <Typography>
-                        {test?.duration === 0 ? '00' : test?.duration}:00
+                        {/* {test?.duration === 0 ? '00' : test?.duration}:00 */}
+                        {test?.duration}:00
                      </Typography>
                   </Box>
                )}
@@ -172,9 +171,11 @@ const Questions = () => {
                            {index + 1}
                         </Typography>
 
-                        <Typography className="name-props">
-                           {item.title}
-                        </Typography>
+                        <Tooltip title={item.title}>
+                           <Typography className="name-props">
+                              {item.title}
+                           </Typography>
+                        </Tooltip>
 
                         <Typography className="duration-props">
                            {item.duration} m
@@ -390,14 +391,6 @@ const StyledBox = styled(Box)(() => ({
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       cursor: 'pointer',
-
-      '&:active': {
-         maxWidth: '13rem',
-         maxHeight: 'none',
-         overflow: 'visible',
-         whiteSpace: 'normal',
-         wordBreak: 'break-all',
-      },
    },
 
    '& > .duration-props': {
