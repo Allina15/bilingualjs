@@ -66,8 +66,6 @@ const Questions = () => {
       navigate(
          `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}/${ROUTES.ADMIN.CREATE_QUESTION}`
       )
-
-      dispatch(QUESTION_ACTIONS.changeIsUpdate(true))
    }
 
    const navigateEditHandler = (question, questionId) => {
