@@ -11,8 +11,8 @@ import { ROUTES } from '../../routes/routes'
 import { useToggleModal } from '../../hooks/useToogleModal'
 import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practice-test/practiceTestSlice'
 import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practice-test/practiceTestThunk'
-import { QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 import { showNotification } from '../../utils/helpers/notification'
+import { QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 
 const PracticeTest = () => {
    const { questions } = useSelector((state) => state.practiceTest)

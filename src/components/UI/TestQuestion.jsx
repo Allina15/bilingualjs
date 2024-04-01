@@ -8,7 +8,7 @@ import Loading from '../Loading'
 import { questionTypeHandler } from '../../utils/helpers'
 import { showNotification } from '../../utils/helpers/notification'
 import { ANSWER_THUNKS } from '../../store/slices/admin/answer/answerThunk'
-import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/adminQuestionComponents'
+import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 import { QUESTION_TITLES } from '../../utils/constants'
 
 const TestQuestion = () => {
