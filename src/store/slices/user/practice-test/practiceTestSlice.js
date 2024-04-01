@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { showNotification } from '../../../../utils/helpers/notification'
 import { PRACTICE_TEST_THUNKS } from './practiceTestThunk'
 
 const correctAnswer = JSON.parse(sessionStorage.getItem('correctAnswer')) || []
@@ -55,18 +54,13 @@ const practiceTestSlice = createSlice({
          .addCase(
             PRACTICE_TEST_THUNKS.getQuestions.fulfilled,
             (state, { payload }) => {
-               if (typeof payload !== 'string') {
-                  state.questions = payload
-                  state.isDisabled = false
-               } else {
-                  state.isDisabled = true
-               }
-
+               state.questions = payload
                state.isLoading = false
             }
          )
 
          .addCase(PRACTICE_TEST_THUNKS.getQuestions.rejected, (state) => {
+            state.isDisabled = true
             state.isLoading = false
          })
 
@@ -80,12 +74,6 @@ const practiceTestSlice = createSlice({
 
          .addCase(PRACTICE_TEST_THUNKS.addAnswer.pending, (state) => {
             state.isLoading = true
-
-            showNotification({
-               title: 'Pending',
-               message: false,
-               type: 'warning',
-            })
          })
    },
 })

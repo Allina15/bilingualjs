@@ -35,6 +35,10 @@ const TestComplete = () => {
 
    const navigateHandler = () => {
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
+      dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
+
+      sessionStorage.removeItem('correctAnswer')
+      sessionStorage.removeItem('question-durations')
 
       navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`, {
          replace: true,
@@ -46,7 +50,7 @@ const TestComplete = () => {
          PRACTICE_TEST_THUNKS.addAnswer({
             correctAnswer,
             navigate,
-            clearAnswer: PRACTICE_TEST_ACTIONS,
+            practiceTestAction: PRACTICE_TEST_ACTIONS,
          })
       )
    }

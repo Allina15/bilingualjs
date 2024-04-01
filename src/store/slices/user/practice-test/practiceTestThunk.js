@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
+import { axiosInstanceFile } from '../../../../configs/axiosInstanceFile'
 import { ROUTES } from '../../../../routes/routes'
 
 const getQuestions = createAsyncThunk(
@@ -16,7 +17,7 @@ const getQuestions = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -29,7 +30,7 @@ const addAnswer = createAsyncThunk(
    'practiceTest/addAnswer',
 
    async (
-      { correctAnswer, navigate, clearAnswer },
+      { correctAnswer, navigate, practiceTestAction },
       { rejectWithValue, dispatch }
    ) => {
       try {
@@ -39,15 +40,40 @@ const addAnswer = createAsyncThunk(
 
          showNotification({ message: data.message })
 
-         dispatch(clearAnswer.clearCorrectAnswer())
+         dispatch(practiceTestAction.clearCorrectAnswer())
+         dispatch(practiceTestAction.clearCorrectOption())
 
          sessionStorage.removeItem('question-durations')
+         sessionStorage.removeItem('correctAnswer')
 
          return data
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.message,
+            type: 'error',
+         })
+
+         return rejectWithValue({ message: error.message })
+      }
+   }
+)
+
+const addAnswerFile = createAsyncThunk(
+   'question/addAnswerFile',
+   async ({ recordedAudio }, { rejectWithValue }) => {
+      try {
+         const formData = new FormData()
+
+         formData.append('multipartFile', recordedAudio, 'recording.mp3')
+
+         const { data } = await axiosInstanceFile.post('/api/awsFile', formData)
+
+         return data
+      } catch (error) {
+         showNotification({
+            title: 'Error',
+            message: error.message,
             type: 'error',
          })
 
@@ -59,4 +85,5 @@ const addAnswer = createAsyncThunk(
 export const PRACTICE_TEST_THUNKS = {
    getQuestions,
    addAnswer,
+   addAnswerFile,
 }

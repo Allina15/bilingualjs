@@ -9,7 +9,7 @@ import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/
 import { FILES_THUNK } from '../../../store/slices/file/filesThunk'
 
 const RecordSayingStatement = ({ questions, nextHandler }) => {
-   const { fileUrl, isLoading } = useSelector((state) => state.practiceTest)
+   const { fileUrl, isLoading } = useSelector((state) => state.files)
 
    const [array, setArray] = useState(null)
    const [stream, setStream] = useState(null)

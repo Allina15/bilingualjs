@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { showNotification } from '../../../../utils/helpers/notification'
 import { QUESTION_THUNKS } from './questionThunk'
 
 const initialState = {
@@ -158,12 +157,6 @@ const questionSlice = createSlice({
          .addCase(QUESTION_THUNKS.addTest.pending, (state) => {
             state.isLoading = true
             state.error = null
-
-            showNotification({
-               title: 'Pending',
-               message: false,
-               type: 'warning',
-            })
          })
 
          .addCase(QUESTION_THUNKS.getQuestion.pending, (state) => {
@@ -198,13 +191,9 @@ const questionSlice = createSlice({
             state.isLoading = true
          })
 
-         .addCase(
-            QUESTION_THUNKS.updateQuestionByEnable.fulfilled,
-            (state, { payload }) => {
-               state.isLoading = false
-               state.duration = payload.duration
-            }
-         )
+         .addCase(QUESTION_THUNKS.updateQuestionByEnable.fulfilled, (state) => {
+            state.isLoading = false
+         })
 
          .addCase(QUESTION_THUNKS.updateQuestionByEnable.rejected, (state) => {
             state.isLoading = false

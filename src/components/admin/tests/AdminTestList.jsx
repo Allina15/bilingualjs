@@ -21,7 +21,7 @@ const AdminTestList = () => {
 
    useEffect(() => {
       dispatch(TESTS_THUNKS.getTests())
-   }, [dispatch])
+   }, [])
 
    const stopPropagationHandler = (e) => e.stopPropagation()
 
