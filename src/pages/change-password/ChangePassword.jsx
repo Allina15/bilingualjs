@@ -32,7 +32,7 @@ const ChangePassword = () => {
 
    const onSubmit = (values, { resetForm }) => {
       const trimmedValues = Object.fromEntries(
-         Object.entries(values).map(([key, value]) => {
+         Object.entries(values)?.map(([key, value]) => {
             const trimmedValue =
                typeof value === 'string' ? value.trim() : value
 
@@ -83,9 +83,9 @@ const ChangePassword = () => {
                   name="newPassword"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.newPassword}
+                  value={values?.newPassword}
                   type={showNewPassword ? 'text' : 'password'}
-                  error={touched.newPassword && errors.newPassword}
+                  error={touched?.newPassword && errors?.newPassword}
                   onFocus={handleNewPasswordFieldFocus}
                   InputProps={{
                      endAdornment: (
@@ -109,9 +109,9 @@ const ChangePassword = () => {
                   name="confirmPassword"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.confirmPassword}
+                  value={values?.confirmPassword}
                   type={showConfirmPassword ? 'text' : 'password'}
-                  error={touched.confirmPassword && errors.confirmPassword}
+                  error={touched?.confirmPassword && errors?.confirmPassword}
                   onFocus={handleConfirmPasswordFieldFocus}
                   InputProps={{
                      endAdornment: (

@@ -35,18 +35,23 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
       if (analyser && array) {
          const loop = () => {
             window.requestAnimationFrame(loop)
+
             analyser.getByteFrequencyData(array)
+
             const elements = []
             for (let i = 0; i < num; i += 1) {
                const height = array[i + num]
+
                elements.push({
                   height,
                   opacity: 0.008 * height,
                   key: Math.random(),
                })
             }
+
             setMyElements(elements)
          }
+
          loop()
       }
    }, [analyser, array])
@@ -118,7 +123,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
          input: '',
          audioFile: fileUrl,
          optionId: [],
-         questionID: questions.questionId,
+         questionID: questions?.questionId,
       }
 
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
@@ -129,7 +134,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
 
    return (
       <StyledContainer>
-         {questions.statement ? (
+         {questions?.statement ? (
             <Box className="main-container">
                <Box>
                   <Box className="record-saying-title-block">
@@ -140,7 +145,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
                      <Box className="speak-block">
                         <SpeakManIcon className="speak" />
 
-                        <Typography>{questions.statement}</Typography>
+                        <Typography>{questions?.statement}</Typography>
                      </Box>
                   </Box>
 
@@ -149,9 +154,9 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
 
                      {isRecording ? (
                         <Box className="block-of-visualize">
-                           {myElements.map((element) => (
+                           {myElements?.map((element) => (
                               <AudioVisualize
-                                 key={element.key}
+                                 key={element?.key}
                                  element={element}
                                  widthpx={width}
                               />

@@ -40,7 +40,7 @@ const SignUp = () => {
          .then((data) => {
             dispatch(
                AUTH_THUNKS.authWithGoogle({
-                  tokenId: data.user.accessToken,
+                  tokenId: data?.user?.accessToken,
                   navigate,
                   isSignUp: false,
                })
@@ -53,7 +53,7 @@ const SignUp = () => {
 
    const onSubmit = (values, { resetForm }) => {
       const trimmedValues = Object.fromEntries(
-         Object.entries(values).map(([key, value]) => {
+         Object.entries(values)?.map(([key, value]) => {
             const trimmedValue =
                typeof value === 'string' ? value.trim() : value
 
@@ -100,7 +100,7 @@ const SignUp = () => {
             </Box>
 
             <Box className="content">
-               {SIGN_UP_INPUTS.map(({ name, label, type }) => (
+               {SIGN_UP_INPUTS?.map(({ name, label, type }) => (
                   <Input
                      key={name}
                      label={label}

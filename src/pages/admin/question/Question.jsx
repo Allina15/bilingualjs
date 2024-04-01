@@ -74,9 +74,9 @@ const Question = () => {
    }, [])
 
    useEffect(() => {
-      const handleBeforeUnload = (event) => {
-         event.preventDefault()
-         event.returnValue = ''
+      const handleBeforeUnload = (e) => {
+         e.preventDefault()
+         e.returnValue = ''
       }
 
       window.addEventListener('beforeunload', handleBeforeUnload)

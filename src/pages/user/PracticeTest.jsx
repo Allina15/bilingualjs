@@ -88,6 +88,7 @@ const PracticeTest = () => {
 
             setWarningCount((prev) => {
                const newCount = prev - 1
+
                if (newCount >= 0) {
                   showNotification({
                      title: 'Error',
@@ -107,6 +108,7 @@ const PracticeTest = () => {
                      { replace: true }
                   )
                }
+
                return newCount
             })
          }
@@ -150,9 +152,9 @@ const PracticeTest = () => {
    }, [warningCount, dispatch, navigate, testId])
 
    useEffect(() => {
-      const handleBeforeUnload = (event) => {
-         event.preventDefault()
-         event.returnValue = ''
+      const handleBeforeUnload = (e) => {
+         e.preventDefault()
+         e.returnValue = ''
       }
 
       window.addEventListener('beforeunload', handleBeforeUnload)
@@ -228,10 +230,12 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       justifyContent: 'flex-end',
       alignItems: 'center',
       margin: '2rem 2rem -3rem 0',
+
       '& > .quit': {
          color: '#4C4C4C',
          fontWeight: '700',
          border: '0.125rem solid #4C4859',
+
          '&:hover': {
             borderColor: theme.palette.primary.main,
             background: theme.palette.primary.main,
@@ -239,6 +243,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          },
       },
    },
+
    '& > .no-data': {
       width: '30rem',
       margin: '0 0 0 12rem',

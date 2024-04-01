@@ -72,9 +72,9 @@ const SelectTheBestTitle = ({
       if (state !== null) {
          dispatch(
             QUESTION_THUNKS.getQuestion({
-               id: state.id,
+               id: state?.id,
                addUpdateOption: QUESTION_ACTIONS,
-               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+               optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
             })
          )
       }
@@ -89,7 +89,7 @@ const SelectTheBestTitle = ({
 
    useEffect(() => {
       if (inOpen === false) {
-         if (options.selectTheBestTitleOptions?.length <= 1) {
+         if (options?.selectTheBestTitleOptions?.length <= 1) {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
          } else {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
@@ -99,7 +99,7 @@ const SelectTheBestTitle = ({
 
    const addOptionHandler = () => {
       const option = {
-         optionTitle: optionTitle.trim(),
+         optionTitle: optionTitle?.trim(),
          isCorrectOption: checkedOption,
          optionId: Math.floor(Math.random() * 999) + 200,
       }
@@ -107,7 +107,7 @@ const SelectTheBestTitle = ({
       dispatch(
          QUESTION_ACTIONS.addOptionRadio({
             option,
-            optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+            optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
          })
       )
 
@@ -116,8 +116,8 @@ const SelectTheBestTitle = ({
 
       toggleModal('save')
 
-      if (options.selectTheBestTitleOptions?.length === 0 || checkedOption) {
-         setSelectedOptionId(option.optionId)
+      if (options?.selectTheBestTitleOptions?.length === 0 || checkedOption) {
+         setSelectedOptionId(option?.optionId)
       }
    }
 
@@ -125,7 +125,7 @@ const SelectTheBestTitle = ({
       dispatch(
          QUESTION_ACTIONS.handleIsCorrect({
             optionId,
-            optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+            optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
          })
       )
 
@@ -142,14 +142,14 @@ const SelectTheBestTitle = ({
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+               optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
             })
          )
       } else if (optionId > 200) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+               optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
             })
          )
       } else {
@@ -157,7 +157,7 @@ const SelectTheBestTitle = ({
             QUESTION_THUNKS.deleteOption({
                optionId,
                id: questionId,
-               optionName: OPTIONS_NAME.selectTheBestTitleOptions,
+               optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
                addUpdateOption: QUESTION_ACTIONS,
             })
          )
@@ -175,9 +175,9 @@ const SelectTheBestTitle = ({
             title: title.trim(),
             duration: +duration,
             passage,
-            option: options.selectTheBestTitleOptions?.map((option) => ({
-               optionTitle: option.optionTitle,
-               isCorrectOption: option.isCorrectOption,
+            option: options?.selectTheBestTitleOptions?.map((option) => ({
+               optionTitle: option?.optionTitle,
+               isCorrectOption: option?.isCorrectOption,
             })),
          }
 
@@ -188,7 +188,7 @@ const SelectTheBestTitle = ({
 
                   data: {
                      testId,
-                     questionType: QUESTION_TITLES.SELECT_THE_BEST_TITLE,
+                     questionType: QUESTION_TITLES?.SELECT_THE_BEST_TITLE,
                      navigate,
                   },
 
@@ -206,11 +206,11 @@ const SelectTheBestTitle = ({
                passage,
                title: title.trim(),
                duration: +duration,
-               optionRequest: options.selectTheBestTitleOptions?.map(
+               optionRequest: options?.selectTheBestTitleOptions?.map(
                   (option) => ({
-                     id: option.optionId,
-                     optionTitle: option.optionTitle,
-                     isCorrectOption: option.isCorrectOption,
+                     id: option?.optionId,
+                     optionTitle: option?.optionTitle,
+                     isCorrectOption: option?.isCorrectOption,
                      fileUrl: 'none',
                   })
                ),
@@ -245,7 +245,7 @@ const SelectTheBestTitle = ({
       !duration ||
       duration < 1 ||
       !title ||
-      options.selectTheBestTitleOptions?.length < 2 ||
+      options?.selectTheBestTitleOptions?.length < 2 ||
       !passage
 
    const isDisabledModal = !optionTitle.trim()
@@ -277,9 +277,9 @@ const SelectTheBestTitle = ({
          </Box>
 
          <Box className="cards">
-            {options.selectTheBestTitleOptions?.map((option, index) => (
+            {options?.selectTheBestTitleOptions?.map((option, index) => (
                <Option
-                  key={option.optionId}
+                  key={option?.optionId}
                   index={index}
                   option={option}
                   isRadio
@@ -289,7 +289,7 @@ const SelectTheBestTitle = ({
                   checkedHandler={checkedHandler}
                   selectedOptionId={selectedOptionId}
                   setSelectedOptionId={setSelectedOptionId}
-                  checked={option.isCorrectOption}
+                  checked={option?.isCorrectOption}
                />
             ))}
          </Box>
@@ -310,7 +310,7 @@ const SelectTheBestTitle = ({
 
          <DeleteModal
             isCloseIcon
-            isVisible={modals.delete}
+            isVisible={modals?.delete}
             toggleModal={() => toggleModal('delete')}
             deleteHandler={deleteHandler}
          >
@@ -322,7 +322,7 @@ const SelectTheBestTitle = ({
             checkbox
             title={optionTitle}
             checked={checkedOption}
-            isVisible={modals.save}
+            isVisible={modals?.save}
             toggleModal={() => toggleModal('save')}
             isDisabledModal={!isDisabledModal}
             addOptionHandler={addOptionHandler}

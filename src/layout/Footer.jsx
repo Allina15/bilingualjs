@@ -24,11 +24,7 @@ const Footer = () => {
                <Box>
                   <Tooltip title="@peaksofthouse2429">
                      <IconButton href="https://www.youtube.com/@peaksofthouse2429">
-                        <img
-                           src={YouTubeIcon}
-                           alt="youtube"
-                           className="youtube"
-                        />
+                        <YouTubeIcon className="youtube" />
                      </IconButton>
                   </Tooltip>
 
@@ -95,6 +91,7 @@ const StyledFooter = styled(Box)(() => ({
 
    '& > div > a > .youtube': {
       width: '2rem',
+      height: '2rem',
       borderRadius: '2rem',
       margin: '0.10rem 0 0 0 ',
    },

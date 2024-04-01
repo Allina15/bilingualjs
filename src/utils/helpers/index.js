@@ -115,6 +115,12 @@ const resultsStatusHandler = (status) => {
    }
 }
 
+const countWords = (text) => {
+   const wordsArray = text.split(' ').filter((word) => word !== '')
+
+   return wordsArray?.length
+}
+
 export {
    showErrorSignUp,
    showErrorSignIn,
@@ -123,4 +129,5 @@ export {
    showErrorChangePassword,
    questionTypeHandler,
    resultsStatusHandler,
+   countWords,
 }

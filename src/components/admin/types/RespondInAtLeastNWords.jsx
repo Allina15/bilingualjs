@@ -93,7 +93,7 @@ const RespondInAtLeastNWords = ({
 
                   data: {
                      testId,
-                     questionType: QUESTION_TITLES.RESPOND_IN_AT_LEAST_N_WORDS,
+                     questionType: QUESTION_TITLES?.RESPOND_IN_AT_LEAST_N_WORDS,
                      navigate,
                   },
 

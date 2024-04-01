@@ -15,7 +15,7 @@ const AdminResults = () => {
       dispatch(SUBMITTED_RESULTS_THUNKS.getResults())
    }, [dispatch])
 
-   if (results.length === 0) {
+   if (results?.length === 0) {
       return (
          <StyledContainer>
             <img src={NoDataImage} alt="no-data" />

@@ -139,7 +139,7 @@ const TypeWhatYouHear = ({
 
                   data: {
                      testId,
-                     questionType: QUESTION_TITLES.TYPE_WHAT_YOU_HEAR,
+                     questionType: QUESTION_TITLES?.TYPE_WHAT_YOU_HEAR,
                      navigate,
                   },
 
@@ -162,7 +162,7 @@ const TypeWhatYouHear = ({
 
             dispatch(
                QUESTION_THUNKS.updateQuestion({
-                  id: state.id,
+                  id: state?.id,
                   testId,
                   requestData,
                   navigate,

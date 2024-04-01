@@ -56,9 +56,9 @@ const SelectRealEnglish = ({
       if (state !== null) {
          dispatch(
             QUESTION_THUNKS.getQuestion({
-               id: state.id,
+               id: state?.id,
                addUpdateOption: QUESTION_ACTIONS,
-               optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+               optionName: OPTIONS_NAME?.selectRealEnglishWordsOptions,
             })
          )
       }
@@ -66,7 +66,7 @@ const SelectRealEnglish = ({
 
    useEffect(() => {
       if (inOpen === false) {
-         if (options.selectRealEnglishWordsOptions?.length <= 1) {
+         if (options?.selectRealEnglishWordsOptions?.length <= 1) {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
          } else {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
@@ -88,7 +88,7 @@ const SelectRealEnglish = ({
       dispatch(
          QUESTION_ACTIONS.addOptionCheck({
             option,
-            optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+            optionName: OPTIONS_NAME?.selectRealEnglishWordsOptions,
          })
       )
 
@@ -102,7 +102,7 @@ const SelectRealEnglish = ({
       dispatch(
          QUESTION_ACTIONS.handleIsChecked({
             optionId,
-            optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+            optionName: OPTIONS_NAME?.selectRealEnglishWordsOptions,
          })
       )
 
@@ -115,22 +115,22 @@ const SelectRealEnglish = ({
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+               optionName: OPTIONS_NAME?.selectRealEnglishWordsOptions,
             })
          )
       } else if (optionId > 200) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+               optionName: OPTIONS_NAME?.selectRealEnglishWordsOptions,
             })
          )
       } else {
          dispatch(
             QUESTION_THUNKS.deleteOption({
                optionId,
-               id: state.id,
-               optionName: OPTIONS_NAME.selectRealEnglishWordsOptions,
+               id: state?.id,
+               optionName: OPTIONS_NAME?.selectRealEnglishWordsOptions,
                addUpdateOption: QUESTION_ACTIONS,
             })
          )
@@ -151,9 +151,9 @@ const SelectRealEnglish = ({
          const requestData = {
             title: title.trim(),
             duration: +duration,
-            option: options.selectRealEnglishWordsOptions?.map((option) => ({
-               optionTitle: option.optionTitle,
-               isCorrectOption: option.isCorrectOption,
+            option: options?.selectRealEnglishWordsOptions?.map((option) => ({
+               optionTitle: option?.optionTitle,
+               isCorrectOption: option?.isCorrectOption,
             })),
          }
 
@@ -164,7 +164,7 @@ const SelectRealEnglish = ({
 
                   data: {
                      testId,
-                     questionType: QUESTION_TITLES.SELECT_REAL_ENGLISH_WORD,
+                     questionType: QUESTION_TITLES?.SELECT_REAL_ENGLISH_WORD,
                      navigate,
                   },
 
@@ -181,11 +181,11 @@ const SelectRealEnglish = ({
             const requestData = {
                title: title.trim(),
                duration: +duration,
-               optionRequest: options.selectRealEnglishWordsOptions?.map(
+               optionRequest: options?.selectRealEnglishWordsOptions?.map(
                   (option) => ({
-                     id: option.optionId,
-                     optionTitle: option.optionTitle,
-                     isCorrectOption: option.isCorrectOption,
+                     id: option?.optionId,
+                     optionTitle: option?.optionTitle,
+                     isCorrectOption: option?.isCorrectOption,
                      fileUrl: 'none',
                   })
                ),
@@ -193,7 +193,7 @@ const SelectRealEnglish = ({
 
             dispatch(
                QUESTION_THUNKS.updateQuestion({
-                  id: state.id,
+                  id: state?.id,
                   requestData,
                   testId,
                   navigate,
@@ -220,7 +220,7 @@ const SelectRealEnglish = ({
       !duration ||
       duration < 1 ||
       !title ||
-      options.selectRealEnglishWordsOptions?.length < 2
+      options?.selectRealEnglishWordsOptions?.length < 2
 
    const isDisabledModal = !optionTitle.trim()
 
@@ -239,7 +239,7 @@ const SelectRealEnglish = ({
             </Box>
 
             <Box className="cards">
-               {options.selectRealEnglishWordsOptions?.map((option, index) => (
+               {options?.selectRealEnglishWordsOptions?.map((option, index) => (
                   <Option
                      key={option.optionId}
                      index={index}
@@ -269,7 +269,7 @@ const SelectRealEnglish = ({
 
          <DeleteModal
             isCloseIcon
-            isVisible={modals.delete}
+            isVisible={modals?.delete}
             toggleModal={() => toggleModal('delete')}
             deleteHandler={deleteHandler}
          >
@@ -287,7 +287,7 @@ const SelectRealEnglish = ({
             checkbox
             title={optionTitle}
             checked={checkedOption}
-            isVisible={modals.save}
+            isVisible={modals?.save}
             toggleModal={() => toggleModal('save')}
             isDisabledModal={!isDisabledModal}
             addOptionHandler={addOptionHandler}

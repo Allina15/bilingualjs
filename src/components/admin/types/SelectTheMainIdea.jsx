@@ -77,9 +77,9 @@ const SelectTheMainIdea = ({
       if (state !== null) {
          dispatch(
             QUESTION_THUNKS.getQuestion({
-               id: state.id,
+               id: state?.id,
                addUpdateOption: QUESTION_ACTIONS,
-               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+               optionName: OPTIONS_NAME?.selectTheMainIdeaOptions,
             })
          )
       }
@@ -93,7 +93,7 @@ const SelectTheMainIdea = ({
 
    useEffect(() => {
       if (inOpen === false) {
-         if (options.selectTheMainIdeaOptions?.length <= 1) {
+         if (options?.selectTheMainIdeaOptions?.length <= 1) {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
          } else {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
@@ -111,7 +111,7 @@ const SelectTheMainIdea = ({
       dispatch(
          QUESTION_ACTIONS.addOptionRadio({
             option,
-            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            optionName: OPTIONS_NAME?.selectTheMainIdeaOptions,
          })
       )
 
@@ -120,8 +120,8 @@ const SelectTheMainIdea = ({
 
       toggleModal('save')
 
-      if (options.selectTheMainIdeaOptions.length === 0 || checkedOption) {
-         setSelectedOptionId(option.optionId)
+      if (options?.selectTheMainIdeaOptions?.length === 0 || checkedOption) {
+         setSelectedOptionId(option?.optionId)
       }
    }
 
@@ -129,7 +129,7 @@ const SelectTheMainIdea = ({
       dispatch(
          QUESTION_ACTIONS.handleIsCorrect({
             optionId,
-            optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+            optionName: OPTIONS_NAME?.selectTheMainIdeaOptions,
          })
       )
 
@@ -140,16 +140,16 @@ const SelectTheMainIdea = ({
    const deleteHandler = () => {
       if (state === null) {
          dispatch(
-            QUESTION_ACTIONS.deleteOption({
+            QUESTION_ACTIONS?.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+               optionName: OPTIONS_NAME?.selectTheMainIdeaOptions,
             })
          )
       } else if (optionId > 200) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+               optionName: OPTIONS_NAME?.selectTheMainIdeaOptions,
             })
          )
       } else {
@@ -157,7 +157,7 @@ const SelectTheMainIdea = ({
             QUESTION_THUNKS.deleteOption({
                optionId,
                id: questionId,
-               optionName: OPTIONS_NAME.selectTheMainIdeaOptions,
+               optionName: OPTIONS_NAME?.selectTheMainIdeaOptions,
                addUpdateOption: QUESTION_ACTIONS,
             })
          )
@@ -175,9 +175,9 @@ const SelectTheMainIdea = ({
             title: title.trim(),
             duration: +duration,
             passage,
-            option: options.selectTheMainIdeaOptions?.map((option) => ({
-               optionTitle: option.optionTitle,
-               isCorrectOption: option.isCorrectOption,
+            option: options?.selectTheMainIdeaOptions?.map((option) => ({
+               optionTitle: option?.optionTitle,
+               isCorrectOption: option?.isCorrectOption,
             })),
          }
 
@@ -206,7 +206,7 @@ const SelectTheMainIdea = ({
                passage,
                title: title.trim(),
                duration: +duration,
-               optionRequest: options.selectTheMainIdeaOptions?.map(
+               optionRequest: options?.selectTheMainIdeaOptions?.map(
                   (option) => ({
                      id: option.optionId,
                      optionTitle: option.optionTitle,
@@ -246,7 +246,7 @@ const SelectTheMainIdea = ({
       duration < 1 ||
       !title ||
       !passage ||
-      options.selectTheMainIdeaOptions?.length < 2
+      options?.selectTheMainIdeaOptions?.length < 2
 
    const isDisabledModal = !optionTitle.trim()
 
@@ -277,7 +277,7 @@ const SelectTheMainIdea = ({
          </Box>
 
          <Box className="cards">
-            {options.selectTheMainIdeaOptions?.map((option, index) => (
+            {options?.selectTheMainIdeaOptions?.map((option, index) => (
                <Option
                   key={option.optionId}
                   index={index}
@@ -289,7 +289,7 @@ const SelectTheMainIdea = ({
                   checkedHandler={checkedHandler}
                   selectedOptionId={selectedOptionId}
                   setSelectedOptionId={setSelectedOptionId}
-                  checked={option.isCorrectOption}
+                  checked={option?.isCorrectOption}
                />
             ))}
          </Box>

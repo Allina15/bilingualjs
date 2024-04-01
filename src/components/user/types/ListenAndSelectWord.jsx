@@ -75,7 +75,7 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
    }
 
    const onSubmit = () => {
-      const selectedOptions = Object.values(optionState).filter(
+      const selectedOptions = Object.values(optionState)?.filter(
          (option) => option.isChecked
       )
 
@@ -83,8 +83,8 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
          attempts: 0,
          input: '',
          audioFile: '',
-         optionId: selectedOptions.map((option) => option.id),
-         questionID: questions.questionId,
+         optionId: selectedOptions?.map((option) => option.id),
+         questionID: questions?.questionId,
       }
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
 
@@ -93,7 +93,7 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
    }
 
-   const isDisabled = !Object.values(optionState).find(
+   const isDisabled = !Object.values(optionState)?.find(
       (option) => option.isChecked
    )
 
@@ -106,7 +106,7 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
                </Typography>
 
                <Box className="options-box">
-                  {options.map(({ id, fileUrl, optionTitle }) => (
+                  {options?.map(({ id, fileUrl, optionTitle }) => (
                      <Box
                         key={id}
                         className={`option ${

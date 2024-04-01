@@ -16,7 +16,7 @@ const ResultDescribeImage = ({ isDisabled, saveHandler }) => {
       <StyledContainer>
          <Box className="admin-answers-box">
             <Box>
-               <img src={fileUrl} alt="img" />
+               <img src={fileUrl} alt="portrayal" />
             </Box>
 
             <Typography className="correct-answer">Correct Answer:</Typography>

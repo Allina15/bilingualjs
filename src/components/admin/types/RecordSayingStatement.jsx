@@ -61,7 +61,7 @@ const RecordSayingStatement = ({
 
                   data: {
                      testId,
-                     questionType: QUESTION_TITLES.RECORD_SAYING,
+                     questionType: QUESTION_TITLES?.RECORD_SAYING,
                      navigate,
                   },
 

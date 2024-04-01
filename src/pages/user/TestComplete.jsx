@@ -52,9 +52,9 @@ const TestComplete = () => {
    }
 
    useEffect(() => {
-      const handleBeforeUnload = (event) => {
-         event.preventDefault()
-         event.returnValue = ''
+      const handleBeforeUnload = (e) => {
+         e.preventDefault()
+         e.returnValue = ''
       }
 
       window.addEventListener('beforeunload', handleBeforeUnload)
@@ -66,7 +66,7 @@ const TestComplete = () => {
 
    return (
       <TestContainer>
-         <StyledContainer active={showConfetti.toString()}>
+         <StyledContainer active={showConfetti?.toString()}>
             <Box className="title-box">
                <Typography className="title">Test is complete!</Typography>
 

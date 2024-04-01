@@ -13,14 +13,14 @@ const SelectRealEnglishWords = ({ questions, nextHandler }) => {
    const dispatch = useDispatch()
 
    const onSubmit = () => {
-      const optionId = correctOptions.map((item) => item.id)
+      const optionId = correctOptions?.map((item) => item.id)
 
       const answerData = {
          attempts: 0,
          input: '',
          audioFile: '',
          optionId,
-         questionID: questions.questionId,
+         questionID: questions?.questionId,
       }
 
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
@@ -30,7 +30,7 @@ const SelectRealEnglishWords = ({ questions, nextHandler }) => {
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
    }
 
-   const isDisabled = correctOptions.length === 0
+   const isDisabled = correctOptions?.length === 0
 
    return (
       <StyledContainer>

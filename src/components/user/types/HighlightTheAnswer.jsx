@@ -37,13 +37,13 @@ const HighlightTheAnswer = ({ questions, nextHandler }) => {
 
    return (
       <StyledContainer>
-         {questions.passage !== '' ? (
+         {questions?.passage !== '' ? (
             <Box className="content-box">
                <Box className="correct-answer">
                   <Typography className="title">PASSAGE</Typography>
 
                   <Typography onMouseUp={mouseUpHandler} className="passage">
-                     {questions.passage}
+                     {questions?.passage}
                   </Typography>
                </Box>
 
@@ -63,7 +63,7 @@ const HighlightTheAnswer = ({ questions, nextHandler }) => {
                      multiline
                      placeholder="Highlight text in the passage to set an answer"
                      className={`input ${
-                        highlightAnswer.length > 0 ? 'highlighted-input' : ''
+                        highlightAnswer?.length > 0 ? 'highlighted-input' : ''
                      }`}
                      autoComplete="off"
                   />

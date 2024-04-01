@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { Box, Skeleton, Typography, styled } from '@mui/material'
-import { ROUTES } from '../../../routes/routes'
 import Switcher from '../../UI/Switcher'
 import DeleteModal from '../../UI/modals/DeleteModal'
 import { NoDataImage } from '../../../assets/images'
 import { EditIcon, TrashIcon } from '../../../assets/icons'
+import { ROUTES } from '../../../routes/routes'
 import { TESTS_THUNKS } from '../../../store/slices/admin/tests/testsThunk'
 
 const AdminTestList = () => {
@@ -60,7 +60,7 @@ const AdminTestList = () => {
    return (
       <StyledContainer>
          {tests?.length > 0 ? (
-            tests.map(({ id, title, enable }) => (
+            tests?.map(({ id, title, enable }) => (
                <Link
                   to={`${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${id}`}
                   key={id}
@@ -121,7 +121,7 @@ const AdminTestList = () => {
             </Typography>
 
             <Typography className="modal-message">
-               You can`t restore this test
+               You cant restore this test
             </Typography>
          </DeleteModal>
       </StyledContainer>

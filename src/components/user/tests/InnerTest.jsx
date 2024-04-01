@@ -77,11 +77,7 @@ const InnerTest = () => {
                   </ListItem>
 
                   <ListItem>
-                     <img
-                        src={ScreenShotIcon}
-                        alt="screen-shot"
-                        className="screen"
-                     />
+                     <ScreenShotIcon className="screen" />
 
                      <Typography>You cant take a screenshot </Typography>
                   </ListItem>
@@ -142,8 +138,9 @@ const MainContent = styled(Box)(() => ({
          flexDirection: 'column',
          gap: '1rem',
 
-         '& .screen': {
+         '& > li > .screen': {
             width: '1.8rem',
+            height: '1.8rem',
          },
 
          '& > .MuiListItem-root': {

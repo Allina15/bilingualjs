@@ -19,7 +19,7 @@ const ForgotPassword = () => {
 
    const onSubmit = (values, { resetForm }) => {
       const trimmedValues = Object.fromEntries(
-         Object.entries(values).map(([key, value]) => {
+         Object.entries(values)?.map(([key, value]) => {
             const trimmedValue =
                typeof value === 'string' ? value.trim() : value
 
@@ -59,7 +59,7 @@ const ForgotPassword = () => {
 
             <Box className="content">
                <Box className="title-box">
-                  <img src={LockIcon} alt="lock" className="lock" />
+                  <LockIcon className="lock" />
 
                   <Typography className="title" variant="h2">
                      Forgot Password
@@ -74,10 +74,10 @@ const ForgotPassword = () => {
                   type="email"
                   label="Email"
                   name="email"
-                  value={values.email}
+                  value={values?.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={touched.email && errors.email}
+                  error={touched?.email && errors?.email}
                />
 
                {showErrorForgotPassword(errors) ? (
@@ -150,8 +150,9 @@ const StyledContainer = styled(Box)(({ theme }) => ({
             alignItems: 'center',
             gap: '0.75rem',
 
-            '& .lock': {
+            '& > .lock': {
                width: '6rem',
+               height: '6rem',
             },
 
             '& > .title': {

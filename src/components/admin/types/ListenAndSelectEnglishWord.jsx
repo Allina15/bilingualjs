@@ -60,7 +60,7 @@ const ListenAndSelectEnglishWord = ({
             QUESTION_THUNKS.getQuestion({
                id: state.id,
                addUpdateOption: QUESTION_ACTIONS,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
+               optionName: OPTIONS_NAME?.listenAndSelectOptions,
             })
          )
       }
@@ -121,14 +121,14 @@ const ListenAndSelectEnglishWord = ({
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
+               optionName: OPTIONS_NAME?.listenAndSelectOptions,
             })
          )
       } else if (optionId > 200) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
+               optionName: OPTIONS_NAME?.listenAndSelectOptions,
             })
          )
       } else {
@@ -136,7 +136,7 @@ const ListenAndSelectEnglishWord = ({
             QUESTION_THUNKS.deleteOption({
                optionId,
                id: state.id,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
+               optionName: OPTIONS_NAME?.listenAndSelectOptions,
                addUpdateOption: QUESTION_ACTIONS,
             })
          )
@@ -168,9 +168,10 @@ const ListenAndSelectEnglishWord = ({
             dispatch(
                QUESTION_THUNKS.addTest({
                   requestData,
+
                   data: {
                      testId,
-                     questionType: QUESTION_TITLES.LISTEN_AND_SELECT_WORD,
+                     questionType: QUESTION_TITLES?.LISTEN_AND_SELECT_WORD,
                      navigate,
                   },
 
@@ -187,12 +188,14 @@ const ListenAndSelectEnglishWord = ({
             const requestData = {
                title: title.trim(),
                duration: +duration,
-               optionRequest: options.listenAndSelectOptions?.map((option) => ({
-                  id: option.optionId,
-                  optionTitle: option.optionTitle,
-                  isCorrectOption: option.isCorrectOption,
-                  fileUrl: option.fileUrl,
-               })),
+               optionRequest: options?.listenAndSelectOptions?.map(
+                  (option) => ({
+                     id: option?.optionId,
+                     optionTitle: option?.optionTitle,
+                     isCorrectOption: option?.isCorrectOption,
+                     fileUrl: option?.fileUrl,
+                  })
+               ),
             }
 
             dispatch(
@@ -227,14 +230,14 @@ const ListenAndSelectEnglishWord = ({
       options?.listenAndSelectOptions?.length < 2
 
    const isDisabledModal =
-      optionTitle.trim() !== '' &&
+      optionTitle?.trim() !== '' &&
       isUploaded !== false &&
       isLoading !== true &&
       fileUrl !== ''
 
    useEffect(() => {
       if (inOpen === false) {
-         if (options.listenAndSelectOptions?.length <= 1) {
+         if (options?.listenAndSelectOptions?.length <= 1) {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
          } else {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
@@ -256,7 +259,7 @@ const ListenAndSelectEnglishWord = ({
          <Box className="cards">
             {options?.listenAndSelectOptions?.map((option, index) => (
                <Option
-                  key={option.optionId}
+                  key={option?.optionId}
                   icon
                   deletion
                   index={index}
@@ -308,7 +311,7 @@ const ListenAndSelectEnglishWord = ({
                </InputLabel>
 
                {isUploaded &&
-                  files.map(({ name }) => (
+                  files?.map(({ name }) => (
                      <Typography key={name} className="file-name">
                         {name}
                      </Typography>
