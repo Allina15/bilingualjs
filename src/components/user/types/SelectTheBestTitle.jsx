@@ -21,7 +21,7 @@ const SelectTheBestTitle = ({ questions, nextHandler }) => {
          input: '',
          audioFile: '',
          optionId: [selectedOptionId],
-         questionID: questions.questionId,
+         questionID: questions?.questionId,
       }
 
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))

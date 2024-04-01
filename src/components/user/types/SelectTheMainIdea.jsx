@@ -21,7 +21,7 @@ const SelectTheMainIdea = ({ questions, nextHandler }) => {
          input: '',
          audioFile: '',
          optionId: [selectedOptionId],
-         questionID: questions.questionId,
+         questionID: questions?.questionId,
       }
 
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
@@ -35,7 +35,7 @@ const SelectTheMainIdea = ({ questions, nextHandler }) => {
 
    return (
       <StyledContainer>
-         {questions.title !== 0 ? (
+         {questions?.title !== 0 ? (
             <Box className="content-box">
                <Box className="correct-answer">
                   <Typography className="title">PASSAGE</Typography>
@@ -50,7 +50,7 @@ const SelectTheMainIdea = ({ questions, nextHandler }) => {
                      Select the main idea for the passage
                   </Typography>
 
-                  {options.map(({ id, optionTitle }) => (
+                  {options?.map(({ id, optionTitle }) => (
                      <Box
                         key={id}
                         className={`option ${

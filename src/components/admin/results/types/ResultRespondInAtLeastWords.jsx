@@ -2,17 +2,12 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Box, Typography, styled } from '@mui/material'
 import Button from '../../../UI/buttons/Button'
+import { countWords } from '../../../../utils/helpers'
 
 const ResultRespondInAtLeastWords = ({ isDisabled, saveHandler }) => {
    const { answer } = useSelector((state) => state.answer)
 
    const navigate = useNavigate()
-
-   const countWords = (text) => {
-      const wordsArray = text.split(' ').filter((word) => word !== '')
-
-      return wordsArray?.length
-   }
 
    const wordsCount = answer.userAnswer ? countWords(answer.userAnswer) : 0
 

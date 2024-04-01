@@ -3,7 +3,7 @@ export { default as SecondPosterVideoImage } from './pngs/second-poster-video.pn
 export { default as ThirdPosterVideoImage } from './pngs/third-poster-video.png'
 export { default as FirstPosterVideoImage } from './pngs/first-poster-video.png'
 export { default as BackgroundIntroImage } from './pngs/background-intro.png'
-export { default as SeventhMemberImage } from './pngs/rabiya.jpg'
+export { default as SeventhMemberImage } from './pngs/rabiya.png'
 export { default as SecondPartnerImage } from './pngs/basf.png'
 export { default as FourthPartnerImage } from './pngs/rodonit.png'
 export { default as SecondPersonImage } from './pngs/nursultan.png'

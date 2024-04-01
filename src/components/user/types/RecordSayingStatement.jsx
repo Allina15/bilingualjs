@@ -6,7 +6,7 @@ import { RecordingIcon, SpeakManIcon } from '../../../assets/icons'
 import { NoData } from '../../../assets/images'
 import { showNotification } from '../../../utils/helpers/notification'
 import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
-import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practice-test/practiceTestThunk'
+import { FILES_THUNK } from '../../../store/slices/file/filesThunk'
 
 const RecordSayingStatement = ({ questions, nextHandler }) => {
    const { fileUrl, isLoading } = useSelector((state) => state.practiceTest)
@@ -34,6 +34,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
       if (analyser && array) {
          const loop = () => {
             window.requestAnimationFrame(loop)
+
             analyser.getByteFrequencyData(array)
 
             const elements = []
@@ -83,9 +84,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
             mediaRecorderInstance.addEventListener('stop', () => {
                const blob = new Blob(chunks, { type: 'audio/mp3' })
 
-               dispatch(
-                  PRACTICE_TEST_THUNKS.addAnswerFile({ recordedAudio: blob })
-               )
+               dispatch(FILES_THUNK.addAnswerFile({ recordedAudio: blob }))
             })
 
             setMediaRecorder(mediaRecorderInstance)
@@ -112,7 +111,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
          input: '',
          audioFile: fileUrl,
          optionId: [],
-         questionID: questions.questionId,
+         questionID: questions?.questionId,
       }
 
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
@@ -124,7 +123,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
 
    return (
       <StyledContainer>
-         {questions.statement ? (
+         {questions?.statement ? (
             <Box className="main-container">
                <Box>
                   <Box className="record-saying-title-block">
@@ -135,7 +134,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
                      <Box className="speak-block">
                         <SpeakManIcon className="speak" />
 
-                        <Typography>{questions.statement}</Typography>
+                        <Typography>{questions?.statement}</Typography>
                      </Box>
                   </Box>
 
@@ -144,9 +143,9 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
 
                      {isRecording ? (
                         <Box className="block-of-visualize">
-                           {myElements.map((element) => (
+                           {myElements?.map((element) => (
                               <AudioVisualize
-                                 key={element.key}
+                                 key={element?.key}
                                  element={element}
                                  widthpx={width}
                               />

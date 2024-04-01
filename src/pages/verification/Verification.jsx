@@ -18,9 +18,10 @@ const Verification = () => {
 
    const onSubmit = (values, { resetForm }) => {
       const trimmedValues = Object.fromEntries(
-         Object.entries(values).map(([key, value]) => {
+         Object.entries(values)?.map(([key, value]) => {
             const trimmedValue =
                typeof value === 'string' ? value.trim() : value
+
             return [key, trimmedValue]
          })
       )
@@ -68,8 +69,8 @@ const Verification = () => {
                   name="uniqueIdentifier"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.uniqueIdentifier}
-                  error={touched.uniqueIdentifier && errors.uniqueIdentifier}
+                  value={values?.uniqueIdentifier}
+                  error={touched?.uniqueIdentifier && errors?.uniqueIdentifier}
                />
 
                {showErrorVerification(errors) ? (

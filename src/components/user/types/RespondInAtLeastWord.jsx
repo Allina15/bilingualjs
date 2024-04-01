@@ -8,6 +8,7 @@ import {
 } from '../../../assets/icons'
 import { NoData } from '../../../assets/images'
 import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
+import { countWords } from '../../../utils/helpers'
 
 const RespondInAtLeastWord = ({ questions, nextHandler }) => {
    const [text, setText] = useState('')
@@ -15,12 +16,6 @@ const RespondInAtLeastWord = ({ questions, nextHandler }) => {
    const dispatch = useDispatch()
 
    const changeTextHandler = (e) => setText(e.target.value || '')
-
-   const countWords = (text) => {
-      const wordsArray = text.split(' ').filter((word) => word !== '')
-
-      return wordsArray.length
-   }
 
    const wordsCount = countWords(text)
 
@@ -30,7 +25,7 @@ const RespondInAtLeastWord = ({ questions, nextHandler }) => {
          input: text,
          audioFile: '',
          optionId: [],
-         questionID: questions.questionId,
+         questionID: questions?.questionId,
       }
 
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerDate))
@@ -40,19 +35,20 @@ const RespondInAtLeastWord = ({ questions, nextHandler }) => {
       setText()
    }
 
-   const isDisabled = wordsCount < questions.attempts
+   const isDisabled = wordsCount < questions?.attempts
 
    return (
       <StyledContainer>
-         {questions.statement !== '' ? (
+         {questions?.statement !== '' ? (
             <>
                <Typography className="title">
-                  Respond to the question in at least {questions.attempts} words
+                  Respond to the question in at least {questions?.attempts}
+                  words
                </Typography>
 
                <Box className="content-box">
                   <Typography className="question">
-                     {questions.statement}
+                     {questions?.statement}
                   </Typography>
 
                   <Box>
@@ -66,7 +62,7 @@ const RespondInAtLeastWord = ({ questions, nextHandler }) => {
                      />
                      <Typography
                         className={`${
-                           wordsCount >= questions.attempts
+                           wordsCount >= questions?.attempts
                               ? 'highlight-word'
                               : 'word-length'
                         }`}
@@ -147,7 +143,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          outline: 'none',
          caretColor: theme.palette.primary.main,
 
-         '::placeholder': {
+         '&::placeholder': {
             color: '#AFAFAF',
             fontSize: '16px',
             fontFamily: 'Arial',

@@ -40,7 +40,7 @@ const SignIn = () => {
          .then((response) => {
             dispatch(
                AUTH_THUNKS.authWithGoogle({
-                  tokenId: response.user.accessToken,
+                  tokenId: response?.user?.accessToken,
                   navigate,
                   isSignUp: true,
                })
@@ -53,7 +53,7 @@ const SignIn = () => {
 
    const onSubmit = (values, { resetForm }) => {
       const trimmedValues = Object.fromEntries(
-         Object.entries(values).map(([key, value]) => {
+         Object.entries(values)?.map(([key, value]) => {
             const trimmedValue =
                typeof value === 'string' ? value.trim() : value
 
@@ -102,21 +102,21 @@ const SignIn = () => {
                   type="email"
                   label="Email"
                   name="email"
-                  value={values.email}
+                  value={values?.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={touched.email && errors.email}
+                  error={touched?.email && errors?.email}
                />
 
                <Input
                   label="Password"
                   name="password"
-                  value={values.password}
+                  value={values?.password}
                   onChange={handleChange}
                   onFocus={handlePasswordFieldFocus}
                   onBlur={handleBlur}
                   type={showPassword ? 'text' : 'password'}
-                  error={touched.password && errors.password}
+                  error={touched?.password && errors?.password}
                   InputProps={{
                      endAdornment: (
                         <InputAdornment className="adornment" position="end">
@@ -133,7 +133,7 @@ const SignIn = () => {
                <Box>
                   <Checkbox
                      name="rememberMe"
-                     checked={values.rememberMe}
+                     checked={values?.rememberMe}
                      onChange={handleChange}
                      className="check"
                   />

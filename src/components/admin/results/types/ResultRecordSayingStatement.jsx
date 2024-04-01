@@ -16,7 +16,7 @@ const ResultRecordSayingStatement = ({ isDisabled, saveHandler }) => {
    const navigate = useNavigate()
 
    const stopSoundHandler = () => {
-      Howler.stop()
+      Howler?.stop()
 
       setIsPlaying(false)
    }
@@ -32,7 +32,7 @@ const ResultRecordSayingStatement = ({ isDisabled, saveHandler }) => {
          onplay: () => setIsPlaying(true),
       })
 
-      sound.play()
+      sound?.play()
 
       setIsPlaying(true)
    }

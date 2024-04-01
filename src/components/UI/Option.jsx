@@ -42,7 +42,7 @@ const Option = ({
    }
 
    const stopSoundHandler = () => {
-      Howler.stop()
+      Howler?.stop()
 
       setIsPlaying(false)
    }
@@ -58,7 +58,7 @@ const Option = ({
          onplay: () => setIsPlaying(true),
       })
 
-      sound.play()
+      sound?.play()
 
       setIsPlaying(true)
    }

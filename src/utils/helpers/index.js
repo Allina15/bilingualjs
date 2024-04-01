@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { QUESTION_TITLES, QUESTION_TYPES } from '../constants'
 
 const showErrorSignUp = (errors) => {
@@ -115,6 +116,20 @@ const resultsStatusHandler = (status) => {
    }
 }
 
+const countWords = (text) => {
+   const wordsArray = text.split(' ').filter((word) => word !== '')
+
+   return wordsArray?.length
+}
+
+const formatDate = (dateString) => {
+   if (!dateString) return ''
+
+   const date = new Date(dateString)
+
+   return format(date, 'dd.MM.yyyy HH:mm')
+}
+
 export {
    showErrorSignUp,
    showErrorSignIn,
@@ -123,4 +138,6 @@ export {
    showErrorChangePassword,
    questionTypeHandler,
    resultsStatusHandler,
+   countWords,
+   formatDate,
 }

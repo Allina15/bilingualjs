@@ -11,13 +11,19 @@ const getResults = createAsyncThunk(
 
          return data
       } catch (error) {
+         showNotification({
+            title: 'Error',
+            message: error.response.data,
+            type: 'error',
+         })
+
          return rejectWithValue({ message: error.message })
       }
    }
 )
 
 const getResult = createAsyncThunk(
-   'submitedResults/getResults',
+   'submitedResults/getResult',
 
    async ({ resultId }, { rejectWithValue }) => {
       try {
@@ -29,7 +35,7 @@ const getResult = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -38,7 +44,7 @@ const getResult = createAsyncThunk(
    }
 )
 
-const postResult = createAsyncThunk(
+const sendResult = createAsyncThunk(
    'submitedResults/postResults',
 
    async ({ resultId, navigate }, { rejectWithValue, dispatch }) => {
@@ -61,7 +67,7 @@ const postResult = createAsyncThunk(
 
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -91,7 +97,7 @@ const deleteResult = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -103,6 +109,6 @@ const deleteResult = createAsyncThunk(
 export const SUBMITTED_RESULTS_THUNKS = {
    getResults,
    getResult,
-   postResult,
+   sendResult,
    deleteResult,
 }

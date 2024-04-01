@@ -10,7 +10,7 @@ import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/
 const TypeWhatYouHear = ({ questions, nextHandler }) => {
    const [description, setDescription] = useState('')
    const [isPlaying, setIsPlaying] = useState(false)
-   const [replays, setReplays] = useState(questions.attempts)
+   const [replays, setReplays] = useState(questions?.attempts)
 
    const dispatch = useDispatch()
 
@@ -19,7 +19,7 @@ const TypeWhatYouHear = ({ questions, nextHandler }) => {
    const changeDescriptionHandler = (e) => setDescription(e.target.value)
 
    const soundHandler = () => {
-      if (questions.fileUrl && replays > 0) {
+      if (questions?.fileUrl && replays > 0) {
          if (isPlaying) {
             soundRef.current.pause()
 
@@ -44,7 +44,7 @@ const TypeWhatYouHear = ({ questions, nextHandler }) => {
          input: description,
          audioFile: '',
          optionId: [],
-         questionID: questions.questionId,
+         questionID: questions?.questionId,
       }
 
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
@@ -54,9 +54,11 @@ const TypeWhatYouHear = ({ questions, nextHandler }) => {
       setDescription('')
    }
 
+   const isValid = !description
+
    return (
       <StyledContainer>
-         {questions.fileUrl !== '' ? (
+         {questions?.fileUrl !== '' ? (
             <>
                <Box className="main-content">
                   <Typography className="title">
@@ -71,7 +73,7 @@ const TypeWhatYouHear = ({ questions, nextHandler }) => {
                   >
                      <track kind="captions" srcLang="english" />
 
-                     <source src={questions.fileUrl} type="audio/mp3" />
+                     <source src={questions?.fileUrl} type="audio/mp3" />
                   </audio>
 
                   <Box className="content">
@@ -104,12 +106,7 @@ const TypeWhatYouHear = ({ questions, nextHandler }) => {
                </Box>
 
                <Box className="container-button">
-                  <Button
-                     disabled={
-                        !description || replays !== questions.attempts - 1
-                     }
-                     onClick={onSubmit}
-                  >
+                  <Button disabled={isValid} onClick={onSubmit}>
                      NEXT
                   </Button>
                </Box>

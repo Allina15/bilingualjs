@@ -7,7 +7,7 @@ import TestContainer from '../../../components/UI/TestContainer'
 import Button from '../../../components/UI/buttons/Button'
 import { ListImage, NoDataImage } from '../../../assets/images'
 import { ROUTES } from '../../../routes/routes'
-import { TESTS_LIST_THUNKS } from '../../../store/slices/user/tests/testsListThunk'
+import { TESTS_LIST_THUNKS } from '../../../store/slices/user/tests-list/testsListThunk'
 
 const TestList = () => {
    const { tests, isLoading } = useSelector((state) => state.testsList)

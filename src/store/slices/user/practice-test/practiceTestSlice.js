@@ -8,7 +8,6 @@ const initialState = {
    questions: [],
    correctOptions: [],
    correctAnswer,
-   fileUrl: '',
    isDisabled: false,
    isLoading: false,
 }
@@ -18,7 +17,7 @@ const practiceTestSlice = createSlice({
    initialState,
    reducers: {
       addCorrectOption: (state, { payload }) => {
-         state.correctOptions.push(payload)
+         state.correctOptions?.push(payload)
       },
 
       deleteCorrectOption: (state, { payload }) => {
@@ -86,24 +85,7 @@ const practiceTestSlice = createSlice({
                title: 'Pending',
                message: false,
                type: 'warning',
-               duration: 200,
             })
-         })
-
-         .addCase(
-            PRACTICE_TEST_THUNKS.addAnswerFile.fulfilled,
-            (state, { payload }) => {
-               state.isLoading = false
-               state.fileUrl = payload?.link
-            }
-         )
-
-         .addCase(PRACTICE_TEST_THUNKS.addAnswerFile.rejected, (state) => {
-            state.isLoading = false
-         })
-
-         .addCase(PRACTICE_TEST_THUNKS.addAnswerFile.pending, (state) => {
-            state.isLoading = true
          })
    },
 })

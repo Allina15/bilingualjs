@@ -20,7 +20,7 @@ const SelectRealEnglishWords = ({ questions, nextHandler }) => {
          input: '',
          audioFile: '',
          optionId,
-         questionID: questions.questionId,
+         questionID: questions?.questionId,
       }
 
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
@@ -30,7 +30,7 @@ const SelectRealEnglishWords = ({ questions, nextHandler }) => {
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
    }
 
-   const isDisabled = correctOptions.length === 0
+   const isDisabled = correctOptions?.length === 0
 
    return (
       <StyledContainer>

@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
-import { axiosInstanceFile } from '../../../../configs/axiosInstanceFile'
 import { ROUTES } from '../../../../routes/routes'
 
 const getQuestions = createAsyncThunk(
@@ -17,7 +16,7 @@ const getQuestions = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -42,34 +41,13 @@ const addAnswer = createAsyncThunk(
 
          dispatch(clearAnswer.clearCorrectAnswer())
 
-         return data
-      } catch (error) {
-         showNotification({
-            title: 'Error',
-            message: error.message,
-            type: 'error',
-         })
-
-         return rejectWithValue({ message: error.message })
-      }
-   }
-)
-
-const addAnswerFile = createAsyncThunk(
-   'question/addAnswerFile',
-   async ({ recordedAudio }, { rejectWithValue }) => {
-      try {
-         const formData = new FormData()
-
-         formData.append('multipartFile', recordedAudio, 'recording.mp3')
-
-         const { data } = await axiosInstanceFile.post('/api/awsFile', formData)
+         sessionStorage.removeItem('question-durations')
 
          return data
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -81,5 +59,4 @@ const addAnswerFile = createAsyncThunk(
 export const PRACTICE_TEST_THUNKS = {
    getQuestions,
    addAnswer,
-   addAnswerFile,
 }

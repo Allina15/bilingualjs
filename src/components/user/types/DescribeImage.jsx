@@ -31,7 +31,7 @@ const DescribeImage = ({ questions, nextHandler }) => {
 
    return (
       <StyledContainer>
-         {questions.fileUrl !== '' ? (
+         {questions?.fileUrl !== '' ? (
             <>
                <Box className="content-box">
                   <Typography className="title">
@@ -39,7 +39,11 @@ const DescribeImage = ({ questions, nextHandler }) => {
                   </Typography>
 
                   <Box className="image-box">
-                     <img src={questions.fileUrl} alt="img" className="image" />
+                     <img
+                        src={questions?.fileUrl}
+                        alt="img"
+                        className="image"
+                     />
 
                      <TextArea
                         className="text-area"

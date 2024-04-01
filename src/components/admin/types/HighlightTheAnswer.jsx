@@ -227,7 +227,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          fontWeight: 400,
          color: '#5b5867',
 
-         '::selection': {
+         '&::selection': {
             color: theme.palette.primary.main,
             textDecoration: 'underline',
          },

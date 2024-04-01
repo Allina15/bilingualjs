@@ -11,6 +11,7 @@ import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionS
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { ROUTES } from '../../../routes/routes'
 import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
+import { FILES_THUNK } from '../../../store/slices/file/filesThunk'
 
 const ListenAndSelectEnglishWord = ({
    title,
@@ -20,8 +21,11 @@ const ListenAndSelectEnglishWord = ({
    setDuration,
    setSelectType,
 }) => {
-   const { fileUrl, isLoading, options, inOpen, isUpdateDisabled } =
-      useSelector((state) => state.question)
+   const { isLoading, options, inOpen, isUpdateDisabled } = useSelector(
+      (state) => state.question
+   )
+
+   const { fileUrl } = useSelector((state) => state.files)
 
    const [files, setFiles] = useState([])
    const [optionId, setOptionId] = useState(null)
@@ -33,13 +37,13 @@ const ListenAndSelectEnglishWord = ({
       save: false,
    })
 
-   const navigate = useNavigate()
-
-   const dispatch = useDispatch()
-
    const { testId } = useParams()
 
    const { state } = useLocation()
+
+   const navigate = useNavigate()
+
+   const dispatch = useDispatch()
 
    const toggleModal = (modalName) => {
       setModals((prev) => ({
@@ -59,7 +63,7 @@ const ListenAndSelectEnglishWord = ({
             QUESTION_THUNKS.getQuestion({
                id: state.id,
                addUpdateOption: QUESTION_ACTIONS,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
+               optionName: OPTIONS_NAME?.listenAndSelectOptions,
             })
          )
       }
@@ -77,7 +81,7 @@ const ListenAndSelectEnglishWord = ({
 
          reader.readAsDataURL(file)
 
-         dispatch(QUESTION_THUNKS.addFile(file))
+         dispatch(FILES_THUNK.addFile(file))
 
          setIsUploaded(true)
       }
@@ -106,7 +110,7 @@ const ListenAndSelectEnglishWord = ({
 
    const checkedHandler = (optionId) => {
       dispatch(
-         QUESTION_ACTIONS.handleIsChecked({
+         QUESTION_ACTIONS.isChecked({
             optionId,
             optionName: OPTIONS_NAME?.listenAndSelectOptions,
          })
@@ -121,14 +125,14 @@ const ListenAndSelectEnglishWord = ({
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
+               optionName: OPTIONS_NAME?.listenAndSelectOptions,
             })
          )
       } else if (optionId > 200) {
          dispatch(
             QUESTION_ACTIONS.deleteOption({
                optionId,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
+               optionName: OPTIONS_NAME?.listenAndSelectOptions,
             })
          )
       } else {
@@ -136,7 +140,7 @@ const ListenAndSelectEnglishWord = ({
             QUESTION_THUNKS.deleteOption({
                optionId,
                id: state.id,
-               optionName: OPTIONS_NAME.listenAndSelectOptions,
+               optionName: OPTIONS_NAME?.listenAndSelectOptions,
                addUpdateOption: QUESTION_ACTIONS,
             })
          )
@@ -168,9 +172,10 @@ const ListenAndSelectEnglishWord = ({
             dispatch(
                QUESTION_THUNKS.addTest({
                   requestData,
+
                   data: {
                      testId,
-                     questionType: QUESTION_TITLES.LISTEN_AND_SELECT_WORD,
+                     questionType: QUESTION_TITLES?.LISTEN_AND_SELECT_WORD,
                      navigate,
                   },
 
@@ -187,12 +192,14 @@ const ListenAndSelectEnglishWord = ({
             const requestData = {
                title: title.trim(),
                duration: +duration,
-               optionRequest: options.listenAndSelectOptions?.map((option) => ({
-                  id: option.optionId,
-                  optionTitle: option.optionTitle,
-                  isCorrectOption: option.isCorrectOption,
-                  fileUrl: option.fileUrl,
-               })),
+               optionRequest: options?.listenAndSelectOptions?.map(
+                  (option) => ({
+                     id: option?.optionId,
+                     optionTitle: option?.optionTitle,
+                     isCorrectOption: option?.isCorrectOption,
+                     fileUrl: option?.fileUrl,
+                  })
+               ),
             }
 
             dispatch(
@@ -227,14 +234,14 @@ const ListenAndSelectEnglishWord = ({
       options?.listenAndSelectOptions?.length < 2
 
    const isDisabledModal =
-      optionTitle.trim() !== '' &&
+      optionTitle?.trim() !== '' &&
       isUploaded !== false &&
       isLoading !== true &&
       fileUrl !== ''
 
    useEffect(() => {
       if (inOpen === false) {
-         if (options.listenAndSelectOptions?.length <= 1) {
+         if (options?.listenAndSelectOptions?.length <= 1) {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
          } else {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
@@ -256,7 +263,7 @@ const ListenAndSelectEnglishWord = ({
          <Box className="cards">
             {options?.listenAndSelectOptions?.map((option, i) => (
                <Option
-                  key={option.optionId}
+                  key={option?.optionId}
                   icon
                   deletion
                   index={i}

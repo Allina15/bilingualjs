@@ -8,7 +8,7 @@ import TestContainer from '../../components/UI/TestContainer'
 import Modal from '../../components/UI/modals/Modal'
 import { NoData } from '../../assets/images'
 import { ROUTES } from '../../routes/routes'
-import { useToggleModal } from '../../hooks/useToogleModal'
+import { useToggleModal } from '../../utils/hooks/useToogleModal'
 import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practice-test/practiceTestSlice'
 import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practice-test/practiceTestThunk'
 import { showNotification } from '../../utils/helpers/notification'
@@ -40,12 +40,14 @@ const PracticeTest = () => {
       navigate({ search: queryParams.toString() })
    }, [count, navigate])
 
-   const { isOpen, onCloseModal, onOpenModal } =
+   const { isModalOpen, closeModalHandler, openModalHandler } =
       useToggleModal('practiceTestModal')
 
    const quitHandler = () => {
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
+
+      sessionStorage.removeItem('question-durations')
 
       navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`, {
          replace: true,
@@ -88,12 +90,11 @@ const PracticeTest = () => {
 
             setWarningCount((prev) => {
                const newCount = prev - 1
+
                if (newCount >= 0) {
                   showNotification({
                      title: 'Error',
-                     message: `You can't take a screenshot! You have ${
-                        newCount + 1
-                     } tries!`,
+                     message: `You can't take a screenshot! You have ${newCount} tries!`,
                      type: 'error',
                   })
                }
@@ -102,11 +103,14 @@ const PracticeTest = () => {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
 
+                  sessionStorage.removeItem('question-durations')
+
                   navigate(
                      `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
                      { replace: true }
                   )
                }
+
                return newCount
             })
          }
@@ -127,6 +131,9 @@ const PracticeTest = () => {
 
                if (newCount === 0) {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
+
+                  sessionStorage.removeItem('question-durations')
+
                   navigate(
                      `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
                      { replace: true }
@@ -150,9 +157,9 @@ const PracticeTest = () => {
    }, [warningCount, dispatch, navigate, testId])
 
    useEffect(() => {
-      const handleBeforeUnload = (event) => {
-         event.preventDefault()
-         event.returnValue = ''
+      const handleBeforeUnload = (e) => {
+         e.preventDefault()
+         e.returnValue = ''
       }
 
       window.addEventListener('beforeunload', handleBeforeUnload)
@@ -171,7 +178,11 @@ const PracticeTest = () => {
    return (
       <StyledContainer>
          <Box className="quit-container">
-            <Button variant="secondary" className="quit" onClick={onOpenModal}>
+            <Button
+               variant="secondary"
+               className="quit"
+               onClick={openModalHandler}
+            >
                QUIT TEST
             </Button>
          </Box>
@@ -197,7 +208,7 @@ const PracticeTest = () => {
             )}
          </TestContainer>
 
-         <Modal isVisible={isOpen} handleIsVisible={onCloseModal}>
+         <Modal isVisible={isModalOpen} handleIsVisible={closeModalHandler}>
             <Box className="quit-content">
                <Typography className="text">
                   Are you sure you want to leave your practice test?
@@ -212,7 +223,7 @@ const PracticeTest = () => {
                      QUIT TEST
                   </Button>
 
-                  <Button onClick={onCloseModal}>CONTINUE TEST</Button>
+                  <Button onClick={closeModalHandler}>CONTINUE TEST</Button>
                </Box>
             </Box>
          </Modal>
@@ -228,10 +239,12 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       justifyContent: 'flex-end',
       alignItems: 'center',
       margin: '2rem 2rem -3rem 0',
+
       '& > .quit': {
          color: '#4C4C4C',
          fontWeight: '700',
          border: '0.125rem solid #4C4859',
+
          '&:hover': {
             borderColor: theme.palette.primary.main,
             background: theme.palette.primary.main,
@@ -239,6 +252,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          },
       },
    },
+
    '& > .no-data': {
       width: '30rem',
       margin: '0 0 0 12rem',

@@ -4,7 +4,9 @@ import { ROUTES } from './routes'
 import Suspense from './Suspense'
 
 const AdminResults = lazy(() => import('../pages/admin/results/AdminResults'))
-const InnerResults = lazy(() => import('../pages/admin/results/InnerResults'))
+const InnerResults = lazy(
+   () => import('../components/admin/results/InnerResults')
+)
 const TestQuestion = lazy(() => import('../components/UI/TestQuestion'))
 const AdminTests = lazy(() => import('../pages/admin/tests/AdminTests'))
 const CreateTest = lazy(() => import('../pages/admin/create-test/CreateTest'))

@@ -13,7 +13,7 @@ const getTests = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -33,7 +33,7 @@ const getTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -57,7 +57,7 @@ const addTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -81,7 +81,7 @@ const deleteTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.respose.data,
             type: 'error',
          })
 
@@ -108,7 +108,7 @@ const updateTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -123,14 +123,14 @@ const updateTestByEnable = createAsyncThunk(
    async ({ testId, enable }, { rejectWithValue, dispatch }) => {
       try {
          const { data } = await axiosInstance.patch(
-            `/api/test/update?tesId=${testId}&enable=${enable}`
+            `/api/test/update?testId=${testId}&enable=${enable}`
          )
 
          return data
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 

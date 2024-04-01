@@ -48,7 +48,6 @@ const testsSlice = createSlice({
                title: 'Pending',
                message: false,
                type: 'warning',
-               duration: 200,
             })
          })
 
@@ -83,7 +82,6 @@ const testsSlice = createSlice({
                title: 'Pending',
                message: false,
                type: 'warning',
-               duration: 100,
             })
          })
 

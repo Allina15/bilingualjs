@@ -15,7 +15,7 @@ const getAnswer = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -24,8 +24,8 @@ const getAnswer = createAsyncThunk(
    }
 )
 
-const postResult = createAsyncThunk(
-   'answer/postResult',
+const saveResult = createAsyncThunk(
+   'answer/saveResult',
 
    async ({ answerId, scoreValue, navigate }, { rejectWithValue }) => {
       try {
@@ -42,7 +42,7 @@ const postResult = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -51,4 +51,4 @@ const postResult = createAsyncThunk(
    }
 )
 
-export const ANSWER_THUNKS = { getAnswer, postResult }
+export const ANSWER_THUNKS = { getAnswer, saveResult }

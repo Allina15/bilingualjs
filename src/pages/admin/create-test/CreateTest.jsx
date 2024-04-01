@@ -30,8 +30,8 @@ const CreateTest = () => {
    useEffect(() => {
       if (!isNewTest && test) {
          setFormData({
-            title: test.title || '',
-            shortDescription: test.shortDescription || '',
+            title: test?.title || '',
+            shortDescription: test?.shortDescription || '',
          })
       }
    }, [isNewTest, test, id])
@@ -57,16 +57,17 @@ const CreateTest = () => {
       }
    }
 
-   const isFormValid = formData.title !== '' && formData.shortDescription !== ''
+   const isFormValid =
+      formData?.title !== '' && formData?.shortDescription !== ''
 
    const isFormUpdateValid =
-      formData.title === (test?.title || '') &&
-      formData.shortDescription === (test?.shortDescription || '')
+      formData?.title === (test?.title || '') &&
+      formData?.shortDescription === (test?.shortDescription || '')
 
    useEffect(() => {
-      const unloadBeforeHandler = (event) => {
-         event.preventDefault()
-         event.returnValue = ''
+      const unloadBeforeHandler = (e) => {
+         e.preventDefault()
+         e.returnValue = ''
       }
 
       window.addEventListener('beforeunload', unloadBeforeHandler)
@@ -91,7 +92,7 @@ const CreateTest = () => {
                <Input
                   className="input"
                   name="title"
-                  value={formData.title}
+                  value={formData?.title}
                   onChange={changeInputHandler}
                />
             )}
@@ -109,7 +110,7 @@ const CreateTest = () => {
                <Input
                   className="input"
                   name="shortDescription"
-                  value={formData.shortDescription}
+                  value={formData?.shortDescription}
                   onChange={changeInputHandler}
                />
             )}

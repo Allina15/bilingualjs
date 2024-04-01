@@ -1,5 +1,5 @@
 import { Box, Typography, styled } from '@mui/material'
-import useTimer from '../../hooks/useTimer'
+import { useTimer } from '../../utils/hooks/useTimer'
 
 const ProgressBar = ({ duration, timeIsUp, count }) => {
    const { minute, seconds, percent } = useTimer(duration, timeIsUp, count)
@@ -43,7 +43,7 @@ const StyledContainer = styled(Box)(() => ({
       lineHeight: '24px',
    },
 
-   '& > .progressbar': {
+   '& > div > .progressbar': {
       overflow: 'hidden',
       width: '100%',
       height: '8px',

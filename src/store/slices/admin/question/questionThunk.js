@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { axiosInstanceFile } from '../../../../configs/axiosInstanceFile'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
 import { TESTS_THUNKS } from '../tests/testsThunk'
@@ -39,37 +38,13 @@ const addTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
          setSelectType()
          setTitle()
          setDuration()
-
-         return rejectWithValue({ message: error.message })
-      }
-   }
-)
-
-const addFile = createAsyncThunk(
-   'question/addFile',
-
-   async (file, { rejectWithValue }) => {
-      try {
-         const formData = new FormData()
-
-         formData.append('multipartFile', file)
-
-         const { data } = await axiosInstanceFile.post('/api/awsFile', formData)
-
-         return data
-      } catch (error) {
-         showNotification({
-            title: 'Error',
-            message: error.message,
-            type: 'error',
-         })
 
          return rejectWithValue({ message: error.message })
       }
@@ -101,7 +76,7 @@ const getQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -130,7 +105,7 @@ const addQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -160,7 +135,7 @@ const deleteQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -193,7 +168,7 @@ const deleteOption = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -233,7 +208,7 @@ const updateQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -257,7 +232,7 @@ const updateQuestionByEnable = createAsyncThunk(
 
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -267,7 +242,6 @@ const updateQuestionByEnable = createAsyncThunk(
 )
 
 export const QUESTION_THUNKS = {
-   addFile,
    addTest,
    getQuestion,
    addQuestion,

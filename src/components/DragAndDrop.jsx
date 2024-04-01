@@ -14,7 +14,7 @@ const DragAndDrop = ({ options }) => {
    const onDragEndHandler = (e, option) => {
       e.preventDefault()
 
-      const correctOption = correctOptions.find(
+      const correctOption = correctOptions?.find(
          (correctOption) => correctOption.id === option.id
       )
 
@@ -43,7 +43,7 @@ const DragAndDrop = ({ options }) => {
    }
 
    const optionDisabledHandler = (id) => {
-      correctOptions.find((correctOption) => correctOption.id === id)
+      correctOptions?.find((correctOption) => correctOption.id === id)
    }
 
    const deleteWordHandler = (id) => {
@@ -53,17 +53,17 @@ const DragAndDrop = ({ options }) => {
    return (
       <StyledContainer>
          <Box className="drag-container">
-            {options.map((option) => (
+            {options?.map((option) => (
                <Box
-                  key={option.id}
+                  key={option?.id}
                   draggable={!false}
                   className={`option-container ${
-                     optionDisabledHandler(option.id) ? 'disabled' : ''
+                     optionDisabledHandler(option?.id) ? 'disabled' : ''
                   }`}
                   onDragEnd={(e) => onDragEndHandler(e, option)}
                >
                   <Typography className="option">
-                     {option.optionTitle}
+                     {option?.optionTitle}
                   </Typography>
                </Box>
             ))}
@@ -124,11 +124,11 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          pointerEvents: 'none',
       },
 
-      ':hover': {
+      '&:hover': {
          borderColor: theme.palette.primary.main,
       },
 
-      ':active': {
+      '&:active': {
          backgroundColor: theme.palette.primary.main,
          color: theme.palette.primary.white,
       },

@@ -6,12 +6,13 @@ import Modal from '../components/UI/modals/Modal'
 import { LogoImage } from '../assets/images'
 import { ROUTES } from '../routes/routes'
 import { AUTH_ACTIONS } from '../store/slices/auth/authSlice'
-import { useToggleModal } from '../hooks/useToogleModal'
+import { useToggleModal } from '../utils/hooks/useToogleModal'
 
 const Header = () => {
    const { role } = useSelector((state) => state.auth)
 
-   const { isOpen, onOpenModal, onCloseModal } = useToggleModal('modal')
+   const { isModalOpen, openModalHandler, closeModalHandler } =
+      useToggleModal('modal')
 
    const dispatch = useDispatch()
 
@@ -62,18 +63,18 @@ const Header = () => {
 
             <Button
                variant="secondary"
-               onClick={onOpenModal}
+               onClick={openModalHandler}
                className="log-out"
             >
                LOG OUT
             </Button>
 
-            <Modal isVisible={isOpen} handleIsVisible={onCloseModal}>
+            <Modal isVisible={isModalOpen} handleIsVisible={closeModalHandler}>
                <Box className="log-out">
                   <Typography>Are you sure you want to log out?</Typography>
 
                   <Box className="buttons">
-                     <Button variant="secondary" onClick={onCloseModal}>
+                     <Button variant="secondary" onClick={closeModalHandler}>
                         CANCEL
                      </Button>
 

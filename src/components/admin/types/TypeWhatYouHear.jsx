@@ -10,6 +10,7 @@ import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionS
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { ROUTES } from '../../../routes/routes'
 import { QUESTION_TITLES } from '../../../utils/constants'
+import { FILES_THUNK } from '../../../store/slices/file/filesThunk'
 
 const TypeWhatYouHear = ({
    title,
@@ -19,9 +20,9 @@ const TypeWhatYouHear = ({
    setDuration,
    setSelectType,
 }) => {
-   const { fileUrl, isLoading, question } = useSelector(
-      (state) => state.question
-   )
+   const { isLoading, question } = useSelector((state) => state.question)
+
+   const { fileUrl } = useSelector((state) => state.files)
 
    const [file, setFile] = useState('')
    const [fileName, setFileName] = useState('')
@@ -106,7 +107,7 @@ const TypeWhatYouHear = ({
 
          audioRef.current.src = URL.createObjectURL(file)
 
-         dispatch(QUESTION_THUNKS.addFile(file))
+         dispatch(FILES_THUNK.addFile(file))
       }
    }
 
@@ -136,7 +137,7 @@ const TypeWhatYouHear = ({
 
                   data: {
                      testId,
-                     questionType: QUESTION_TITLES.TYPE_WHAT_YOU_HEAR,
+                     questionType: QUESTION_TITLES?.TYPE_WHAT_YOU_HEAR,
                      navigate,
                   },
 
@@ -159,7 +160,7 @@ const TypeWhatYouHear = ({
 
             dispatch(
                QUESTION_THUNKS.updateQuestion({
-                  id: state.id,
+                  id: state?.id,
                   testId,
                   requestData,
                   navigate,
