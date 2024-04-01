@@ -6,10 +6,10 @@ import Option from '../../UI/Option'
 import Button from '../../UI/buttons/Button'
 import SaveModal from '../../UI/modals/SaveModal'
 import DeleteModal from '../../UI/modals/DeleteModal'
-import { ROUTES } from '../../../routes/routes'
 import { PlusIcon } from '../../../assets/icons'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
+import { ROUTES } from '../../../routes/routes'
 import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 
 const ListenAndSelectEnglishWord = ({
@@ -28,29 +28,28 @@ const ListenAndSelectEnglishWord = ({
    const [isUploaded, setIsUploaded] = useState(false)
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
-
-   const { testId } = useParams()
-
-   const navigate = useNavigate()
-
-   const dispatch = useDispatch()
-
-   const { state } = useLocation()
-
    const [modals, setModals] = useState({
       delete: false,
       save: false,
    })
 
+   const navigate = useNavigate()
+
+   const dispatch = useDispatch()
+
+   const { testId } = useParams()
+
+   const { state } = useLocation()
+
    const toggleModal = (modalName) => {
-      setModals((prevModals) => ({
-         ...prevModals,
-         [modalName]: !prevModals[modalName],
+      setModals((prev) => ({
+         ...prev,
+         [modalName]: !prev[modalName],
       }))
 
+      setFiles([])
       setOptionTitle('')
       setIsUploaded(false)
-      setFiles([])
       setCheckedOption(false)
    }
 
@@ -64,7 +63,7 @@ const ListenAndSelectEnglishWord = ({
             })
          )
       }
-   }, [dispatch, state])
+   }, [state])
 
    const changeTitleHandler = (e) => setOptionTitle(e.target.value)
 
@@ -75,6 +74,7 @@ const ListenAndSelectEnglishWord = ({
          setFiles([file])
 
          const reader = new FileReader()
+
          reader.readAsDataURL(file)
 
          dispatch(QUESTION_THUNKS.addFile(file))
@@ -257,12 +257,12 @@ const ListenAndSelectEnglishWord = ({
          </Box>
 
          <Box className="cards">
-            {options?.listenAndSelectOptions?.map((option, index) => (
+            {options?.listenAndSelectOptions?.map((option, i) => (
                <Option
                   key={option?.optionId}
                   icon
                   deletion
-                  index={index}
+                  index={i}
                   option={option}
                   toggleModal={() => toggleModal('delete')}
                   setOptionId={setOptionId}

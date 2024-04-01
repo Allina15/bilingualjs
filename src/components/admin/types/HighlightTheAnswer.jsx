@@ -5,8 +5,8 @@ import { Box, InputLabel, TextField, Typography, styled } from '@mui/material'
 import Input from '../../UI/Input'
 import Button from '../../UI/buttons/Button'
 import Loading from '../../Loading'
-import { ROUTES } from '../../../routes/routes'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
+import { ROUTES } from '../../../routes/routes'
 import { QUESTION_TITLES } from '../../../utils/constants'
 
 const HighlightTheAnswer = ({
@@ -19,8 +19,6 @@ const HighlightTheAnswer = ({
 }) => {
    const { question, isLoading } = useSelector((state) => state.question)
 
-   const { state } = useLocation()
-
    const [text, setText] = useState('')
    const [statement, setStatement] = useState('')
    const [answerValue, setAnswerValue] = useState('')
@@ -28,6 +26,8 @@ const HighlightTheAnswer = ({
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
+
+   const { state } = useLocation()
 
    const { testId } = useParams()
 
@@ -47,22 +47,15 @@ const HighlightTheAnswer = ({
 
    const mouseUpHandler = () => setAnswerValue(window.getSelection().toString())
 
-   const changeTextHandler = (e) => {
-      const { value } = e.target
+   const changeTextHandler = (e) => setText(e.target.value || '')
 
-      setText(value || '')
-   }
+   const changeQuestionHandler = (e) => setStatement(e.target.value || '')
 
-   const changeQuestionHandler = (e) => {
-      const { value } = e.target
-
-      setStatement(value || '')
-   }
-
-   const navigateGoBackHandler = () =>
+   const navigateGoBackHandler = () => {
       navigate(
          `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
       )
+   }
 
    const onSubmit = () => {
       if (

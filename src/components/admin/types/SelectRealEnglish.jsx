@@ -7,10 +7,10 @@ import Button from '../../UI/buttons/Button'
 import Loading from '../../Loading'
 import SaveModal from '../../UI/modals/SaveModal'
 import DeleteModal from '../../UI/modals/DeleteModal'
-import { ROUTES } from '../../../routes/routes'
 import { PlusIcon } from '../../../assets/icons'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
+import { ROUTES } from '../../../routes/routes'
 import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 
 const SelectRealEnglish = ({
@@ -28,8 +28,10 @@ const SelectRealEnglish = ({
    const [optionId, setOptionId] = useState(null)
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
-
-   const { testId } = useParams()
+   const [modals, setModals] = useState({
+      delete: false,
+      save: false,
+   })
 
    const dispatch = useDispatch()
 
@@ -37,15 +39,12 @@ const SelectRealEnglish = ({
 
    const { state } = useLocation()
 
-   const [modals, setModals] = useState({
-      delete: false,
-      save: false,
-   })
+   const { testId } = useParams()
 
    const toggleModal = (modalName) => {
-      setModals((prevModals) => ({
-         ...prevModals,
-         [modalName]: !prevModals[modalName],
+      setModals((prev) => ({
+         ...prev,
+         [modalName]: !prev[modalName],
       }))
 
       setOptionTitle('')
@@ -62,19 +61,17 @@ const SelectRealEnglish = ({
             })
          )
       }
-   }, [dispatch, state])
+   }, [state])
 
    useEffect(() => {
       if (inOpen === false) {
          if (options?.selectRealEnglishWordsOptions?.length <= 1) {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-         } else {
-            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-         }
+         } else dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       }
    }, [options, inOpen])
 
-   const changeCheckbox = (e) => setCheckedOption(e.target.checked)
+   const changeCheckboxHandler = (e) => setCheckedOption(e.target.checked)
 
    const changeTitleHandler = (e) => setOptionTitle(e.target.value)
 
@@ -105,7 +102,6 @@ const SelectRealEnglish = ({
             optionName: OPTIONS_NAME?.selectRealEnglishWordsOptions,
          })
       )
-
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
@@ -200,7 +196,6 @@ const SelectRealEnglish = ({
                   clearOptions: QUESTION_ACTIONS,
                })
             )
-
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
          }
       }
@@ -239,10 +234,10 @@ const SelectRealEnglish = ({
             </Box>
 
             <Box className="cards">
-               {options?.selectRealEnglishWordsOptions?.map((option, index) => (
+               {options?.selectRealEnglishWordsOptions?.map((option, i) => (
                   <Option
                      key={option.optionId}
-                     index={index}
+                     index={i}
                      deletion
                      option={option}
                      toggleModal={() => toggleModal('delete')}
@@ -292,7 +287,7 @@ const SelectRealEnglish = ({
             isDisabledModal={!isDisabledModal}
             addOptionHandler={addOptionHandler}
             changeTitleHandler={changeTitleHandler}
-            changeCheckboxHandler={changeCheckbox}
+            changeCheckboxHandler={changeCheckboxHandler}
          />
       </>
    )

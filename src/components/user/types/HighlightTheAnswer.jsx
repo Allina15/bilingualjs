@@ -14,9 +14,7 @@ const HighlightTheAnswer = ({ questions, nextHandler }) => {
    const mouseUpHandler = () => {
       const selection = window.getSelection().toString().trim()
 
-      if (selection !== '') {
-         setHighlightAnswer(selection)
-      }
+      if (selection !== '') setHighlightAnswer(selection)
    }
 
    const onSubmit = () => {

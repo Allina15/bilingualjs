@@ -2,8 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
 
-const getResult = createAsyncThunk(
-   'results/getResult',
+const getResults = createAsyncThunk(
+   'results/getResults',
 
    async (_, { rejectWithValue }) => {
       try {
@@ -22,7 +22,7 @@ const getResult = createAsyncThunk(
    }
 )
 
-const deleteResult = createAsyncThunk(
+const deleteResults = createAsyncThunk(
    'results/deleteResults',
 
    async ({ resultId }, { rejectWithValue, dispatch }) => {
@@ -35,13 +35,13 @@ const deleteResult = createAsyncThunk(
             message: data.message,
          })
 
-         dispatch(getResult())
+         dispatch(getResults())
 
          return data
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to delete test',
+            message: error.message,
             type: 'error',
          })
 
@@ -50,4 +50,4 @@ const deleteResult = createAsyncThunk(
    }
 )
 
-export const MY_RESULTS_THUNKS = { getResult, deleteResult }
+export const RESULTS_THUNKS = { getResults, deleteResults }

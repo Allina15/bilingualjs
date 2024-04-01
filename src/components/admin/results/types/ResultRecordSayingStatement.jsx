@@ -17,13 +17,12 @@ const ResultRecordSayingStatement = ({ isDisabled, saveHandler }) => {
 
    const stopSoundHandler = () => {
       Howler.stop()
+
       setIsPlaying(false)
    }
 
    const startSoundHandler = () => {
-      if (!isPlaying) {
-         stopSoundHandler()
-      }
+      if (!isPlaying) stopSoundHandler()
 
       const sound = new Howl({
          src: audioFile,
@@ -34,10 +33,17 @@ const ResultRecordSayingStatement = ({ isDisabled, saveHandler }) => {
       })
 
       sound.play()
+
       setIsPlaying(true)
    }
 
    const navigateHandler = () => navigate(-1)
+
+   const buttonIcon = isPlaying ? (
+      <SmallPlayIcon className="icon" />
+   ) : (
+      <SmallPauseIcon className="icon" />
+   )
 
    return (
       <StyledContainer>
@@ -45,13 +51,7 @@ const ResultRecordSayingStatement = ({ isDisabled, saveHandler }) => {
             <Button
                className={isPlaying ? 'stop-button' : 'play-button'}
                onClick={isPlaying ? stopSoundHandler : startSoundHandler}
-               icon={
-                  isPlaying ? (
-                     <SmallPlayIcon className="icon" />
-                  ) : (
-                     <SmallPauseIcon className="icon" />
-                  )
-               }
+               icon={buttonIcon}
             >
                {isPlaying ? 'STOP RECORDED AUDIO' : 'PLAY AUDIO'}
             </Button>

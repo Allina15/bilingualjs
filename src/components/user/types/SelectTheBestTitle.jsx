@@ -1,17 +1,17 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 import Radio from '../../UI/Radio'
 import Button from '../../UI/buttons/Button'
 import { NoData } from '../../../assets/images'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const SelectTheBestTitle = ({ questions, nextHandler }) => {
-   const options = questions?.optionResponses
-
    const [selectedOptionId, setSelectedOptionId] = useState(null)
 
    const dispatch = useDispatch()
+
+   const options = questions?.optionResponses
 
    const optionSelectHandler = (id) => setSelectedOptionId(id)
 
@@ -50,7 +50,7 @@ const SelectTheBestTitle = ({ questions, nextHandler }) => {
                      Select the best title for the passage
                   </Typography>
 
-                  {options.map(({ id, optionTitle }) => (
+                  {options?.map(({ id, optionTitle }) => (
                      <Box
                         key={id}
                         className={`option ${

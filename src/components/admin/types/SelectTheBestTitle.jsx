@@ -8,9 +8,9 @@ import Button from '../../UI/buttons/Button'
 import SaveModal from '../../UI/modals/SaveModal'
 import DeleteModal from '../../UI/modals/DeleteModal'
 import { PlusIcon } from '../../../assets/icons'
-import { ROUTES } from '../../../routes/routes'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
+import { ROUTES } from '../../../routes/routes'
 import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
 
 const SelectTheBestTitle = ({
@@ -29,27 +29,27 @@ const SelectTheBestTitle = ({
    const [optionTitle, setOptionTitle] = useState('')
    const [checkedOption, setCheckedOption] = useState(false)
    const [selectedOptionId, setSelectedOptionId] = useState(null)
-
-   const { testId, questionId } = useParams()
-
-   const dispatch = useDispatch()
-
-   const navigate = useNavigate()
-
-   const { state } = useLocation()
-
    const [modals, setModals] = useState({
       delete: false,
       save: false,
    })
 
+   const dispatch = useDispatch()
+
+   const navigate = useNavigate()
+
+   const { testId, questionId } = useParams()
+
+   const { state } = useLocation()
+
    const changeTitleHandler = (e) => setOptionTitle(e.target.value)
+
    const changeCheckboxHandler = (e) => setCheckedOption(e.target.checked)
 
    const toggleModal = (modalName) => {
-      setModals((prevModals) => ({
-         ...prevModals,
-         [modalName]: !prevModals[modalName],
+      setModals((prev) => ({
+         ...prev,
+         [modalName]: !prev[modalName],
       }))
 
       setOptionTitle('')
@@ -59,13 +59,9 @@ const SelectTheBestTitle = ({
    const changeTextAreaHandler = (e) => {
       if (passage === options?.passage) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-      } else {
-         dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      }
+      } else dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
 
-      const { value } = e.target
-
-      setPassage(value || '')
+      setPassage(e.target.value || '')
    }
 
    useEffect(() => {
@@ -78,7 +74,7 @@ const SelectTheBestTitle = ({
             })
          )
       }
-   }, [dispatch, state])
+   }, [state])
 
    useEffect(() => {
       if (questionId && question) {
@@ -91,9 +87,7 @@ const SelectTheBestTitle = ({
       if (inOpen === false) {
          if (options?.selectTheBestTitleOptions?.length <= 1) {
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-         } else {
-            dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-         }
+         } else dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       }
    }, [options, inOpen])
 
@@ -110,7 +104,6 @@ const SelectTheBestTitle = ({
             optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
          })
       )
-
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))
 
@@ -128,7 +121,6 @@ const SelectTheBestTitle = ({
             optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
          })
       )
-
       dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
       dispatch(QUESTION_ACTIONS.changeInOpen(false))
    }
@@ -225,7 +217,6 @@ const SelectTheBestTitle = ({
                   clearOptions: QUESTION_ACTIONS,
                })
             )
-
             dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
          }
       }
@@ -277,10 +268,10 @@ const SelectTheBestTitle = ({
          </Box>
 
          <Box className="cards">
-            {options?.selectTheBestTitleOptions?.map((option, index) => (
+            {options?.selectTheBestTitleOptions?.map((option, i) => (
                <Option
                   key={option?.optionId}
-                  index={index}
+                  index={i}
                   option={option}
                   isRadio
                   deletion

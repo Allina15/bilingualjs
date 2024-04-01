@@ -1,13 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
-import { axiosInstanceFile } from '../../../../configs/axiosInstanceFile'
 import { ROUTES } from '../../../../routes/routes'
 
 const getQuestions = createAsyncThunk(
    'practiceTest/getQuestions',
 
-   async ({ testId }) => {
+   async ({ testId }, { rejectWithValue }) => {
       try {
          const { data } = await axiosInstance.get(
             `/api/question?testId=${testId}`
@@ -15,21 +14,19 @@ const getQuestions = createAsyncThunk(
 
          return data
       } catch (error) {
-         if (error.response) {
-            showNotification({
-               title: 'Error',
-               message: `${error.response.data.message}`,
-               type: 'error',
-            })
-         }
+         showNotification({
+            title: 'Error',
+            message: error.message,
+            type: 'error',
+         })
 
-         return error.response.data.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
 
 const addAnswer = createAsyncThunk(
-   'practiceTest/postTest',
+   'practiceTest/addAnswer',
 
    async (
       { correctAnswer, navigate, clearAnswer },
@@ -44,34 +41,13 @@ const addAnswer = createAsyncThunk(
 
          dispatch(clearAnswer.clearCorrectAnswer())
 
-         return data
-      } catch (error) {
-         showNotification({
-            title: 'Error',
-            message: `${error.response.data.message}`,
-            type: 'error',
-         })
-
-         return rejectWithValue({ message: error.message })
-      }
-   }
-)
-
-const addAnswerFile = createAsyncThunk(
-   'question/addAnswerFile',
-   async ({ recordedAudio }, { rejectWithValue }) => {
-      try {
-         const formData = new FormData()
-
-         formData.append('multipartFile', recordedAudio, 'recording.mp3')
-
-         const { data } = await axiosInstanceFile.post('/api/awsFile', formData)
+         // sessionStorage.removeItem(`question-${count}-duration`)
 
          return data
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to file!',
+            message: error.message,
             type: 'error',
          })
 
@@ -83,5 +59,4 @@ const addAnswerFile = createAsyncThunk(
 export const PRACTICE_TEST_THUNKS = {
    getQuestions,
    addAnswer,
-   addAnswerFile,
 }

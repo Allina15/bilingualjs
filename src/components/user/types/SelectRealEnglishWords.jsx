@@ -1,19 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, styled } from '@mui/material'
-import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 import Button from '../../UI/buttons/Button'
 import DragAndDrop from '../../DragAndDrop'
 import { NoData } from '../../../assets/images'
+import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const SelectRealEnglishWords = ({ questions, nextHandler }) => {
-   const options = questions?.optionResponses
-
    const { correctOptions } = useSelector((state) => state.practiceTest)
 
    const dispatch = useDispatch()
 
+   const options = questions?.optionResponses
+
    const onSubmit = () => {
-      const optionId = correctOptions?.map((item) => item.id)
+      const optionId = correctOptions?.map(({ id }) => id)
 
       const answerData = {
          attempts: 0,

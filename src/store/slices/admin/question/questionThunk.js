@@ -1,12 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { axiosInstanceFile } from '../../../../configs/axiosInstanceFile'
 import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
 import { TESTS_THUNKS } from '../tests/testsThunk'
 import { ROUTES } from '../../../../routes/routes'
 
 const addTest = createAsyncThunk(
-   'question/saveTest',
+   'question/addTest',
 
    async (
       {
@@ -39,37 +38,13 @@ const addTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to save question!',
+            message: error.message,
             type: 'error',
          })
 
          setSelectType()
          setTitle()
          setDuration()
-
-         return rejectWithValue({ message: error.message })
-      }
-   }
-)
-
-const addFile = createAsyncThunk(
-   'question/addFile',
-
-   async (file, { rejectWithValue }) => {
-      try {
-         const formData = new FormData()
-
-         formData.append('multipartFile', file)
-
-         const { data } = await axiosInstanceFile.post('/api/awsFile', formData)
-
-         return data
-      } catch (error) {
-         showNotification({
-            title: 'Error',
-            message: 'Failed to file!',
-            type: 'error',
-         })
 
          return rejectWithValue({ message: error.message })
       }
@@ -130,7 +105,7 @@ const addQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Error creating question',
+            message: error.message,
             type: 'error',
          })
 
@@ -160,7 +135,7 @@ const deleteQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to delete test',
+            message: error.message,
             type: 'error',
          })
 
@@ -256,18 +231,17 @@ const updateQuestionByEnable = createAsyncThunk(
          dispatch(TESTS_THUNKS.getTest({ id: testId }))
 
          showNotification({
-            message: 'Failed to update question',
-            type: 'error',
             title: 'Error',
+            message: error.message,
+            type: 'error',
          })
 
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
 
 export const QUESTION_THUNKS = {
-   addFile,
    addTest,
    getQuestion,
    addQuestion,

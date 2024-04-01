@@ -8,7 +8,7 @@ import TestContainer from '../../components/UI/TestContainer'
 import Modal from '../../components/UI/modals/Modal'
 import { NoData } from '../../assets/images'
 import { ROUTES } from '../../routes/routes'
-import { useToggleModal } from '../../hooks/useToogleModal'
+import { useToggleModal } from '../../utils/hooks/useToogleModal'
 import { PRACTICE_TEST_ACTIONS } from '../../store/slices/user/practice-test/practiceTestSlice'
 import { PRACTICE_TEST_THUNKS } from '../../store/slices/user/practice-test/practiceTestThunk'
 import { QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
@@ -40,12 +40,14 @@ const PracticeTest = () => {
       navigate({ search: queryParams.toString() })
    }, [count, navigate])
 
-   const { isOpen, onCloseModal, onOpenModal } =
+   const { isModalOpen, closeModalHandler, openModalHandler } =
       useToggleModal('practiceTestModal')
 
    const quitHandler = () => {
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
+
+      sessionStorage.removeItem(`question-${count}-duration`)
 
       navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`, {
          replace: true,
@@ -92,9 +94,7 @@ const PracticeTest = () => {
                if (newCount >= 0) {
                   showNotification({
                      title: 'Error',
-                     message: `You can't take a screenshot! You have ${
-                        newCount + 1
-                     } tries!`,
+                     message: `You can't take a screenshot! You have ${newCount} tries!`,
                      type: 'error',
                   })
                }
@@ -102,6 +102,8 @@ const PracticeTest = () => {
                if (newCount === 0) {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
+
+                  sessionStorage.removeItem(`question-${count}-duration`)
 
                   navigate(
                      `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
@@ -129,6 +131,9 @@ const PracticeTest = () => {
 
                if (newCount === 0) {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
+
+                  sessionStorage.removeItem(`question-${count}-duration`)
+
                   navigate(
                      `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
                      { replace: true }
@@ -173,7 +178,11 @@ const PracticeTest = () => {
    return (
       <StyledContainer>
          <Box className="quit-container">
-            <Button variant="secondary" className="quit" onClick={onOpenModal}>
+            <Button
+               variant="secondary"
+               className="quit"
+               onClick={openModalHandler}
+            >
                QUIT TEST
             </Button>
          </Box>
@@ -199,7 +208,7 @@ const PracticeTest = () => {
             )}
          </TestContainer>
 
-         <Modal isVisible={isOpen} handleIsVisible={onCloseModal}>
+         <Modal isVisible={isModalOpen} handleIsVisible={closeModalHandler}>
             <Box className="quit-content">
                <Typography className="text">
                   Are you sure you want to leave your practice test?
@@ -214,7 +223,7 @@ const PracticeTest = () => {
                      QUIT TEST
                   </Button>
 
-                  <Button onClick={onCloseModal}>CONTINUE TEST</Button>
+                  <Button onClick={closeModalHandler}>CONTINUE TEST</Button>
                </Box>
             </Box>
          </Modal>

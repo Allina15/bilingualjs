@@ -15,17 +15,15 @@ const CreateTest = () => {
       shortDescription: '',
    })
 
-   const { id } = useParams()
-
    const navigate = useNavigate()
 
    const dispatch = useDispatch()
 
+   const { id } = useParams()
+
    useEffect(() => {
-      if (id) {
-         dispatch(TESTS_THUNKS.getTest({ id }))
-      }
-   }, [dispatch, id])
+      if (id) dispatch(TESTS_THUNKS.getTest({ id }))
+   }, [id])
 
    const isNewTest = id === undefined || id === ''
 
@@ -38,15 +36,16 @@ const CreateTest = () => {
       }
    }, [isNewTest, test, id])
 
-   const handleInputChange = (e) => {
+   const changeInputHandler = (e) => {
       const { name, value } = e.target
+
       setFormData({
          ...formData,
          [name]: value,
       })
    }
 
-   const handleSave = () => {
+   const saveHandler = () => {
       const testToSave = { ...formData }
 
       if (isNewTest) {
@@ -66,15 +65,15 @@ const CreateTest = () => {
       formData?.shortDescription === (test?.shortDescription || '')
 
    useEffect(() => {
-      const handleBeforeUnload = (e) => {
+      const unloadBeforeHandler = (e) => {
          e.preventDefault()
          e.returnValue = ''
       }
 
-      window.addEventListener('beforeunload', handleBeforeUnload)
+      window.addEventListener('beforeunload', unloadBeforeHandler)
 
       return () => {
-         window.removeEventListener('beforeunload', handleBeforeUnload)
+         window.removeEventListener('beforeunload', unloadBeforeHandler)
       }
    }, [])
 
@@ -94,7 +93,7 @@ const CreateTest = () => {
                   className="input"
                   name="title"
                   value={formData?.title}
-                  onChange={handleInputChange}
+                  onChange={changeInputHandler}
                />
             )}
 
@@ -112,7 +111,7 @@ const CreateTest = () => {
                   className="input"
                   name="shortDescription"
                   value={formData?.shortDescription}
-                  onChange={handleInputChange}
+                  onChange={changeInputHandler}
                />
             )}
 
@@ -123,7 +122,7 @@ const CreateTest = () => {
 
                <Button
                   variant="primary"
-                  onClick={handleSave}
+                  onClick={saveHandler}
                   disabled={!isFormValid || isFormUpdateValid}
                >
                   SAVE

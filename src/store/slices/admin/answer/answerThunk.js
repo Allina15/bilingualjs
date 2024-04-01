@@ -24,7 +24,7 @@ const getAnswer = createAsyncThunk(
    }
 )
 
-const postResult = createAsyncThunk(
+const sendResult = createAsyncThunk(
    'answer/postResult',
 
    async ({ answerId, scoreValue, navigate }, { rejectWithValue }) => {
@@ -51,4 +51,4 @@ const postResult = createAsyncThunk(
    }
 )
 
-export const ANSWER_THUNKS = { getAnswer, postResult }
+export const ANSWER_THUNKS = { getAnswer, sendResult }

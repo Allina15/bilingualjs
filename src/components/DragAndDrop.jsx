@@ -19,9 +19,8 @@ const DragAndDrop = ({ options }) => {
       )
 
       if (isDropped) {
-         if (correctOption) {
-            return correctOptions
-         }
+         if (correctOption) return correctOptions
+
          return dispatch(PRACTICE_TEST_ACTIONS.addCorrectOption(option))
       }
 
@@ -43,8 +42,9 @@ const DragAndDrop = ({ options }) => {
       setIsDragging(true)
    }
 
-   const optionDisabledHandler = (id) =>
+   const optionDisabledHandler = (id) => {
       correctOptions?.find((correctOption) => correctOption.id === id)
+   }
 
    const deleteWordHandler = (id) => {
       dispatch(PRACTICE_TEST_ACTIONS.deleteCorrectOption(id))
@@ -76,9 +76,9 @@ const DragAndDrop = ({ options }) => {
                onDragOver={onDragOverHandler}
             >
                {correctOptions?.length === 0 ? (
-                  <Box className="board-text">
-                     <Typography>Select words & drag here</Typography>
-                  </Box>
+                  <Typography className="board-text">
+                     Select words & drag here
+                  </Typography>
                ) : (
                   correctOptions?.map(({ id, optionTitle }) => (
                      <Box

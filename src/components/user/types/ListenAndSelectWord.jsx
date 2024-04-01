@@ -3,23 +3,23 @@ import { useDispatch } from 'react-redux'
 import { Howl, Howler } from 'howler'
 import { Box, Typography, styled } from '@mui/material'
 import Button from '../../UI/buttons/Button'
-import { NoData } from '../../../assets/images'
 import { AnimationSoundIcon, CheckIcon, SoundIcon } from '../../../assets/icons'
+import { NoData } from '../../../assets/images'
 import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
 
 const ListenAndSelectWord = ({ questions, nextHandler }) => {
-   const options = questions?.optionResponses
-
    const [optionState, setOptionState] = useState({})
 
    const dispatch = useDispatch()
 
+   const options = questions?.optionResponses
+
    const stopSoundHandler = (id) => {
       Howler.stop()
 
-      setOptionState((prevState) => ({
-         ...prevState,
-         [id]: { ...prevState[id], isPlaying: false },
+      setOptionState((prev) => ({
+         ...prev,
+         [id]: { ...prev[id], isPlaying: false },
       }))
    }
 
@@ -50,11 +50,12 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
             }))
          },
       })
+
       sound.play()
 
-      setOptionState((prevState) => ({
-         ...prevState,
-         [id]: { ...prevState[id], howl: sound, isPlaying: true },
+      setOptionState((prev) => ({
+         ...prev,
+         [id]: { ...prev[id], howl: sound, isPlaying: true },
       }))
    }
 
@@ -86,6 +87,7 @@ const ListenAndSelectWord = ({ questions, nextHandler }) => {
          optionId: selectedOptions?.map((option) => option.id),
          questionID: questions?.questionId,
       }
+
       dispatch(PRACTICE_TEST_ACTIONS.addCorrectAnswer(answerData))
 
       nextHandler()

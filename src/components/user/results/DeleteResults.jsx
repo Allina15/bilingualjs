@@ -4,7 +4,7 @@ import { Typography } from '@mui/material'
 import DeleteModal from '../../UI/modals/DeleteModal'
 import IconButton from '../../UI/buttons/IconButton'
 import { TrashIcon } from '../../../assets/icons'
-import { MY_RESULTS_THUNKS } from '../../../store/slices/user/results/resultsThunk'
+import { RESULTS_THUNKS } from '../../../store/slices/user/results/resultsThunk'
 
 const DeleteResults = ({ row }) => {
    const [isVisible, setIsVisible] = useState(false)
@@ -19,7 +19,7 @@ const DeleteResults = ({ row }) => {
 
    const deleteHandler = () => {
       dispatch(
-         MY_RESULTS_THUNKS.deleteResult({ resultId: row.original.resultId })
+         RESULTS_THUNKS.deleteResults({ resultId: row.original.resultId })
       )
 
       setIsVisible(false)

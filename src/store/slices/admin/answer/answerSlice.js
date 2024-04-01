@@ -26,16 +26,16 @@ const answerSlice = createSlice({
             state.isLoading = false
          })
 
-         .addCase(ANSWER_THUNKS.postResult.pending, (state) => {
+         .addCase(ANSWER_THUNKS.sendResult.pending, (state) => {
             state.isLoading = true
          })
 
-         .addCase(ANSWER_THUNKS.postResult.fulfilled, (state, { payload }) => {
+         .addCase(ANSWER_THUNKS.sendResult.fulfilled, (state, { payload }) => {
             state.answer = payload
             state.isLoading = false
          })
 
-         .addCase(ANSWER_THUNKS.postResult.rejected, (state) => {
+         .addCase(ANSWER_THUNKS.sendResult.rejected, (state) => {
             state.isLoading = false
          })
    },

@@ -3,7 +3,7 @@ import { axiosInstance } from '../../../../configs/axiosInstance'
 import { showNotification } from '../../../../utils/helpers/notification'
 
 const getResults = createAsyncThunk(
-   'submitedResults/getAllResults',
+   'submitedResults/getResults',
 
    async (_, { rejectWithValue }) => {
       try {
@@ -11,13 +11,13 @@ const getResults = createAsyncThunk(
 
          return data
       } catch (error) {
-         return rejectWithValue.message
+         return rejectWithValue({ message: error.message })
       }
    }
 )
 
 const getResult = createAsyncThunk(
-   'submitedResults/getResults',
+   'submitedResults/getResult',
 
    async ({ resultId }, { rejectWithValue }) => {
       try {
@@ -38,7 +38,7 @@ const getResult = createAsyncThunk(
    }
 )
 
-const postResult = createAsyncThunk(
+const sendResult = createAsyncThunk(
    'submitedResults/postResults',
 
    async ({ resultId, navigate }, { rejectWithValue, dispatch }) => {
@@ -61,7 +61,7 @@ const postResult = createAsyncThunk(
 
          showNotification({
             title: 'Error',
-            message: 'Failed to post results',
+            message: error.message,
             type: 'error',
          })
 
@@ -91,7 +91,7 @@ const deleteResult = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: 'Failed to delete test',
+            message: error.message,
             type: 'error',
          })
 
@@ -103,6 +103,6 @@ const deleteResult = createAsyncThunk(
 export const SUBMITTED_RESULTS_THUNKS = {
    getResults,
    getResult,
-   postResult,
+   sendResult,
    deleteResult,
 }

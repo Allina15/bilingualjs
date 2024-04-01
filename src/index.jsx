@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { injectStore } from './configs/axiosInstance'
 import { fileInjectStore } from './configs/axiosInstanceFile'
-import store, { persistor } from './store/store'
+import { persistor, store } from './store/store'
 import App from './App'
 import Themes from './components/Themes'
 import Loading from './components/Loading'
@@ -22,6 +22,7 @@ root.render(
          <PersistGate loading={<Loading />} persistor={persistor}>
             <Themes>
                <Notification />
+
                <App />
             </Themes>
          </PersistGate>

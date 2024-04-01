@@ -2,10 +2,11 @@ import { lazy } from 'react'
 import { Navigate } from 'react-router'
 import { ROUTES } from './routes'
 import Suspense from './Suspense'
-import Loading from '../components/Loading'
 
 const AdminResults = lazy(() => import('../pages/admin/results/AdminResults'))
-const InnerResults = lazy(() => import('../pages/admin/results/InnerResults'))
+const InnerResults = lazy(
+   () => import('../components/admin/results/InnerResults')
+)
 const TestQuestion = lazy(() => import('../components/UI/TestQuestion'))
 const AdminTests = lazy(() => import('../pages/admin/tests/AdminTests'))
 const CreateTest = lazy(() => import('../pages/admin/create-test/CreateTest'))
@@ -83,7 +84,7 @@ export const ADMIN_ROUTES = [
    {
       path: `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.RESULTS}/:${ROUTES.ADMIN.RESULT_ID}/${ROUTES.ADMIN.EVALUATIONS}`,
       element: (
-         <Suspense fallback={<Loading />}>
+         <Suspense>
             <InnerResults />
          </Suspense>
       ),
@@ -92,7 +93,7 @@ export const ADMIN_ROUTES = [
    {
       path: `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.RESULTS}/:${ROUTES.ADMIN.RESULT_ID}/${ROUTES.ADMIN.EVALUATIONS}/:${ROUTES.ADMIN.ANSWER_ID}`,
       element: (
-         <Suspense fallback={<Loading />}>
+         <Suspense>
             <TestQuestion />
          </Suspense>
       ),

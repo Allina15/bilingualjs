@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 import { Navigate } from 'react-router'
-import { ROUTES } from './routes'
 import Suspense from './Suspense'
+import { ROUTES } from './routes'
 
 const PracticeTest = lazy(() => import('../pages/user/PracticeTest'))
 const TestComplete = lazy(() => import('../pages/user/TestComplete'))

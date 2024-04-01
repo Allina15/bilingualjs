@@ -15,6 +15,7 @@ const submitedResultsSlice = createSlice({
 
    extraReducers: (builder) => {
       builder
+
          .addCase(SUBMITTED_RESULTS_THUNKS.getResults.pending, (state) => {
             state.isLoading = true
          })
@@ -56,7 +57,7 @@ const submitedResultsSlice = createSlice({
             (state, action) => {
                state.isLoading = false
 
-               state.results = state.results.filter(
+               state.results = state.results?.filter(
                   (result) => result.id !== action?.meta?.arg
                )
             }
@@ -66,15 +67,15 @@ const submitedResultsSlice = createSlice({
             state.isLoading = false
          })
 
-         .addCase(SUBMITTED_RESULTS_THUNKS.postResult.pending, (state) => {
+         .addCase(SUBMITTED_RESULTS_THUNKS.sendResult.pending, (state) => {
             state.isSendLoading = true
          })
 
-         .addCase(SUBMITTED_RESULTS_THUNKS.postResult.fulfilled, (state) => {
+         .addCase(SUBMITTED_RESULTS_THUNKS.sendResult.fulfilled, (state) => {
             state.isSendLoading = false
          })
 
-         .addCase(SUBMITTED_RESULTS_THUNKS.postResult.rejected, (state) => {
+         .addCase(SUBMITTED_RESULTS_THUNKS.sendResult.rejected, (state) => {
             state.isSendLoading = false
          })
    },
