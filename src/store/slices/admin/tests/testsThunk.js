@@ -57,7 +57,7 @@ const addTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -81,7 +81,7 @@ const deleteTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.respose.data,
+            message: error.respose.data.message,
             type: 'error',
          })
 
@@ -108,7 +108,7 @@ const updateTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -130,7 +130,7 @@ const updateTestByEnable = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 

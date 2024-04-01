@@ -13,7 +13,7 @@ const getResults = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -35,7 +35,7 @@ const getResult = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -67,7 +67,7 @@ const sendResult = createAsyncThunk(
 
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -97,7 +97,7 @@ const deleteResult = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 

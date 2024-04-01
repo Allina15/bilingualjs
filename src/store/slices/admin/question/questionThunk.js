@@ -38,7 +38,7 @@ const addTest = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -76,7 +76,7 @@ const getQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -105,7 +105,7 @@ const addQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -133,7 +133,7 @@ const deleteQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -166,7 +166,7 @@ const deleteOption = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -206,7 +206,7 @@ const updateQuestion = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -230,7 +230,7 @@ const updateQuestionByEnable = createAsyncThunk(
 
          showNotification({
             title: 'Error',
-            message: error.response.data,
+            message: error.response.data.message,
             type: 'error',
          })
 
