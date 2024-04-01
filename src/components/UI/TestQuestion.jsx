@@ -7,8 +7,8 @@ import TestContainer from './TestContainer'
 import Loading from '../Loading'
 import { questionTypeHandler } from '../../utils/helpers'
 import { ANSWER_THUNKS } from '../../store/slices/admin/answer/answerThunk'
-import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 import { QUESTION_TITLES } from '../../utils/constants'
+import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 
 const TestQuestion = () => {
    const { answer, isLoading } = useSelector((state) => state.answer)

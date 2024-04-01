@@ -6,10 +6,11 @@ import { PRACTICE_TEST_ACTIONS } from '../store/slices/user/practice-test/practi
 const DragAndDrop = ({ options }) => {
    const { correctOptions } = useSelector((state) => state.practiceTest)
 
-   const [isDropped, setIsDropped] = useState(false)
-   const [isDragging, setIsDragging] = useState(false)
-
    const dispatch = useDispatch()
+
+   const [isDropped, setIsDropped] = useState(false)
+
+   const [isDragging, setIsDragging] = useState(false)
 
    const onDragEndHandler = (e, option) => {
       e.preventDefault()
@@ -19,7 +20,9 @@ const DragAndDrop = ({ options }) => {
       )
 
       if (isDropped) {
-         if (correctOption) return correctOptions
+         if (correctOption) {
+            return correctOptions
+         }
 
          return dispatch(PRACTICE_TEST_ACTIONS.addCorrectOption(option))
       }
@@ -28,6 +31,10 @@ const DragAndDrop = ({ options }) => {
       setIsDragging(false)
 
       return option
+   }
+
+   const deleteWordHandler = (id) => {
+      dispatch(PRACTICE_TEST_ACTIONS.deleteCorrectOption(id))
    }
 
    const onDropHandler = (e) => {
@@ -42,13 +49,8 @@ const DragAndDrop = ({ options }) => {
       setIsDragging(true)
    }
 
-   const optionDisabledHandler = (id) => {
+   const optionDisabledHandler = (id) =>
       correctOptions?.find((correctOption) => correctOption.id === id)
-   }
-
-   const deleteWordHandler = (id) => {
-      dispatch(PRACTICE_TEST_ACTIONS.deleteCorrectOption(id))
-   }
 
    return (
       <StyledContainer>
@@ -69,18 +71,19 @@ const DragAndDrop = ({ options }) => {
             ))}
          </Box>
 
-         <Box className="bord-container">
-            <StyledBord
+         <Box className="main-bord-container">
+            <StyledBox
+               className="board-container"
                dragging={isDragging.toString()}
                onDrop={onDropHandler}
                onDragOver={onDragOverHandler}
             >
-               {correctOptions?.length === 0 ? (
-                  <Typography className="board-text">
-                     Select words & drag here
-                  </Typography>
+               {correctOptions.length === 0 ? (
+                  <Box className="board-text">
+                     <Typography>Select words & drag here</Typography>
+                  </Box>
                ) : (
-                  correctOptions?.map(({ id, optionTitle }) => (
+                  correctOptions.map(({ id, optionTitle }) => (
                      <Box
                         key={id}
                         className="option-container"
@@ -92,7 +95,7 @@ const DragAndDrop = ({ options }) => {
                      </Box>
                   ))
                )}
-            </StyledBord>
+            </StyledBox>
          </Box>
       </StyledContainer>
    )
@@ -107,12 +110,12 @@ const StyledContainer = styled(Box)(({ theme }) => ({
    gap: '1.5rem',
    width: '100%',
 
-   '& > .drag-container': {
+   '& .drag-container': {
       display: 'flex',
       flexWrap: 'wrap',
    },
 
-   '& div > .option-container': {
+   '& .option-container': {
       border: '2px solid #D4D0D0',
       borderRadius: '0.5rem',
       padding: '0.5rem 2rem',
@@ -124,28 +127,28 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          pointerEvents: 'none',
       },
 
-      '&:hover': {
+      ':hover': {
          borderColor: theme.palette.primary.main,
       },
 
-      '&:active': {
+      ':active': {
          backgroundColor: theme.palette.primary.main,
          color: theme.palette.primary.white,
       },
 
-      '& > .option': {
+      '& .option': {
          fontFamily: 'Poppins',
          fontWeight: '500',
       },
    },
 
-   '& > .bord-container': {
+   '& .main-bord-container': {
       display: 'flex',
       justifyContent: 'flex-end',
    },
 }))
 
-const StyledBord = styled(Box)(({ dragging }) => ({
+const StyledBox = styled(Box)(({ dragging }) => ({
    gap: '0.3rem',
    display: 'flex',
    flexWrap: 'wrap',
@@ -157,7 +160,7 @@ const StyledBord = styled(Box)(({ dragging }) => ({
    background: dragging === 'true' ? 'rgba(58, 16, 229, 0.1)' : '',
    padding: '3.5rem',
 
-   '& > .board-text': {
+   '& .board-text': {
       fontFamily: 'Poppins',
    },
 }))
