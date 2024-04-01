@@ -104,15 +104,15 @@ const TestQuestion = () => {
                   </Box>
 
                   {questionType === QUESTION_TITLES.TYPE_WHAT_YOU_HEAR ||
-                     (QUESTION_TITLES.RESPOND_IN_AT_LEAST_N_WORDS && (
-                        <Box className="test-questions">
-                           <Typography className="title">
-                              Mimimum number of words:
-                           </Typography>
-
-                           <Typography>{questionAttempts}</Typography>
-                        </Box>
-                     ))}
+                  questionType ===
+                     QUESTION_TITLES.RESPOND_IN_AT_LEAST_N_WORDS ? (
+                     <Box className="test-questions">
+                        <Typography className="title">
+                           Minimum number of words:
+                        </Typography>
+                        <Typography>{questionAttempts}</Typography>
+                     </Box>
+                  ) : null}
 
                   {questionType === QUESTION_TITLES.RECORD_SAYING && (
                      <Box className="test-questions">
