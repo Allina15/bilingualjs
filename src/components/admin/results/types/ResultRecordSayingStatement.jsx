@@ -9,7 +9,7 @@ import { SmallPauseIcon, SmallPlayIcon } from '../../../../assets/icons'
 const ResultRecordSayingStatement = ({ isDisabled, saveHandler }) => {
    const { answer } = useSelector((state) => state.answer)
 
-   const { audioFile, correctAnswer } = answer
+   const { correctAnswer } = answer
 
    const [isPlaying, setIsPlaying] = useState(false)
 
@@ -25,7 +25,7 @@ const ResultRecordSayingStatement = ({ isDisabled, saveHandler }) => {
       if (!isPlaying) stopSoundHandler()
 
       const sound = new Howl({
-         src: audioFile,
+         src: answer?.audioFile,
          html5: true,
          onend: () => setIsPlaying(false),
          onstop: () => setIsPlaying(false),
