@@ -10,6 +10,7 @@ import { showNotification } from '../../../utils/helpers/notification'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { ROUTES } from '../../../routes/routes'
 import { QUESTION_TITLES } from '../../../utils/constants'
+import { FILES_THUNK } from '../../../store/slices/file/filesThunk'
 
 const DescribeImage = ({
    title,
@@ -19,9 +20,9 @@ const DescribeImage = ({
    setDuration,
    setSelectType,
 }) => {
-   const { fileUrl, isLoading, question } = useSelector(
-      (state) => state.question
-   )
+   const { isLoading, question } = useSelector((state) => state.question)
+
+   const { fileUrl } = useSelector((state) => state.files)
 
    const [image, setImage] = useState(null)
    const [answer, setAnswer] = useState('')
@@ -67,7 +68,7 @@ const DescribeImage = ({
 
          setFileName(file.name)
 
-         dispatch(QUESTION_THUNKS.addFile(file))
+         dispatch(FILES_THUNK.addFile(file))
       }
    }
 
@@ -91,7 +92,7 @@ const DescribeImage = ({
    })
 
    useEffect(() => {
-      if (fileRejections && fileRejections.length > 0) {
+      if (fileRejections && fileRejections?.length > 0) {
          const rejectionMessage = fileRejections
             ?.map(({ errors }) => errors?.map((e) => e.message)?.join(', '))
             ?.join('\n')

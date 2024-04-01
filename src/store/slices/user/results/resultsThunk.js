@@ -13,7 +13,7 @@ const getResults = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 

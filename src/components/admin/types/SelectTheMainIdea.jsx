@@ -112,7 +112,7 @@ const SelectTheMainIdea = ({
 
    const checkedHandler = (optionId) => {
       dispatch(
-         QUESTION_ACTIONS.handleIsCorrect({
+         QUESTION_ACTIONS.isCorrect({
             optionId,
             optionName: OPTIONS_NAME?.selectTheMainIdeaOptions,
          })

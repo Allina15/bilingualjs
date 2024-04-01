@@ -16,7 +16,7 @@ const getQuestions = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -41,13 +41,13 @@ const addAnswer = createAsyncThunk(
 
          dispatch(clearAnswer.clearCorrectAnswer())
 
-         // sessionStorage.removeItem(`question-${count}-duration`)
+         sessionStorage.removeItem('question-durations')
 
          return data
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data,
             type: 'error',
          })
 

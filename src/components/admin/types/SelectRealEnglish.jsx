@@ -97,7 +97,7 @@ const SelectRealEnglish = ({
 
    const checkedHandler = (optionId) => {
       dispatch(
-         QUESTION_ACTIONS.handleIsChecked({
+         QUESTION_ACTIONS.isChecked({
             optionId,
             optionName: OPTIONS_NAME?.selectRealEnglishWordsOptions,
          })

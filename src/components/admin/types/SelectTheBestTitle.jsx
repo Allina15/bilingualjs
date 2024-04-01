@@ -116,7 +116,7 @@ const SelectTheBestTitle = ({
 
    const checkedHandler = (optionId) => {
       dispatch(
-         QUESTION_ACTIONS.handleIsCorrect({
+         QUESTION_ACTIONS.isCorrect({
             optionId,
             optionName: OPTIONS_NAME?.selectTheBestTitleOptions,
          })
@@ -126,7 +126,7 @@ const SelectTheBestTitle = ({
    }
 
    const deleteHandler = () => {
-      if (options.selectTheBestTitleOptions.length > 1) {
+      if (options?.selectTheBestTitleOptions?.length > 1) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
       }
 

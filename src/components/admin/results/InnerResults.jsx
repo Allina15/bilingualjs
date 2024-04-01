@@ -33,7 +33,7 @@ const InnerResults = () => {
    const stopPropagationHandler = (e) => e.stopPropagation()
 
    const sendResultsHandler = () => {
-      dispatch(SUBMITTED_RESULTS_THUNKS.postResult({ resultId, navigate }))
+      dispatch(SUBMITTED_RESULTS_THUNKS.sendResult({ resultId, navigate }))
    }
 
    const navigateHandler = (answerId) => {

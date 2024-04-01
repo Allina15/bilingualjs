@@ -6,7 +6,7 @@ import { RecordingIcon, SpeakManIcon } from '../../../assets/icons'
 import { NoData } from '../../../assets/images'
 import { showNotification } from '../../../utils/helpers/notification'
 import { PRACTICE_TEST_ACTIONS } from '../../../store/slices/user/practice-test/practiceTestSlice'
-import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practice-test/practiceTestThunk'
+import { FILES_THUNK } from '../../../store/slices/file/filesThunk'
 
 const RecordSayingStatement = ({ questions, nextHandler }) => {
    const { fileUrl, isLoading } = useSelector((state) => state.practiceTest)
@@ -84,9 +84,7 @@ const RecordSayingStatement = ({ questions, nextHandler }) => {
             mediaRecorderInstance.addEventListener('stop', () => {
                const blob = new Blob(chunks, { type: 'audio/mp3' })
 
-               dispatch(
-                  PRACTICE_TEST_THUNKS.addAnswerFile({ recordedAudio: blob })
-               )
+               dispatch(FILES_THUNK.addAnswerFile({ recordedAudio: blob }))
             })
 
             setMediaRecorder(mediaRecorderInstance)

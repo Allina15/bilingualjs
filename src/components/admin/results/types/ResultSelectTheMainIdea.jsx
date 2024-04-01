@@ -4,7 +4,7 @@ import { Box, Typography, styled } from '@mui/material'
 import Radio from '../../../UI/Radio'
 import Button from '../../../UI/buttons/Button'
 
-const ResultSelectTheMainIdea = ({ saveHandler }) => {
+const ResultSelectTheMainIdea = ({ saveHandler, isDisabled }) => {
    const { answer } = useSelector((state) => state.answer)
 
    const navigate = useNavigate()
@@ -58,7 +58,11 @@ const ResultSelectTheMainIdea = ({ saveHandler }) => {
                GO BACK
             </Button>
 
-            <Button variant="primary" onClick={saveHandler}>
+            <Button
+               variant="primary"
+               onClick={saveHandler}
+               disabled={isDisabled}
+            >
                SAVE
             </Button>
          </Box>

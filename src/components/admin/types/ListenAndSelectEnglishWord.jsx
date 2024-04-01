@@ -11,6 +11,7 @@ import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionS
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
 import { ROUTES } from '../../../routes/routes'
 import { OPTIONS_NAME, QUESTION_TITLES } from '../../../utils/constants'
+import { FILES_THUNK } from '../../../store/slices/file/filesThunk'
 
 const ListenAndSelectEnglishWord = ({
    title,
@@ -20,8 +21,11 @@ const ListenAndSelectEnglishWord = ({
    setDuration,
    setSelectType,
 }) => {
-   const { fileUrl, isLoading, options, inOpen, isUpdateDisabled } =
-      useSelector((state) => state.question)
+   const { isLoading, options, inOpen, isUpdateDisabled } = useSelector(
+      (state) => state.question
+   )
+
+   const { fileUrl } = useSelector((state) => state.files)
 
    const [files, setFiles] = useState([])
    const [optionId, setOptionId] = useState(null)
@@ -33,13 +37,13 @@ const ListenAndSelectEnglishWord = ({
       save: false,
    })
 
-   const navigate = useNavigate()
-
-   const dispatch = useDispatch()
-
    const { testId } = useParams()
 
    const { state } = useLocation()
+
+   const navigate = useNavigate()
+
+   const dispatch = useDispatch()
 
    const toggleModal = (modalName) => {
       setModals((prev) => ({
@@ -77,7 +81,7 @@ const ListenAndSelectEnglishWord = ({
 
          reader.readAsDataURL(file)
 
-         dispatch(QUESTION_THUNKS.addFile(file))
+         dispatch(FILES_THUNK.addFile(file))
 
          setIsUploaded(true)
       }
@@ -106,7 +110,7 @@ const ListenAndSelectEnglishWord = ({
 
    const checkedHandler = (optionId) => {
       dispatch(
-         QUESTION_ACTIONS.handleIsChecked({
+         QUESTION_ACTIONS.isChecked({
             optionId,
             optionName: OPTIONS_NAME?.listenAndSelectOptions,
          })

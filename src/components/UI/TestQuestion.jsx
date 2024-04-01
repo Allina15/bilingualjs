@@ -6,7 +6,6 @@ import Input from './Input'
 import TestContainer from './TestContainer'
 import Loading from '../Loading'
 import { questionTypeHandler } from '../../utils/helpers'
-import { showNotification } from '../../utils/helpers/notification'
 import { ANSWER_THUNKS } from '../../store/slices/admin/answer/answerThunk'
 import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 import { QUESTION_TITLES } from '../../utils/constants'
@@ -41,12 +40,7 @@ const TestQuestion = () => {
 
    const saveHandler = () => {
       if (answer.status !== 'EVALUATED') {
-         dispatch(ANSWER_THUNKS.postResult({ answerId, scoreValue, navigate }))
-      } else {
-         showNotification({
-            type: 'error',
-            message: 'This test has already been evaluated.',
-         })
+         dispatch(ANSWER_THUNKS.saveResult({ answerId, scoreValue, navigate }))
       }
    }
 
@@ -67,7 +61,6 @@ const TestQuestion = () => {
    const formattedDuration = ` ${hours}:${minutes < 10 ? '0' : ''}${minutes}`
 
    const isDisabled = !scoreValue
-
    return (
       <TestContainer>
          <StyledContainer>
@@ -110,15 +103,16 @@ const TestQuestion = () => {
                      </Typography>
                   </Box>
 
-                  {questionType === QUESTION_TITLES.TYPE_WHAT_YOU_HEAR && (
-                     <Box className="test-questions">
-                        <Typography className="title">
-                           Mimimum number of words:
-                        </Typography>
+                  {questionType === QUESTION_TITLES.TYPE_WHAT_YOU_HEAR ||
+                     (QUESTION_TITLES.RESPOND_IN_AT_LEAST_N_WORDS && (
+                        <Box className="test-questions">
+                           <Typography className="title">
+                              Mimimum number of words:
+                           </Typography>
 
-                        <Typography>{questionAttempts}</Typography>
-                     </Box>
-                  )}
+                           <Typography>{questionAttempts}</Typography>
+                        </Box>
+                     ))}
 
                   {questionType === QUESTION_TITLES.RECORD_SAYING && (
                      <Box className="test-questions">
@@ -144,7 +138,7 @@ const TestQuestion = () => {
                <Typography className="test-question">Evaluation</Typography>
 
                <Box className="score-box">
-                  <Typography className="score">Score:</Typography>
+                  <Typography className="score-title">Score:</Typography>
 
                   {questionType === QUESTION_TITLES.SELECT_MAIN_IDEA ||
                   questionType === QUESTION_TITLES.SELECT_THE_BEST_TITLE ||
@@ -152,7 +146,15 @@ const TestQuestion = () => {
                   questionType === QUESTION_TITLES.LISTEN_AND_SELECT_WORD ? (
                      <Typography className="number">{score}</Typography>
                   ) : (
-                     <Typography className="score">(1-10)</Typography>
+                     <Box>
+                        {answer.score ? (
+                           <Typography className="number-score">
+                              {score}
+                           </Typography>
+                        ) : (
+                           <Typography className="score">(1-10)</Typography>
+                        )}
+                     </Box>
                   )}
                </Box>
 
@@ -161,15 +163,19 @@ const TestQuestion = () => {
                questionType === QUESTION_TITLES.SELECT_REAL_ENGLISH_WORD ||
                questionType ===
                   QUESTION_TITLES.LISTEN_AND_SELECT_WORD ? null : (
-                  <Input
-                     className="input"
-                     type="number"
-                     inputProps={{ min: 1, max: 10 }}
-                     autoComplete="off"
-                     onInput={changeValueHandler}
-                     value={scoreValue}
-                     onChange={changeScoreValueHandler}
-                  />
+                  <Box>
+                     {score ? null : (
+                        <Input
+                           className="input"
+                           type="number"
+                           inputProps={{ min: 1, max: 10 }}
+                           autoComplete="off"
+                           onInput={changeValueHandler}
+                           value={scoreValue}
+                           onChange={changeScoreValueHandler}
+                        />
+                     )}
+                  </Box>
                )}
             </Box>
          </StyledContainer>
@@ -232,13 +238,26 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       '& > .score-box': {
          display: 'flex',
 
-         '& > .score': {
+         '& > .score-title': {
+            fontWeight: 500,
+            color: '#3752B4',
+            marginTop: '-0.7rem',
+         },
+
+         '& > div > .score': {
             fontWeight: 500,
             color: '#3752B4',
             marginTop: '-0.7rem',
          },
 
          '& > .number': {
+            marginTop: '-0.7rem',
+            marginLeft: '0.2rem',
+            color: '#2AB930',
+            fontWeight: 'bold',
+         },
+
+         '& > div > .number-score': {
             marginTop: '-0.7rem',
             marginLeft: '0.2rem',
             color: '#2AB930',
@@ -254,11 +273,11 @@ const StyledContainer = styled(Box)(({ theme }) => ({
          '& > .MuiOutlinedInput-root': {
             height: '46px',
          },
-
-         '& div > .MuiOutlinedInput-input[type="number"]::-webkit-inner-spin-button':
-            {
-               display: 'none',
-            },
       },
+
+      '& div > .MuiOutlinedInput-input[type="number"]::-webkit-inner-spin-button':
+         {
+            display: 'none',
+         },
    },
 }))

@@ -19,7 +19,7 @@ const filesSlice = createSlice({
 
          .addCase(FILES_THUNK.addFile.fulfilled, (state, { payload }) => {
             state.isLoading = false
-            state.fileUrl = payload.link
+            state.fileUrl = payload?.link
          })
 
          .addCase(FILES_THUNK.addFile.rejected, (state) => {
