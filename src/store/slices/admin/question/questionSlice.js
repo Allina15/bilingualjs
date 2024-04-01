@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { QUESTION_THUNKS } from './questionThunk'
 import { showNotification } from '../../../../utils/helpers/notification'
+import { QUESTION_THUNKS } from './questionThunk'
 
 const initialState = {
    title: '',
@@ -13,19 +13,18 @@ const initialState = {
    correctAnswer: '',
    fileUrl: '',
    question: {},
+   isLoading: false,
    options: {
       selectRealEnglishWordsOptions: [],
       listenAndSelectOptions: [],
       selectTheMainIdeaOptions: [],
       selectTheBestTitleOptions: [],
    },
-   isLoading: false,
 }
 
 const questionSlice = createSlice({
    name: 'question',
    initialState,
-
    reducers: {
       addOptionCheck: (state, { payload }) => {
          state.options[payload?.optionName].push(payload.option)
@@ -90,6 +89,7 @@ const questionSlice = createSlice({
             if (option?.optionId === payload?.optionId) {
                return { ...option, isCorrectOption: !option?.isCorrectOption }
             }
+
             return {
                ...option,
                isCorrectOption: option?.isCorrectOption,
@@ -107,6 +107,7 @@ const questionSlice = createSlice({
                   isCorrectOption: !option?.isCorrectOption,
                }
             }
+
             return {
                ...option,
                isCorrectOption: false,

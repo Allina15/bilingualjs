@@ -11,12 +11,12 @@ const ProgressBar = ({ duration, timeIsUp, count }) => {
                {minute}:{seconds}
             </Typography>
 
-            <div className="progressbar">
-               <div
+            <Box className="progressbar">
+               <Box
                   className="progressbar-line"
                   style={{ width: `${100 - percent}%` }}
                />
-            </div>
+            </Box>
          </Box>
       </StyledContainer>
    )
@@ -43,18 +43,18 @@ const StyledContainer = styled(Box)(() => ({
       lineHeight: '24px',
    },
 
-   '& .progressbar': {
+   '& > .progressbar': {
       overflow: 'hidden',
       width: '100%',
       height: '8px',
       borderRadius: '5px',
       backgroundColor: '#eee',
-   },
 
-   '& .progressbar-line': {
-      height: '100%',
-      backgroundColor: '#3a10e5',
-      transition: 'width 0.6s',
-      borderRadius: '5px',
+      '& > .progressbar-line': {
+         height: '100%',
+         backgroundColor: '#3a10e5',
+         transition: 'width 0.6s',
+         borderRadius: '5px',
+      },
    },
 }))

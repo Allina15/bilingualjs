@@ -18,8 +18,8 @@ export const useToggleModal = (query) => {
    }
 
    return {
-      onOpenModal: openModalHandler,
-      isOpen: isModalOpen,
-      onCloseModal: closeModalHandler,
+      openModalHandler,
+      isModalOpen,
+      closeModalHandler,
    }
 }

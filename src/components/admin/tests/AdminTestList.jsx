@@ -60,7 +60,7 @@ const AdminTestList = () => {
    return (
       <StyledContainer>
          {tests?.length > 0 ? (
-            tests.map(({ id, title, enable }) => (
+            tests?.map(({ id, title, enable }) => (
                <Link
                   to={`${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${id}`}
                   key={id}
@@ -159,11 +159,11 @@ const StyledContainer = styled(Box)(() => ({
          color: '#4C4859',
          padding: '20px 25px',
          borderRadius: '0.5rem',
-         boxShadow:
-            '0px 4px 10px 0px rgba(0, 0, 0, 0.06), 0px -4px 10px 0px rgba(0, 0, 0, 0.06)',
          marginBottom: '0.94rem',
          cursor: 'pointer',
          position: 'relative',
+         boxShadow:
+            '0px 4px 10px 0px rgba(0, 0, 0, 0.06), 0px -4px 10px 0px rgba(0, 0, 0, 0.06)',
 
          '& > .title': {
             maxWidth: '20rem',

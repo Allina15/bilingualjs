@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { TESTS_THUNKS } from './testsThunk'
 import { showNotification } from '../../../../utils/helpers/notification'
+import { TESTS_THUNKS } from './testsThunk'
 
 const initialState = {
    tests: [],
@@ -67,7 +67,7 @@ const testsSlice = createSlice({
          .addCase(TESTS_THUNKS.deleteTest.fulfilled, (state, action) => {
             state.isLoading = false
 
-            state.tests = state.tests.filter(
+            state.tests = state.tests?.filter(
                (test) => test.id !== action?.meta?.arg
             )
          })

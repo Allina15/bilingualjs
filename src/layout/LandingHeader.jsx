@@ -18,23 +18,23 @@ const LandingHeader = () => {
 
    const navigate = useNavigate()
 
-   const handlelogOut = () => dispatch(AUTH_ACTIONS.logOut({ navigate }))
+   const logOutHandler = () => dispatch(AUTH_ACTIONS.logOut({ navigate }))
 
-   const handleModal = () => setIsVisibleModal((prev) => !prev)
+   const toggleModalHandler = () => setIsVisibleModal((prev) => !prev)
 
    useEffect(() => {
-      const handleScroll = () => {
+      const scrollHandler = () => {
          const scrollTop = window.scrollY
 
          setIsScrolled(scrollTop > 0)
       }
 
-      window.addEventListener('scroll', handleScroll)
+      window.addEventListener('scroll', scrollHandler)
 
-      return () => window.removeEventListener('scroll', handleScroll)
+      return () => window.removeEventListener('scroll', scrollHandler)
    }, [])
 
-   const scrollToTop = () => {
+   const scrollToTopHandler = () => {
       window.scrollTo({
          top: 0,
          behavior: 'smooth',
@@ -44,7 +44,7 @@ const LandingHeader = () => {
    return (
       <StyledContainer isscrolled={isScrolled.toString()}>
          <Box className="box">
-            <Box onClick={scrollToTop} className="logo">
+            <Box onClick={scrollToTopHandler} className="logo">
                <img src={LogoImage} alt="logo" />
             </Box>
 
@@ -70,14 +70,14 @@ const LandingHeader = () => {
                      <Button
                         variant="secondary"
                         className="register-button"
-                        onClick={handleModal}
+                        onClick={toggleModalHandler}
                      >
                         LOG OUT
                      </Button>
 
                      <Modal
                         isVisible={isVisibleModal}
-                        handleIsVisible={handleModal}
+                        handleIsVisible={toggleModalHandler}
                      >
                         <Box className="log-out">
                            <Typography className="text">
@@ -87,13 +87,13 @@ const LandingHeader = () => {
                            <Box className="buttons">
                               <Button
                                  variant="secondary"
-                                 onClick={handleModal}
+                                 onClick={toggleModalHandler}
                                  className="button"
                               >
                                  CANCEL
                               </Button>
 
-                              <Button onClick={handlelogOut}>YES</Button>
+                              <Button onClick={logOutHandler}>YES</Button>
                            </Box>
                         </Box>
                      </Modal>

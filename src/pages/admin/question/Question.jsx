@@ -6,30 +6,29 @@ import Input from '../../../components/UI/Input'
 import Dropdown from '../../../components/UI/Dropdown'
 import TestType from '../../../components/admin/TestType'
 import TestContainer from '../../../components/UI/TestContainer'
+import { questionTypeHandler } from '../../../utils/helpers'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { OPTIONS } from '../../../utils/constants'
-import { questionTypeHandler } from '../../../utils/helpers'
 
 const Question = () => {
    const { options } = useSelector((state) => state.question)
 
    const { state } = useLocation()
 
-   const [searchParams, setSearchParams] = useSearchParams()
    const [title, setTitle] = useState(state?.title || '')
    const [duration, setDuration] = useState(state?.duration || 0)
    const [selectType, setSelectType] = useState(
       questionTypeHandler(state?.questionType) || ''
    )
 
+   const [searchParams, setSearchParams] = useSearchParams()
+
    const dispatch = useDispatch()
 
    useEffect(() => {
       const typeParam = searchParams.get('type')
 
-      if (typeParam) {
-         setSelectType(typeParam)
-      }
+      if (typeParam) setSelectType(typeParam)
    }, [searchParams])
 
    const changeSelecTypeHandler = (e) => {
@@ -49,12 +48,12 @@ const Question = () => {
 
    const changeDurationHandler = (e) => {
       let newValue = e.target.value.replace(/\D/g, '')
+
       newValue = newValue.slice(0, 2)
 
       const value = parseInt(newValue, 10)
-      if (value > 15) {
-         newValue = '15'
-      }
+
+      if (value > 15) newValue = '15'
 
       setDuration(newValue)
 
@@ -64,9 +63,7 @@ const Question = () => {
          state?.duration === value.toString()
       ) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-      } else {
-         dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      }
+      } else dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
    }
 
    useEffect(() => {
@@ -74,15 +71,15 @@ const Question = () => {
    }, [])
 
    useEffect(() => {
-      const handleBeforeUnload = (event) => {
+      const unloadBeforeHandler = (event) => {
          event.preventDefault()
          event.returnValue = ''
       }
 
-      window.addEventListener('beforeunload', handleBeforeUnload)
+      window.addEventListener('beforeunload', unloadBeforeHandler)
 
       return () => {
-         window.removeEventListener('beforeunload', handleBeforeUnload)
+         window.removeEventListener('beforeunload', unloadBeforeHandler)
       }
    }, [])
 
@@ -97,7 +94,7 @@ const Question = () => {
                <Box className="input-container">
                   <Input
                      className="input-title"
-                     placeholder="Enter the title ....."
+                     placeholder="Enter the title..."
                      onChange={changeTitleHandler}
                      value={title}
                      autoComplete="off"

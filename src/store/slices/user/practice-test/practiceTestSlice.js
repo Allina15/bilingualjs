@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { PRACTICE_TEST_THUNKS } from './practiceTestThunk'
 import { showNotification } from '../../../../utils/helpers/notification'
+import { PRACTICE_TEST_THUNKS } from './practiceTestThunk'
+
+const correctAnswer = JSON.parse(sessionStorage.getItem('correctAnswer')) || []
 
 const initialState = {
    questions: [],
    correctOptions: [],
-   correctAnswer: JSON.parse(sessionStorage.getItem('correctAnswer')) || [],
+   correctAnswer,
    fileUrl: '',
    isDisabled: false,
    isLoading: false,
@@ -14,7 +16,6 @@ const initialState = {
 const practiceTestSlice = createSlice({
    name: 'practiceTest',
    initialState,
-
    reducers: {
       addCorrectOption: (state, { payload }) => {
          state.correctOptions.push(payload)

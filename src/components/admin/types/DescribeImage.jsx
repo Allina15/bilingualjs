@@ -6,10 +6,10 @@ import { Box, InputLabel, Typography, styled } from '@mui/material'
 import Input from '../../UI/Input'
 import Button from '../../UI/buttons/Button'
 import Loading from '../../Loading'
-import { ROUTES } from '../../../routes/routes'
-import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
-import { QUESTION_TITLES } from '../../../utils/constants'
 import { showNotification } from '../../../utils/helpers/notification'
+import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
+import { ROUTES } from '../../../routes/routes'
+import { QUESTION_TITLES } from '../../../utils/constants'
 
 const DescribeImage = ({
    title,
@@ -27,12 +27,13 @@ const DescribeImage = ({
    const [answer, setAnswer] = useState('')
    const [fileName, setFileName] = useState('')
 
-   const { testId } = useParams()
-   const { state } = useLocation()
-
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
+
+   const { testId } = useParams()
+
+   const { state } = useLocation()
 
    const inputFileRef = useRef(null)
    const inputRef = useRef(null)
@@ -50,14 +51,11 @@ const DescribeImage = ({
       }
    }, [state, question])
 
-   const changeAnswerHandler = (e) => {
-      const { value } = e.target
-      setAnswer(value || '')
-   }
+   const changeAnswerHandler = (e) => setAnswer(e.target.value || '')
 
    const clickHandler = () => inputFileRef.current.click()
 
-   const handleFileUpload = (file) => {
+   const uploadFileHandler = (file) => {
       if (file) {
          const reader = new FileReader()
 
@@ -75,12 +73,14 @@ const DescribeImage = ({
 
    const changeFileHandler = (e) => {
       const file = e.target.files[0]
-      handleFileUpload(file)
+
+      uploadFileHandler(file)
    }
 
    const onDrop = (acceptedFiles) => {
       const file = acceptedFiles[0]
-      handleFileUpload(file)
+
+      uploadFileHandler(file)
    }
 
    const { getRootProps, getInputProps, fileRejections } = useDropzone({

@@ -5,9 +5,9 @@ import { InputLabel, styled, Box } from '@mui/material'
 import Input from '../../UI/Input'
 import Button from '../../UI/buttons/Button'
 import Loading from '../../Loading'
-import { ROUTES } from '../../../routes/routes'
 import { QUESTION_ACTIONS } from '../../../store/slices/admin/question/questionSlice'
 import { QUESTION_THUNKS } from '../../../store/slices/admin/question/questionThunk'
+import { ROUTES } from '../../../routes/routes'
 import { QUESTION_TITLES } from '../../../utils/constants'
 
 const RespondInAtLeastNWords = ({
@@ -23,18 +23,19 @@ const RespondInAtLeastNWords = ({
    const [attempts, setAttempts] = useState(1)
    const [statement, setStatement] = useState('')
 
-   const { testId } = useParams()
-   const { state } = useLocation()
-
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
+
+   const { testId } = useParams()
+
+   const { state } = useLocation()
 
    useEffect(() => {
       if (state !== null) {
          dispatch(QUESTION_THUNKS.getQuestion({ id: state?.id }))
       }
-   }, [dispatch, state])
+   }, [state])
 
    useEffect(() => {
       if (state !== null && question) {
@@ -43,20 +44,16 @@ const RespondInAtLeastNWords = ({
       }
    }, [state, question])
 
-   const statementChangeHandler = (e) => {
-      const { value } = e.target
+   const changeStatementHandler = (e) => setStatement(e.target.value || '')
 
-      setStatement(value || '')
-   }
-
-   const attemptsChangeHandler = (e) => {
+   const changeAttemptsHandler = (e) => {
       let newValue = e.target.value.replace(/\D/g, '')
+
       newValue = newValue.slice(0, 2)
 
       const value = parseInt(newValue, 10)
-      if (value > 50) {
-         newValue = '50'
-      }
+
+      if (value > 50) newValue = '50'
 
       setAttempts(newValue)
 
@@ -66,9 +63,7 @@ const RespondInAtLeastNWords = ({
          state?.duration === value.toString()
       ) {
          dispatch(QUESTION_ACTIONS.changeIsdisabled(true))
-      } else {
-         dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
-      }
+      } else dispatch(QUESTION_ACTIONS.changeIsdisabled(false))
    }
 
    const onSubmit = () => {
@@ -125,10 +120,11 @@ const RespondInAtLeastNWords = ({
       }
    }
 
-   const navigateGoBackHandler = () =>
+   const navigateGoBackHandler = () => {
       navigate(
          `${ROUTES.ADMIN.INDEX}/${ROUTES.ADMIN.TESTS}/${ROUTES.ADMIN.QUESTIONS}/${testId}`
       )
+   }
 
    const isDisabled =
       isLoading ||
@@ -153,7 +149,7 @@ const RespondInAtLeastNWords = ({
          <Box>
             <InputLabel>Question statement</InputLabel>
 
-            <Input value={statement || ''} onChange={statementChangeHandler} />
+            <Input value={statement || ''} onChange={changeStatementHandler} />
          </Box>
 
          <Box>
@@ -166,7 +162,7 @@ const RespondInAtLeastNWords = ({
                className="input-number"
                type="number"
                value={attempts || ''}
-               onChange={attemptsChangeHandler}
+               onChange={changeAttemptsHandler}
                inputProps={{ min: 0, max: 15 }}
                autoComplete="off"
             />

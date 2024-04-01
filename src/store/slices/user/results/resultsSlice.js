@@ -10,7 +10,6 @@ const resultsSlice = createSlice({
    name: 'results',
    initialState,
    reducers: {},
-
    extraReducers: (builder) => {
       builder
          .addCase(MY_RESULTS_THUNKS.getResult.pending, (state) => {
