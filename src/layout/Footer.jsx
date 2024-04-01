@@ -1,7 +1,7 @@
 import { Typography, styled, IconButton, Box, Tooltip } from '@mui/material'
 import FAQ from '../components/landing/FAQ'
-import { FooterLogoImage } from '../assets/images'
 import { FacebookIcon, InstagramIcon, YouTubeIcon } from '../assets/icons'
+import { FooterLogoImage } from '../assets/images'
 
 const Footer = () => {
    const scrollToTop = () => {
@@ -47,7 +47,7 @@ const Footer = () => {
             </StyledFooter>
 
             <Typography className="reserved">
-               © Copyright PeakSoft. All Rights Reserved
+               © Copyright Peaksoft. All Rights Reserved
             </Typography>
          </Box>
       </StyledContainer>

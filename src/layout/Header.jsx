@@ -17,7 +17,7 @@ const Header = () => {
 
    const navigate = useNavigate()
 
-   const handlelogOut = () => dispatch(AUTH_ACTIONS.logOut({ navigate }))
+   const logOutHandler = () => dispatch(AUTH_ACTIONS.logOut({ navigate }))
 
    return (
       <StyledContainer>
@@ -77,7 +77,7 @@ const Header = () => {
                         CANCEL
                      </Button>
 
-                     <Button onClick={handlelogOut}>YES</Button>
+                     <Button onClick={logOutHandler}>YES</Button>
                   </Box>
                </Box>
             </Modal>

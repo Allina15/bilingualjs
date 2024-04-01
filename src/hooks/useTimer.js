@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-const useTimer = (durationInMinutes, timeIsUp, count) => {
+export const useTimer = (durationInMinutes, timeIsUp, count) => {
    const durationInSeconds = durationInMinutes * 60
 
    const storedDuration = sessionStorage.getItem(`question-${count}-duration`)
@@ -47,6 +47,7 @@ const useTimer = (durationInMinutes, timeIsUp, count) => {
 
                return 0
             }
+
             return prevTime - 1
          })
       }, interval)
@@ -65,5 +66,3 @@ const useTimer = (durationInMinutes, timeIsUp, count) => {
 
    return timeObject
 }
-
-export default useTimer

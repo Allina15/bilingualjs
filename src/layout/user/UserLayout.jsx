@@ -5,6 +5,7 @@ import { ROUTES } from '../../routes/routes'
 
 const UserLayout = () => {
    const location = useLocation()
+
    const { testId } = useParams()
 
    const hideHeaderOnPaths = [

@@ -5,16 +5,16 @@ import { Box, ListItem, Typography, styled } from '@mui/material'
 import Loading from '../../Loading'
 import Button from '../../UI/buttons/Button'
 import TestContainer from '../../UI/TestContainer'
-import { TestImage } from '../../../assets/images'
-import { ROUTES } from '../../../routes/routes'
 import {
    ClockIcon,
    LaptopIcon,
    ScreenShotIcon,
    UserCardIcon,
 } from '../../../assets/icons'
+import { TestImage } from '../../../assets/images'
 import { PRACTICE_TEST_THUNKS } from '../../../store/slices/user/practice-test/practiceTestThunk'
 import { TESTS_LIST_THUNKS } from '../../../store/slices/user/tests/testsListThunk'
+import { ROUTES } from '../../../routes/routes'
 
 const InnerTest = () => {
    const { tests, isLoading } = useSelector((state) => state.testsList)

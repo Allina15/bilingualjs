@@ -4,6 +4,7 @@ const BASE_URL = process.env.REACT_APP_API
 
 export const axiosInstanceFile = axios.create({
    baseURL: BASE_URL,
+
    headers: {
       'Content-Type': 'multipart/form-data',
    },
