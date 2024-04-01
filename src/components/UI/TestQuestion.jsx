@@ -7,8 +7,8 @@ import TestContainer from './TestContainer'
 import Loading from '../Loading'
 import { questionTypeHandler } from '../../utils/helpers'
 import { ANSWER_THUNKS } from '../../store/slices/admin/answer/answerThunk'
-import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 import { QUESTION_TITLES } from '../../utils/constants'
+import { ADMIN_QUESTION_COMPONENTS } from '../../utils/constants/questionComponents'
 
 const TestQuestion = () => {
    const { answer, isLoading } = useSelector((state) => state.answer)
@@ -104,15 +104,15 @@ const TestQuestion = () => {
                   </Box>
 
                   {questionType === QUESTION_TITLES.TYPE_WHAT_YOU_HEAR ||
-                     (QUESTION_TITLES.RESPOND_IN_AT_LEAST_N_WORDS && (
-                        <Box className="test-questions">
-                           <Typography className="title">
-                              Mimimum number of words:
-                           </Typography>
-
-                           <Typography>{questionAttempts}</Typography>
-                        </Box>
-                     ))}
+                  questionType ===
+                     QUESTION_TITLES.RESPOND_IN_AT_LEAST_N_WORDS ? (
+                     <Box className="test-questions">
+                        <Typography className="title">
+                           Minimum number of words:
+                        </Typography>
+                        <Typography>{questionAttempts}</Typography>
+                     </Box>
+                  ) : null}
 
                   {questionType === QUESTION_TITLES.RECORD_SAYING && (
                      <Box className="test-questions">
