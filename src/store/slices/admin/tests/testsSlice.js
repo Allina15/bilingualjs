@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { showNotification } from '../../../../utils/helpers/notification'
 import { TESTS_THUNKS } from './testsThunk'
+import { QUESTION_THUNKS } from '../question/questionThunk'
 
 const initialState = {
    tests: [],
@@ -43,12 +43,6 @@ const testsSlice = createSlice({
 
          .addCase(TESTS_THUNKS.addTest.pending, (state) => {
             state.isLoading = true
-
-            showNotification({
-               title: 'Pending',
-               message: false,
-               type: 'warning',
-            })
          })
 
          .addCase(TESTS_THUNKS.addTest.fulfilled, (state) => {
@@ -77,12 +71,6 @@ const testsSlice = createSlice({
 
          .addCase(TESTS_THUNKS.updateTest.pending, (state) => {
             state.isLoading = true
-
-            showNotification({
-               title: 'Pending',
-               message: false,
-               type: 'warning',
-            })
          })
 
          .addCase(TESTS_THUNKS.updateTest.fulfilled, (state) => {
@@ -104,6 +92,21 @@ const testsSlice = createSlice({
          .addCase(TESTS_THUNKS.updateTestByEnable.rejected, (state) => {
             state.isLoading = false
          })
+
+         .addCase(
+            QUESTION_THUNKS.updateQuestionByEnable.fulfilled,
+            (state, { payload }) => {
+               state.test.duration = payload.duration
+            }
+         )
+
+         .addCase(
+            QUESTION_THUNKS.deleteQuestion.fulfilled,
+            (state, { payload }) => {
+               state.isLoading = false
+               state.test = payload
+            }
+         )
    },
 })
 

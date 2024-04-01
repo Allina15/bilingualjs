@@ -36,7 +36,7 @@ const RecordSayingStatement = ({
    }, [state])
 
    useEffect(() => {
-      if (state !== null && question) setStatement(question?.correctAnswer)
+      if (state !== null && question) setStatement(question?.statement)
    }, [state, question])
 
    const changeStatementHandler = (e) => setStatement(e.target.value || '')

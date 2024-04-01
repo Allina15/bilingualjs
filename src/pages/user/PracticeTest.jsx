@@ -48,6 +48,7 @@ const PracticeTest = () => {
       dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
 
       sessionStorage.removeItem('question-durations')
+      sessionStorage.removeItem('correctAnswer')
 
       navigate(`${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`, {
          replace: true,
@@ -104,6 +105,7 @@ const PracticeTest = () => {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectOption())
 
                   sessionStorage.removeItem('question-durations')
+                  sessionStorage.removeItem('correctAnswer')
 
                   navigate(
                      `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
@@ -133,6 +135,7 @@ const PracticeTest = () => {
                   dispatch(PRACTICE_TEST_ACTIONS.clearCorrectAnswer())
 
                   sessionStorage.removeItem('question-durations')
+                  sessionStorage.removeItem('correctAnswer')
 
                   navigate(
                      `${ROUTES.USER.INDEX}/${ROUTES.USER.TESTS}/${testId}`,
