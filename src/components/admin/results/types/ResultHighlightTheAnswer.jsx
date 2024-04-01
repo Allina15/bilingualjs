@@ -87,7 +87,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
       '& > .correct-answer': {
          color: theme.palette.primary.main,
          width: '785px',
-         marginLeft: '-2.5rem',
+         marginLeft: '-1.5rem',
          marginBottom: '1rem',
       },
 
