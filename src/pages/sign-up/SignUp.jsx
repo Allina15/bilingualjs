@@ -37,10 +37,10 @@ const SignUp = () => {
 
    const handleWithGoogle = async () => {
       await signInWithPopup(auth, provider)
-         .then((data) => {
+         .then((response) => {
             dispatch(
                AUTH_THUNKS.authWithGoogle({
-                  tokenId: data?.user?.accessToken,
+                  tokenId: response?.user?.accessToken,
                   navigate,
                   isSignUp: false,
                })

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'http://billingual.peaksoftprojects.com/'
+const BASE_URL = process.env.REACT_APP_BASE_API
 
 export const axiosInstanceFile = axios.create({
    baseURL: BASE_URL,
