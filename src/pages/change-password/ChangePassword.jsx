@@ -66,7 +66,7 @@ const ChangePassword = () => {
       <StyledContainer>
          <form className="form" autoComplete="off" onSubmit={handleSubmit}>
             <Box className="exit">
-               <Link to={ROUTES.FORGOT_PASSWORD}>
+               <Link to={`${ROUTES.FORGOT_PASSWORD.INDEX}`}>
                   <ExitIcon />
                </Link>
             </Box>

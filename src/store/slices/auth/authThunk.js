@@ -28,7 +28,7 @@ const signUp = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -75,7 +75,7 @@ const signIn = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data.message,
+            message: error.response.data,
             type: 'error',
          })
 
@@ -157,7 +157,7 @@ const verificationCode = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.response.data.message,
+            message: 'Verification code is invalid',
             type: 'error',
          })
 
