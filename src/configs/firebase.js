@@ -2,12 +2,12 @@ import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 
 const firebaseConfig = {
-   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-   appId: process.env.REACT_APP_FIREBASE_APP_ID,
+   apiKey: 'AIzaSyD8is_glhLHHCJ8L4ZWsNQ-ZwiqnDVcSFU',
+   authDomain: 'bilinguo-c5ad7.firebaseapp.com',
+   projectId: 'bilinguo-c5ad7',
+   storageBucket: 'bilinguo-c5ad7.appspot.com',
+   messagingSenderId: '920208050630',
+   appId: '1:920208050630:web:7d49dd646dbbe0c25e0ac7',
 }
 
 const app = initializeApp(firebaseConfig, 'bilinguo')
