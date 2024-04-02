@@ -50,7 +50,7 @@ const addAnswer = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data.message,
             type: 'error',
          })
 
@@ -73,7 +73,7 @@ const addAnswerFile = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data.message,
             type: 'error',
          })
 

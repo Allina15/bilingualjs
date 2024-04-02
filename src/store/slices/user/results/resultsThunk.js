@@ -41,7 +41,7 @@ const deleteResults = createAsyncThunk(
       } catch (error) {
          showNotification({
             title: 'Error',
-            message: error.message,
+            message: error.response.data.message,
             type: 'error',
          })
 
